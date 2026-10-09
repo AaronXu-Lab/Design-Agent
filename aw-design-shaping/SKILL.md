@@ -2,7 +2,7 @@
 name: aw-design-shaping
 description: "Shape product ideas, PRDs, or competitor references into an agreed UI/UX direction through focused questioning, competitor research, and wireframes. Use before initial interface generation or when rethinking a feature's task flow and structure."
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   author: "aaron_xu"
   creation_context: "为将不同成熟度的需求、想法与竞品参考，通过主动追问、研究和可视化讨论共同塑形成可交给初版界面生成的设计方向而创建。"
 ---
@@ -10,6 +10,8 @@ metadata:
 # AW Design Shaping · 设计塑形
 
 与用户共同明确目标、任务与界面结构，交付可在组件库和 DESIGN.md 约束下生成初版的设计简报。先读 [工作流](references/workflow.md)，按当前问题选择追问、研究或可视化，不要求把所有输入补成 PRD，也不固定先问完再画图。
+
+AaronUI-Web 主流程在塑形后交给 `aw-component-advisor guidance` 读取适用规范，再由当前执行者使用真实组件生成；本轮规范只覆盖 Dialog。塑形仅在能力会改变主方案时按需查证，不保存组件规则或以旧 Reference 兜底。
 
 | 当前任务 | 按需资料 |
 | --- | --- |

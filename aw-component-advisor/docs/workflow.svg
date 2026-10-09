@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1270" role="img" aria-labelledby="title desc">
+<title id="title">组件指导与审查 · 同一知识源</title><desc id="desc">按任务选择 guidance 或 audit，先取得当前 Dialog 规范和真实源码证据。服务未支持记为未覆盖，证据缺失或读取失败记为待验证，不回退旧规则。两模式分别形成指导或审查结论；纯读任务只报告，已有实施授权则完成修改与适用验证，交付来源、覆盖和剩余事项。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
+<rect width="1200" height="1270" fill="#f7f9fb"/>
+<text class="title" x="600" y="48">组件指导与审查 · 同一知识源</text>
+<rect x="380" y="90" width="440" height="76" rx="14" fill="#ffffff" stroke="#9eacb8" stroke-width="2"/>
+<text class="label" x="600.0" y="120">限定任务与当前模式</text>
+<text class="note" x="600.0" y="145">guidance：实现前 · audit：已有用法</text>
+<path class="edge" d="M600 166V205"/>
+<rect x="380" y="205" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
+<text class="label" x="600.0" y="235">本地 MCP 读取当前 Dialog 规范</text>
+<text class="note" x="600.0" y="260">同一源正文 / revision，真实源码核实 API</text>
+<path class="edge" d="M600 281V320"/>
+<path d="M600 320L775 370L600 420L425 370Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
+<text class="label" x="600" y="376">规范与证据可用？</text>
+<path class="edge" d="M775 370H875"/>
+<text class="note" x="820" y="354">否</text>
+<rect x="875" y="333" width="285" height="76" rx="14" fill="#fff0ef" stroke="#c94b43" stroke-width="2"/>
+<text class="label" x="1017.5" y="363">未覆盖 / 待验证</text>
+<text class="note" x="1017.5" y="388">报告缺口，不回退旧规则</text>
+<path class="edge" d="M600 420V465"/>
+<text class="note" x="625" y="449">是</text>
+<path d="M600 465L775 515L600 565L425 515Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
+<text class="label" x="600" y="521">执行哪种模式？</text>
+<path class="edge" d="M425 515H280V585"/>
+<text class="note" x="350" y="554">guidance</text>
+<path class="edge" d="M775 515H920V585"/>
+<text class="note" x="850" y="554">audit</text>
+<rect x="60" y="585" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
+<text class="label" x="280.0" y="615">任务 → 组件用法与验证计划</text>
+<text class="note" x="280.0" y="640">按规范指导，核实真实导出与调用方责任</text>
+<rect x="700" y="585" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
+<text class="label" x="920.0" y="615">观察证据 → 组件用法判断</text>
+<text class="note" x="920.0" y="640">规则与位置可追溯，静态 / 动态分开</text>
+<path class="join" d="M280 661V700H600"/>
+<path class="join" d="M920 661V700H600"/>
+<path class="edge" d="M600 700V740"/>
+<path d="M600 740L775 790L600 840L425 790Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
+<text class="label" x="600" y="796">已有对应实施授权？</text>
+<path class="edge" d="M425 790H280V860"/>
+<text class="note" x="345" y="774">否</text>
+<path class="edge" d="M775 790H920V860"/>
+<text class="note" x="855" y="774">是</text>
+<rect x="60" y="860" width="440" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
+<text class="label" x="280.0" y="890">交付指导 / 审查结论</text>
+<text class="note" x="280.0" y="915">不自动改产品、库组件或规范</text>
+<rect x="700" y="860" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
+<text class="label" x="920.0" y="890">完成获准改动与适用验证</text>
+<text class="note" x="920.0" y="915">用法改变局部复核，失败记录证据缺口</text>
+<path class="join" d="M280 936V985H600"/>
+<path class="join" d="M920 936V985H600"/>
+<path class="edge" d="M600 985V1030"/>
+<rect x="380" y="1030" width="440" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
+<text class="label" x="600.0" y="1060">交付可追溯结果与剩余事项</text>
+<text class="note" x="600.0" y="1085">来源 / revision / 章节 / 覆盖与验证范围</text>
+<text class="note" x="600" y="1160">本轮仅 component/dialog · 依赖组件可使用真实 API，但无独立规范覆盖</text>
+<text class="note" x="600" y="1192">指导、已实现、已验证分别记录 · 保留相邻 Skill 的人工 Review 与职责</text>
+</svg>

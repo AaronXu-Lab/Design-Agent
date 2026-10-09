@@ -2,12 +2,14 @@
 name: aw-flow-completeness-audit
 description: "Audit user-flow completeness across steps, branches, state transitions, handoffs, recovery, and completion outcomes. Use to find missing behavior in implemented interfaces, prototypes, or flow designs; not for visual polish or task usability alone."
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   author: "aaron_xu"
   creation_context: "初版界面经过信息、组件和文案检查后，仍可能遗漏流程分支、角色交接和中断恢复。为从实际入口追踪到任务结果，形成有证据的补全建议并经人工审阅后实施而创建。"
 ---
 
 # 流程完整性审查
+
+AaronUI-Web 工作流中，人工 Review 后的获准补全若改变 Dialog 用法，按工作流交给 `aw-component-advisor` 做指导/局部审查；规范由本地 MCP 提供，未覆盖与待验证单独记录。组件审查不替代实际流程结果，也不越过本 Skill 的人工关口。
 
 检查约定范围内的用户流程在正常、异常和中断情况下，是否交代了必要步骤、后续行为与完成结果。以已实现界面及相关源码为主要证据，也接受设计稿、原型和需求描述，并明确相应验证限制。
 

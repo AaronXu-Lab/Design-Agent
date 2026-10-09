@@ -2,7 +2,7 @@
 
 中文 · [English](./README.md)
 
-收录 **8 个 Skill**，用于 UI/UX 设计塑形、界面审查与真实用户任务走查。
+收录 **8 个活跃 Skill**，用于 UI/UX 设计塑形、组件指导与审查、真实用户任务走查；另保留 1 个弃用兼容入口，共 **9 个 Skill 目录**。
 
 ## 安装
 
@@ -21,18 +21,24 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 
 | Skill | 版本 | 它解决什么问题 | 关键边界 |
 | --- | --- | --- | --- |
-| [`aw-design-orchestrator`](./aw-design-orchestrator/) | `1.0.0` | 接收多种形式需求，顺序编排设计塑形、初版生成、审查、任务走查与文案收敛，提供独立 `/help` | 只编排主流程；保留人工 Review 与新会话交接，按阶段加载 Skill 并报告缺失依赖，不包含按需增强 |
-| [`aw-design-shaping`](./aw-design-shaping/) | `1.1.0` | 通过聚焦追问、竞品研究与线框图，将想法、PRD 和参考共同塑形成可生成初版的 UI/UX 方向 | 用户选择探索方式并决定关键取舍；简报随后续已批准决定更新并记录实施状态，不穷举状态或自动实施正式界面 |
-| [`aw-canvas-design`](./aw-canvas-design/) | `1.7.0` | 支持流程模式审查业务步骤与分支，及设计平铺模式收集、对齐比较真实页面、Dialog、Sheet；附带共用 canvas-kit 标准件、独立模式模型、模块目录、隔离预览与明确覆盖清单 | 优先复用项目能力与同一展示代码；平铺按类型 Section Group → 直接业务模块 Item，模块内一个相关流程一行，区分源码记录和真实交互覆盖；只有明确要求时才迁移到业务入口 |
-| [`aw-component-checker`](./aw-component-checker/) | `1.24.1` | 审查桌面端组件的语义、组合与内部使用，并维护 Component Reference 和索引 | 按需读取相关规则；纯审查不自动改写；不用于单纯视觉规格检查 |
-| [`aw-ux-info-redundancy-audit`](./aw-ux-info-redundancy-audit/) | `1.7.1` | 审计各类 UI/UX 的信息任务价值、语义重复、适用阶段与视觉承载物必要性 | 先输出审计证据与最小改动决策，再实施界面修改 |
-| [`aw-flow-completeness-audit`](./aw-flow-completeness-audit/) | `1.1.0` | 从入口追踪步骤、分支、状态转换、角色交接、恢复与真实结果，交付有证据的流程补全建议 | 已实现界面优先；范围外记录依赖，业务规则缺失时提出方案；报告后强制人工 Review，审阅并明确授权后才实施；关键决定变化同步已有简报 |
-| [`aw-task-walkthrough`](./aw-task-walkthrough/) | `1.1.0` | 在可交互原型或运行产品上独立走查用户选定的任务，判断理解、发现、任务负担与完成结果 | 文案收敛前以新会话执行，简报仅作辅助规划依据，可完整读取 PRD；默认面向懂业务的首次使用者；必须实际交互，交付问题与证据供人工 review，默认不提供修改方案或修改产品 |
-| [`aw-wording-reviewer`](./aw-wording-reviewer/) | `0.13.0` | 审查简体中文 UI 的排版、术语、格式、跨组件数据展示与微文案 | 默认只审查不修改；不用于英文、日文或产品信息架构评审 |
+| [`aw-design-orchestrator`](./aw-design-orchestrator/) | `1.1.0` | 顺序编排塑形、实时组件指导、AaronUI-Web 实现、审查、任务走查与文案收敛，提供独立 `/help` | 保留人工 Review 与新会话交接；明确 Dialog-only 知识缺口；后续改动只触发受影响组件复核 |
+| [`aw-design-shaping`](./aw-design-shaping/) | `1.2.0` | 通过聚焦追问、竞品研究与线框图，共同塑形 UI/UX 方向 | 用户选择探索方式与关键取舍；简报同步已批准决定和实施状态；交接组件指导，不复制规则或自动实施正式界面 |
+| [`aw-canvas-design`](./aw-canvas-design/) | `1.8.0` | 在流程模式审查业务分支，或平铺真实页面、Dialog、Sheet 做比较，提供 canvas-kit、隔离预览与覆盖记录 | 复用项目能力和共享展示；类型组下直接业务模块，一流程一行；区分源码记录与交互覆盖；Dialog 用法变化按需指导/审查；业务迁移须明确要求 |
+| [`aw-component-advisor`](./aw-component-advisor/) | `1.0.0` | 实现前指导 AaronUI-Web 组件用法，实现后通过同一实时知识源审查 | 本轮仅 Dialog；只保存方法，无规则副本或旧 Reference 兜底；源码是精确 API 依据；未覆盖和待验证不算通过 |
+| [`aw-ux-info-redundancy-audit`](./aw-ux-info-redundancy-audit/) | `1.8.0` | 审计信息任务价值、语义重复、适用阶段与视觉承载物必要性 | 实施前交付证据与最小改动决策；Dialog 用法受影响时交接组件审查，不替代信息价值判断 |
+| [`aw-flow-completeness-audit`](./aw-flow-completeness-audit/) | `1.2.0` | 审查步骤、分支、转换、交接、恢复与可观察结果，交付证据和最小补全建议 | 已实现界面优先；人工 Review 后才实施获准修复；同步已有简报；Dialog 用法变化局部复核，不替代流程结果验证 |
+| [`aw-task-walkthrough`](./aw-task-walkthrough/) | `1.2.0` | 独立走查用户选定的可交互原型或产品任务，判断理解、发现、负担与结果 | 文案前以新会话执行；可读完整 PRD，简报仅辅助规划；不预读组件规则或旧审查；真实交互后交人工 review，默认只报问题不修复 |
+| [`aw-wording-reviewer`](./aw-wording-reviewer/) | `0.14.0` | 审查简体中文排版、术语、数据展示与微文案 | 默认只审查；组件约束相关时才读取当前源；获准修改影响 Dialog 用法时局部 audit；不用于其他语言或信息架构 |
 
 统一入口为 [`aw-design-orchestrator`](./aw-design-orchestrator/)，调用时附带 `/help` 可单独查看新手帮助。
 
-建议顺序：设计塑形 → 结合组件库与 DESIGN.md 生成初版 → 信息冗余审计 → 组件审查 → 流程完整性审查 → 人工 Review、获准修复与复查 → 独立任务走查 → 人工 Review 与获准修复 → Wording 文案收敛。已批准改动影响关键决定时同步已有设计简报；Wording 保留一致化规则，包括必要的解释性重复。
+建议顺序：塑形 → `aw-component-advisor guidance` → 当前执行者用 AaronUI-Web 真实组件与 DESIGN.md 实现 → 信息冗余审计 → `aw-component-advisor audit` → 流程完整性审查 → 人工 Review 与获准修复 → 独立任务走查 → 人工 Review 与获准修复 → 文案收敛。两模式读取同一规范；后续改动影响 Dialog 用法时局部复核，未变证据复用。关键决定变化同步简报；Wording 保留一致化规则，包括必要的解释性重复。首次独立走查不预读组件规则或前序发现。
+
+### 不再维护
+
+| Skill | 版本 | 它解决什么问题 | 关键边界 |
+| --- | --- | --- | --- |
+| [`aw-component-checker`](./aw-component-checker/) | `1.25.0` | 弃用的旧名称兼容入口，将指导/审查转发给 `aw-component-advisor` | 无组件规则、静态索引或知识兜底；旧编辑请求指向 AaronUI-Web 规范源；新入口缺失时明确报告 |
 
 ## 依赖与校验
 
@@ -40,9 +46,13 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 
 `aw-design-fake` 等设计支撑 Skill 仍在 [AaronSkill](https://github.com/AaronXu-Lab/AaronSkill)，需要时单独安装，不假设相邻仓库目录存在。Skill 维护使用 AaronSkill 中的 `aw-meta-skill` 和基础 `skill-creator` 校验器。
 
+[AaronUI-Web 知识 MCP](https://github.com/AaronXu-Lab/AaronUI-Web/tree/main/mcp) 手动启动，提供 `list_documents({type?})` 和 `get_document({type,id})`。默认 Streamable HTTP 端点为 `http://127.0.0.1:7331/mcp`，端口可用 `MCP_PORT` 修改。在该仓库执行 `npm ci --prefix mcp` 安装依赖，再执行 `npm --prefix mcp start`，按服务文档配置宿主 MCP 客户端。无需云端服务、自动启动或外部设计生成器。
+
+当前仅支持 `component/dialog`。Gallery 继续展示更多组件；Button、Input、ModalActions 可作为 Dialog 依赖使用真实 API，但没有独立知识覆盖。[Dialog 唯一规范](https://github.com/AaronXu-Lab/AaronUI-Web/blob/main/gallery/content/components/dialog.md) 同时服务 Gallery 和 MCP；精确 API/行为来自 TypeScript 源码。未知资源返回 `NOT_SUPPORTED_YET`，来源不可用、正文无效或行为证据缺失仍为待验证。Skill 不保存组件规则副本，也不回退旧 checker。旧包的整个 `references/components/` 目录与静态索引已移出当前包，Git 历史保留原文；非 Dialog 知识未迁移。响应和引用字段见 [访问契约](./aw-component-advisor/references/knowledge-access.md)。
+
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py ./<skill-name>
 python3 /path/to/aw-meta-skill/scripts/validate_aw_skill.py ./<skill-name>
 ```
 
-从 [AaronSkill 提交 0f430b6](https://github.com/AaronXu-Lab/AaronSkill/tree/0f430b6) 原样迁入，保留版本、作者、工作流及资源；更早的历史保留在原仓库。
+最初从 [AaronSkill 提交 0f430b6](https://github.com/AaronXu-Lab/AaronSkill/tree/0f430b6) 迁入，更早的历史保留在原仓库；活跃设计 Skill 在此维护。用户产品验收与 Skill 结构校验、工程检查分别记录。

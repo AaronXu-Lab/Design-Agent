@@ -20,12 +20,13 @@ aw-design-orchestrator 继续，任务走查报告在：……
 | 顺序 | Skill / 执行能力 | 它做什么 |
 | --- | --- | --- |
 | 1 | `aw-design-shaping` | 通过提问、竞品研究和线框图，与你确定要做什么、给谁用、怎样组织任务 |
-| 2 | 当前执行者生成初版 | 结合项目组件库和 DESIGN.md，把确认的方向做成可以操作的界面；这不是独立 Skill |
-| 3 | `aw-ux-info-redundancy-audit` | 检查信息价值与重复，精简不必要表达 |
-| 4 | `aw-component-checker` | 检查组件是否选对、组合和内部使用是否合适 |
-| 5 | `aw-flow-completeness-audit` | 检查流程分支、中断、异常、交接和恢复是否有遗漏 |
-| 6 | `aw-task-walkthrough` | 在独立新会话中，实际尝试你选定的任务，记录理解和操作障碍 |
-| 7 | `aw-wording-reviewer` | 最后统一简体中文文案、术语和数据表达 |
+| 2 | `aw-component-advisor guidance` | 从 AaronUI-Web 本地 MCP 读取当前规范，核实真实 API，指导组件用法；本轮只覆盖 Dialog |
+| 3 | 当前执行者生成初版 | 使用 AaronUI-Web 的真实组件和 DESIGN.md，把确认的方向做成可以操作的界面；这不是独立 Skill，也不依赖外部设计生成服务 |
+| 4 | `aw-ux-info-redundancy-audit` | 检查信息价值与重复，精简不必要表达 |
+| 5 | `aw-component-advisor audit` | 使用与 guidance 相同的规范源，检查当前组件选择、组合和内部用法 |
+| 6 | `aw-flow-completeness-audit` | 检查流程分支、中断、异常、交接和恢复是否有遗漏 |
+| 7 | `aw-task-walkthrough` | 在独立新会话中，实际尝试你选定的任务，记录理解和操作障碍 |
+| 8 | `aw-wording-reviewer` | 最后统一简体中文文案、术语和数据表达 |
 
 ## 什么时候需要你参与
 
@@ -34,6 +35,8 @@ aw-design-orchestrator 继续，任务走查报告在：……
 - 按交接说明启动独立走查会话，选择任务，并审阅其报告。第一版不自动创建会话。
 - 有未决产品取舍、必要资源缺失或超出既有授权的修改时，处理对应事项。
 
-普通步骤会依次推进。缺失 Skill 会被明确报告，不能把未执行的步骤算作通过。组件审查当前面向桌面界面，Wording 面向简体中文；其他目标会先说明适用性限制。
+普通步骤会依次推进。缺失 Skill 或规范服务会被明确报告，不能把未执行、未覆盖或待验证算作通过。MCP 需手动启动，连接与命令查 AaronUI-Web 当前服务文档。Gallery 展示范围大于 MCP，本轮只有 `component/dialog`；Dialog 依赖的 Button、Input、ModalActions 可用真实 API 组合，但没有独立规范覆盖，不用旧 Reference 兜底。组件指导/审查面向 AaronUI-Web 用法，Wording 面向简体中文；其他目标说明适用性限制。
+
+后续获准修复或文案改变 Dialog 用法时会局部复核，未变部分复用有效证据，不重跑整条流程。首次独立走查不预读组件规范和旧审查报告。旧 `aw-component-checker` 仅为弃用转发入口；编辑组件规范应维护 AaronUI-Web 的源文件。
 
 最终得到当前界面入口、最新设计简报、审查报告和剩余事项。简报会随后续批准的关键决定更新。按需增强暂不包含在本入口中。

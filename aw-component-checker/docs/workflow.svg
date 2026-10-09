@@ -1,76 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1140" viewBox="0 0 1200 1140" role="img" aria-labelledby="title desc">
-  <title id="title">组件审查与编辑工作流</title>
-  <desc id="desc">识别任务与已有授权，读取组件索引后区分审查和编辑。审查按需读取规则并判断组件用法，核心条件不明时澄清；编辑核对最新正式注册，联动维护规则、索引和链接，检查通过后交付，有问题时修复重验或保留待定差异。</desc>
-  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#52606d"/></marker></defs>
-  <style>
-    text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; fill: #243746; text-anchor: middle; }
-    .title { font-size: 30px; font-weight: 700; }
-    .label { font-size: 18px; font-weight: 600; }
-    .note { font-size: 14px; font-weight: 400; }
-    .node { stroke-width: 2; rx: 14; }
-    .input { fill: #ffffff; stroke: #9eacb8; }
-    .step { fill: #edf6ff; stroke: #287bbb; }
-    .decision { fill: #fff7e6; stroke: #c98312; stroke-width: 2; }
-    .pending { fill: #fff0ef; stroke: #c94b43; }
-    .done { fill: #edf9f1; stroke: #2e8b54; }
-    .edge { fill: none; stroke: #52606d; stroke-width: 2.5; marker-end: url(#arrow); }
-  </style>
-  <rect width="1200" height="1140" fill="#f7f9fb"/>
-  <text class="title" x="600" y="51">组件审查与编辑</text>
-  <text class="note" x="600" y="78">审查用法，或随组件变化维护规则与索引</text>
-  <rect class="node input" x="390" y="105" width="420" height="74"/>
-  <text class="label" x="600" y="136">识别任务范围与已有授权</text>
-  <text class="note" x="600" y="161">局部修改保持范围；纯视觉请求不启动审查</text>
-  <path class="edge" d="M600 179 V210"/>
-  <rect class="node step" x="390" y="210" width="420" height="74"/>
-  <text class="label" x="600" y="241">读取组件索引，定位目标</text>
-  <text class="note" x="600" y="266">以 Gallery ID 区分展示名与文件名</text>
-  <path class="edge" d="M600 284 V315"/>
-  <path class="decision" d="M600 315 L785 375 L600 435 L415 375 Z"/>
-  <text class="label" x="600" y="381">当前要审查还是维护？</text>
-  <path class="edge" d="M415 375 H300 V475"/>
-  <text class="note" x="341" y="363">审查模式</text>
-  <path class="edge" d="M785 375 H900 V475"/>
-  <text class="note" x="858" y="363">编辑模式</text>
-  <rect class="node step" x="80" y="475" width="440" height="80"/>
-  <text class="label" x="300" y="507">按需加载相关组件规则</text>
-  <text class="note" x="300" y="535">需要区分边界时才补读相似组件</text>
-  <rect class="node step" x="680" y="475" width="440" height="80"/>
-  <text class="label" x="900" y="507">核对最新正式注册与变更</text>
-  <text class="note" x="900" y="535">区分新增、移除、改名和能力变化</text>
-  <path class="edge" d="M300 555 V602"/>
-  <path class="edge" d="M900 555 V602"/>
-  <rect class="node step" x="80" y="602" width="440" height="88"/>
-  <text class="label" x="300" y="635">判断语义、场景与组件用法</text>
-  <text class="note" x="300" y="663">先跨组件组合，再内部意图；示例帮助解释</text>
-  <rect class="node step" x="680" y="602" width="440" height="88"/>
-  <text class="label" x="900" y="635">联动维护规则、索引与链接</text>
-  <text class="note" x="900" y="663">只处理实际差异；迁移前检查受影响引用</text>
-  <path class="edge" d="M300 690 V735"/>
-  <path class="edge" d="M900 690 V735"/>
-  <path class="decision" d="M300 735 L480 796 L300 857 L120 796 Z"/>
-  <text class="label" x="300" y="802">核心条件仍无法判断？</text>
-  <path class="decision" d="M900 735 L1080 796 L900 857 L720 796 Z"/>
-  <text class="label" x="900" y="802">校验与差异核对通过？</text>
-  <path class="edge" d="M300 857 V900"/>
-  <text class="note" x="277" y="884">否</text>
-  <path class="edge" d="M900 857 V900"/>
-  <text class="note" x="877" y="884">是</text>
-  <rect class="node done" x="80" y="900" width="440" height="74"/>
-  <text class="label" x="300" y="931">交付有依据的审查结论</text>
-  <text class="note" x="300" y="958">说明问题、成立条件与最小调整建议</text>
-  <rect class="node done" x="680" y="900" width="440" height="74"/>
-  <text class="label" x="900" y="931">交付已同步的规则与索引</text>
-  <text class="note" x="900" y="958">记录实际增删改、覆盖数、检查与版本</text>
-  <path class="edge" d="M120 796 H35 V1043 H80"/>
-  <text class="note" x="76" y="784">是</text>
-  <path class="edge" d="M1080 796 H1165 V1043 H1120"/>
-  <text class="note" x="1122" y="784">否</text>
-  <rect class="node pending" x="80" y="1006" width="440" height="74"/>
-  <text class="label" x="300" y="1037">澄清关键条件，交付已审部分</text>
-  <text class="note" x="300" y="1064">仅保留依赖答案的结论</text>
-  <rect class="node pending" x="680" y="1006" width="440" height="74"/>
-  <text class="label" x="900" y="1037">修复重验或说明待定差异</text>
-  <text class="note" x="900" y="1064">在授权范围内继续；不伪造完整同步</text>
-  <text class="note" x="600" y="1117">文字工作流是事实源 · 仅加载当前模式需要的资料</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 925" role="img" aria-labelledby="title desc">
+<title id="title">旧组件入口 · 迁移与转发</title><desc id="desc">旧 aw-component-checker 只保留迁移方法。旧编辑请求说明规范维护源；指导和审查定位新入口并实际执行，缺失时报告依赖，不保留静态组件规则或知识兜底。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
+<rect width="1200" height="925" fill="#f7f9fb"/>
+<text class="title" x="600" y="48">旧组件入口 · 迁移与转发</text>
+<rect x="380" y="90" width="440" height="76" rx="14" fill="#ffffff" stroke="#9eacb8" stroke-width="2"/>
+<text class="label" x="600.0" y="120">接收旧组件入口请求</text>
+<text class="note" x="600.0" y="145">保留原范围与已有授权</text>
+<path class="edge" d="M600 166V205"/>
+<path d="M600 205L775 255L600 305L425 255Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
+<text class="label" x="600" y="261">旧 Reference 编辑请求？</text>
+<path class="edge" d="M425 255H300V340"/>
+<text class="note" x="345" y="239">是</text>
+<rect x="70" y="340" width="460" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
+<text class="label" x="300.0" y="370">说明 AaronUI-Web 规范源位置</text>
+<text class="note" x="300.0" y="395">源仓修改沿用具体授权，不在此重建规则</text>
+<path class="edge" d="M600 305V460"/>
+<text class="note" x="760" y="371">否：指导 / 审查</text>
+<path d="M600 460L775 510L600 560L425 510Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
+<text class="label" x="600" y="516">新入口可用？</text>
+<path class="edge" d="M775 510H880"/>
+<text class="note" x="825" y="494">否</text>
+<rect x="880" y="473" width="280" height="76" rx="14" fill="#fff0ef" stroke="#c94b43" stroke-width="2"/>
+<text class="label" x="1020.0" y="503">报告缺失并停止相关执行</text>
+<text class="note" x="1020.0" y="528">不自动安装，不回退旧规范</text>
+<path class="edge" d="M600 560V620"/>
+<text class="note" x="625" y="600">是</text>
+<rect x="380" y="620" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
+<text class="label" x="600.0" y="650">读取并执行 aw-component-advisor</text>
+<text class="note" x="600.0" y="675">实现前 guidance · 已有用法 audit</text>
+<path class="edge" d="M600 696V745"/>
+<rect x="380" y="745" width="440" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
+<text class="label" x="600.0" y="775">按新入口交付实际结果</text>
+<text class="note" x="600.0" y="800">未覆盖 / 待验证不能算通过</text>
+<text class="note" x="600" y="873">弃用兼容入口 · 本包不含组件规范或索引</text>
 </svg>

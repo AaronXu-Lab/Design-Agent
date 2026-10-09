@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1160" viewBox="0 0 1200 1160" role="img" aria-labelledby="title desc">
   <title id="title">流程完整性审查</title>
-  <desc id="desc">限定目标和证据，追踪入口、分支、交接与结果，按适用条件审查并分类发现。交付报告后强制人工 Review；未审阅或未授权时停留在报告阶段，审阅并授权后才实施及复查。</desc>
+  <desc id="desc">限定目标和证据，追踪入口、分支、交接与结果，按适用条件审查并分类发现。交付报告后强制人工 Review；未审阅或未授权时停留在报告阶段，审阅并授权后才实施及复查；Dialog 用法改变时按需同源 guidance/audit，不替代流程结果验证。</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#52606d"/></marker>
   </defs>
@@ -58,11 +58,11 @@
 
   <rect class="step" x="380" y="865" width="440" height="72" rx="14"/>
   <text class="heading" x="600" y="894">按已确认范围实施与复查</text>
-  <text class="note" x="600" y="917">新增产品取舍另交 Review，独立的已批事项继续</text>
+  <text class="note" x="600" y="917">Dialog 用法改变：按需指导与局部 audit</text>
   <path class="edge" d="M600 937 V980"/>
 
   <rect class="output" x="380" y="980" width="440" height="82" rx="14"/>
   <text class="heading" x="600" y="1012">更新处理结果与设计依据</text>
-  <text class="note" x="600" y="1037">同步受影响简报，区分已批准、已实施与待验证</text>
+  <text class="note" x="600" y="1037">同步简报，区分未覆盖、已实施与待验证</text>
   <text class="note" x="600" y="1120">分批审计保留稳定 ID、证据基线、未检查队列及 Review 状态</text>
 </svg>

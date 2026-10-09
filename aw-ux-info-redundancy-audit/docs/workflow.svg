@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1450" viewBox="0 0 1200 1450" role="img" aria-labelledby="title desc">
   <title id="title">UI/UX 信息冗余审计工作流程</title>
-  <desc id="desc">限定请求范围，在当前证据充分的部分映射事实并判断价值，未知部分保留待验证。核对必要语义后，局部问题简短交付，完整审计使用九项报告。只审查时完成报告；沿用完整会话实施授权，修改并验证，发现语义问题返回映射，检查失败或不可用时交付验证缺口。</desc>
+  <desc id="desc">限定请求范围，在当前证据充分的部分映射事实并判断价值，未知部分保留待验证。核对必要语义后，局部问题简短交付，完整审计使用九项报告。只审查时完成报告；沿用完整会话实施授权，修改并验证，Dialog 用法变化交回同源组件 audit，不复制规则；发现语义问题返回映射，检查失败或不可用时交付验证缺口。</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#52606d"/></marker>
     <style>
@@ -71,13 +71,13 @@
 
   <rect class="action" x="400" y="1085" width="400" height="80" rx="14"/>
   <text class="label" x="600" y="1117">实施并执行相关验证</text>
-  <text class="detail" x="600" y="1143">按需读取实施细则 · 修复并重验受影响路径</text>
+  <text class="detail" x="600" y="1143">Dialog 用法变化交回组件 audit 局部复核</text>
   <path class="route" d="M400 1125 H120 V430 H265"/>
   <text class="branch" x="235" y="1110">语义问题：返回映射</text>
   <path class="line" d="M600 1165 V1205"/>
   <polygon class="decision" points="600,1205 795,1270 600,1335 405,1270"/>
   <text class="label" x="600" y="1267">相关检查实际通过？</text>
-  <text class="detail" x="600" y="1292">方案推演不能代替实测</text>
+  <text class="detail" x="600" y="1292">信息结论与组件覆盖分别记录</text>
   <path class="line" d="M795 1270 H865"/>
   <text class="branch" x="830" y="1256">否</text>
   <rect class="stop" x="865" y="1230" width="290" height="80" rx="14"/>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
 <title id="title">AW Design Shaping · 设计塑形</title>
-<desc id="desc">从需求、想法或竞品建立理解，确认探索方式，按需交替追问、研究与可视化，修正需求和方案。关键问题未解决则继续探索，用户确认方向后交付初版生成所需简报；暂停时保存探索进度。</desc>
+<desc id="desc">从需求、想法或竞品建立理解，确认探索方式，按需交替追问、研究与可视化，修正需求和方案。关键问题未解决则继续探索，用户确认方向后交付简报，后续 guidance 读取适用规范并由当前执行者使用真实组件实现；暂停时保存探索进度。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;fill:#203243;text-anchor:middle}.heading{font-size:30px;font-weight:700}.title{font-size:18px;font-weight:600}.note{font-size:14px}.box{stroke-width:2;rx:14}.input{fill:#fff;stroke:#9eacb8}.step{fill:#edf6ff;stroke:#287bbb}.done{fill:#edf9f1;stroke:#2e8b54}.pause{fill:#fff0ef;stroke:#c94b43}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}</style>
 <rect width="1200" height="1200" fill="#f7f9fb"/>
@@ -30,7 +30,7 @@
 <text x="600" y="856" class="title">交付设计简报与必要图稿</text><text x="600" y="883" class="note">简报随已批准决定更新，标明实施状态与剩余问题</text>
 <path d="M600 903V940" class="line"/>
 <rect x="370" y="940" width="460" height="64" rx="14" class="box input"/>
-<text x="600" y="968" class="title">组件库 + DESIGN.md → 生成初版</text><text x="600" y="990" class="note">后续阶段；状态覆盖另行展开</text>
+<text x="600" y="968" class="title">guidance → 真实组件生成初版</text><text x="600" y="990" class="note">Dialog-only 规范；其余能力标明缺口</text>
 <path d="M910 450H1010V520" class="line"/><text x="1025" y="435" class="note">用户暂停 / 无法继续</text>
 <rect x="905" y="520" width="220" height="90" rx="14" class="box pause"/>
 <text x="1015" y="551" class="title">保存探索进度</text><text x="1015" y="576" class="note">记录下一个决定</text><text x="1015" y="596" class="note">不标记为已确认方案</text>

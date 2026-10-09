@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1130" viewBox="0 0 1200 1130" role="img" aria-labelledby="title desc">
   <title id="title">独立任务走查工作流</title>
-  <desc id="desc">独立会话准备，确认原型可操作，读取需求并提出任务和用户类型。用户选定后从界面实际走查，保留首次证据并复现核实，交付问题报告等待人工 review。不可操作或任务未选定时暂停相关执行。</desc>
+  <desc id="desc">独立会话准备，确认原型可操作，读取需求并提出任务和用户类型，不预读组件规范或前序报告。用户选定后从界面实际走查，保留首次证据并复现核实，交付问题报告等待人工 review；获准修复改变 Dialog 用法后交回执行阶段局部审查。不可操作或任务未选定时暂停相关执行。</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" fill="#52606d"/></marker>
   </defs>
@@ -65,4 +65,5 @@
   <rect x="380" y="996" width="440" height="82" rx="14" class="input"/>
   <text x="600" y="1027" class="label">等待人工 review</text>
   <text x="600" y="1053" class="note">默认不附方案；获准修复后再做 Wording 收敛</text>
+<text class="note" x="600" y="1092">首次观察不预读组件规范 · 后续获准修复改变 Dialog 用法再局部 audit</text>
 </svg>

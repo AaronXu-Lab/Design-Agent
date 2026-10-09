@@ -2,7 +2,7 @@
 name: aw-ux-info-redundancy-audit
 description: "Review information redundancy, density, and hierarchy in UI/UX, and provide evidence-based simplification decisions. Do not trigger for styling-only changes, literal translation, or code fixes that do not affect semantics."
 metadata:
-  version: "1.7.1"
+  version: "1.8.0"
   author: "aaron_xu"
   creation_context: "为在界面改动前系统识别语义重复、信息密度和层级问题，并形成可验证的最小安全改动决策而创建。"
 ---
@@ -18,6 +18,8 @@ metadata:
 - 已授权实施时，再读取 [实施与验证](references/implementation.md)，完成审计支持的修改及相关检查，不重复索要已有授权。
 
 先明确事实与决策，再修改界面；用途未明的内容保留待验证，必要业务、安全、恢复与无障碍语义不能因精简丢失。只审查时交付建议；实施时如实区分实际修改、已执行检查和验证缺口。未知部分不阻止独立且有证据的部分继续。
+
+AaronUI-Web 主流程随后用 `aw-component-advisor audit` 核对组件规范；改变 Dialog 内容或操作时交接受影响项，规范由本地 MCP 提供。本 Skill 保留信息价值判断职责，不保存组件规则，不把知识未覆盖算作组件合规。
 
 以下流程图供人类概览，无需为文字审计读取或渲染：
 

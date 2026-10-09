@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1670" role="img" aria-labelledby="title desc">
 <title id="title">交互式画布双模式设计</title>
-<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程建模和 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收，失败修复或报告阻塞。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
+<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程建模和 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收；Dialog 用法变化按需从 MCP 指导并局部审查，不复制规范，失败修复或报告阻塞。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;fill:#243746;text-anchor:middle}.title{font-size:30px;font-weight:700}.node{font-size:18px;font-weight:600}.detail{font-size:14px}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}.join{fill:none;stroke:#52606d;stroke-width:2.5}</style>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <path fill="#f7f9fb" d="M0 0H1200V1670H0Z"/>
@@ -33,9 +33,9 @@
 <path d="M600 410L750 455L600 500L450 455Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
 <text class="node" x="600" y="461">选择画布模式</text>
 <path class="line" d="M450 455H290V560"/>
-<text class="detail" x="308" y="505">审查步骤与分支</text>
+<text class="detail" x="390" y="505">审查步骤与分支</text>
 <path class="line" d="M750 455H910V560"/>
-<text class="detail" x="903" y="505">收集与对齐比较</text>
+<text class="detail" x="1010" y="505">收集与对齐比较</text>
 <rect x="60" y="560" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="290.0" y="590">流程 · 追踪实际入口与状态</text>
 <text class="detail" x="290.0" y="615">节点、判断、边和出口均需依据</text>
@@ -55,7 +55,7 @@
 <path class="line" d="M600 780V820"/>
 <rect x="370" y="820" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="600.0" y="850">共用真实组件与隔离交互</text>
-<text class="detail" x="600.0" y="875">重置、拖拽、缩放、说明及国际化</text>
+<text class="detail" x="600.0" y="875">真实组件，Dialog 用法按需 guidance / audit</text>
 <path class="line" d="M600 896V930"/>
 <rect x="370" y="930" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="600.0" y="960">评论迭代与模式覆盖回核</text>
@@ -74,7 +74,7 @@
 <path class="line" d="M600 1130V1180"/>
 <text class="detail" x="625" y="1157">是</text>
 <rect x="370" y="1180" width="460" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
-<text class="node" x="600.0" y="1210">Step 1 · 交付画布设计</text>
+<text class="node" x="600.0" y="1210">Step 1 · 交付画布设计与覆盖</text>
 <text class="detail" x="600.0" y="1235">模式入口、完整清单、评论与验收证据</text>
 <path class="line" d="M600 1256V1295"/>
 <path d="M600 1295L750 1340L600 1385L450 1340Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
@@ -90,5 +90,5 @@
 <text class="node" x="910.0" y="1470">Step 2 · 接入指定业务入口</text>
 <text class="detail" x="910.0" y="1495">复用已审阅展示，逐入口验证</text>
 <text class="detail" x="600" y="1575">混合任务保留两视图边界，分别验收 · 参考实现不限定技术栈</text>
-<text class="detail" x="600" y="1604">文本工作流为事实源 · 仅补齐必要能力 · 全部收集条目逐项可查看</text>
+<text class="detail" x="600" y="1604">文本为事实源 · Dialog 规范来自本地 MCP · 其他组件未覆盖不算通过</text>
 </svg>

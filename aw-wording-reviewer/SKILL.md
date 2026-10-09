@@ -2,7 +2,7 @@
 name: aw-wording-reviewer
 description: "Review or, when requested, revise Simplified Chinese UI copy to standardize typography, terminology, microcopy, and data display formats. Use for copy proofreading and Chinese i18n reviews; not for other languages, code naming, or information architecture reviews."
 metadata:
-  version: "0.13.0"
+  version: "0.14.0"
   author: "aaron_xu"
   creation_context: "中文界面的排版与微文案约定通常散落在各项目的设计文档和语料惯例里，每次改文案都要重新推断混排空格、分隔符和日期格式的边界。为把这些通用规则固化成与具体项目无关、可机械校验的审查流程而创建。"
 ---
@@ -28,6 +28,7 @@ metadata:
 - 用户显式要求 > 项目成文约定 > 内置默认规则。只选部分规则时，机械与语义复核都限于所选范围；没有项目背景时不能声称核对过项目约定。
 - 内置的标点、术语、时间与数据展示标准是本 Skill 的具体约定，不能以通用写作习惯替代。需要产品事实才能裁定的内容标记待确认，不编造错误原因、保留内容或恢复动作。
 - 机械零命中不代表完整通过。源码、语义、调用链和实际渲染分别以真实证据支持；未执行的检查不能宣称通过。
+- AaronUI-Web Dialog 的组件约束按需由 `aw-component-advisor` 从本地 MCP 取得，作为项目约定；本 Skill 保留通用中文一致化规则，不复制组件规范。改变 Dialog 用法的获准修改触发局部复核，普通校对不必查询 MCP；未覆盖不能算组件规范通过。
 - 修改保留 i18n key、插值与其他语言。字符串修改与渲染、格式化、组件配置等实现修改分开处理：先完成已授权的独立字符串修改，再按 [工作流第 4 节](references/workflow.md#4-按已有授权完成修改) 单独列出必要实现项及影响范围，明确征得同意后继续；已有具体授权无需重复确认。
 
 ![AW Wording Reviewer 工作流程：范围先行，按任务读取，先完成字符串，必要实现单独确认](docs/workflow.svg)

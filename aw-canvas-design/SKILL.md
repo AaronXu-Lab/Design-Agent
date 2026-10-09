@@ -2,7 +2,7 @@
 name: aw-canvas-design
 description: "Use an interactive canvas of real components to review business flows or tile pages, Dialogs, and Sheets for aligned design comparison, with isolated previews and explicit coverage. Not for plain flowcharts or styling a single dialog."
 metadata:
-  version: "1.7.0"
+  version: "1.8.0"
   author: "aaron_xu"
   creation_context: "源于在 ADM 画布中并列操作真实弹窗、分支与结果并通过评论迭代的实践，将可复用画布基础设施与多弹层业务设计分离，支持流程审查与设计平铺比较，以及不同业务和技术栈。"
 ---
@@ -34,6 +34,8 @@ metadata:
 已有画布先核实就绪记录；能力满足则跳过初始化细节，只在缺口处增量补齐。只初始化的请求以环境就绪为出口，不自动进入业务设计。
 
 ## 共同约束
+
+AaronUI-Web Dialog 用法新增或实质变化时，按工作流交给 `aw-component-advisor guidance/audit`，规范通过本地 MCP 读取，API 与预览使用真实组件。仅画布几何变化复用有效证据；本轮其他组件没有独立知识覆盖，不在 Canvas 复制规则或读旧 Reference 兜底。
 
 优先复用项目已有画布能力、设计系统与实际组件；canvas-kit 的技术栈和版本仅供参考，不强制升级项目依赖。以实际入口、源码来源和能力证据建模，区分现用、旧代码及新提议。画布、独立预览与实际页面必须共用展示组件和样式；初始化按[共享展示契约](references/workflow.md#从初始化建立同一套展示代码)检查引用关系。交互预览必须隔离状态和副作用，不能用截图或重复 UI 代替。平铺全部收集条目均须逐项可查看，源码记录、引用可达、可操作预览和已验证交互分别计数；Dialog/Sheet 使用独立类型 Section Group，下接业务模块 Sidebar Item，不用文件夹或折叠树；模块内每个流程一行，有依据的步骤从左到右排列，未知顺序明确标记，复用项目真实导出。两模式共用重置、拖拽、缩放、说明与项目国际化机制，预览尺寸按真实响应式留白回算并在稳定后验收。适用时使用可用的 aw-design-fake 和 aw-wording-reviewer，缺失时遵循工作流的降级边界。
 
