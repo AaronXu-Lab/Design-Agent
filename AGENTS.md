@@ -41,5 +41,5 @@
 ## 当前分类基线
 
 - 设计 · Agent：`aw-design-orchestrator`、`aw-design-shaping`、`aw-canvas-design`、`aw-component-advisor`、`aw-ux-info-redundancy-audit`、`aw-flow-completeness-audit`、`aw-task-walkthrough`、`aw-wording-reviewer`
-- 不再维护：`aw-component-checker`（仅保留无组件知识副本的旧名称转发入口）
+- 不再维护：无。
 - 设计支撑与元 Skill 依赖保留在 `AaronXu-Lab/AaronSkill`，按需单独安装。

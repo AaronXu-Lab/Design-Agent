@@ -2,7 +2,7 @@
 
 中文 · [English](./README.md)
 
-收录 **8 个活跃 Skill**，用于 UI/UX 设计塑形、组件指导与审查、真实用户任务走查；另保留 1 个弃用兼容入口，共 **9 个 Skill 目录**。
+收录 **8 个活跃 Skill**，用于 UI/UX 设计塑形、组件指导与审查、真实用户任务走查。
 
 ## 安装
 
@@ -21,10 +21,10 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 
 | Skill | 版本 | 它解决什么问题 | 关键边界 |
 | --- | --- | --- | --- |
-| [`aw-design-orchestrator`](./aw-design-orchestrator/) | `1.1.0` | 顺序编排塑形、实时组件指导、AaronUI-Web 实现、审查、任务走查与文案收敛，提供独立 `/help` | 保留人工 Review 与新会话交接；明确 Dialog-only 知识缺口；后续改动只触发受影响组件复核 |
-| [`aw-design-shaping`](./aw-design-shaping/) | `1.2.0` | 通过聚焦追问、竞品研究与线框图，共同塑形 UI/UX 方向 | 用户选择探索方式与关键取舍；简报同步已批准决定和实施状态；交接组件指导，不复制规则或自动实施正式界面 |
+| [`aw-design-orchestrator`](./aw-design-orchestrator/) | `1.3.0` | 顺序编排塑形、实时组件指导、AaronUI-Web 实现、审查、任务走查与文案收敛，提供独立 `/help` | 保留人工 Review 与新会话交接；guidance 按匹配 Example 规则回校 AI 提案，交接来源、差异和知识缺口；后续改动只触发受影响组件复核 |
+| [`aw-design-shaping`](./aw-design-shaping/) | `1.4.0` | 通过聚焦追问、竞品研究与线框图，共同塑形 UI/UX 方向 | 仅指明方向与补足空白；明确任务直接推进；AI 提案服从匹配 Example 规则，简报标清来源和实施状态；交接组件指导，不复制规则或自动实施正式界面 |
 | [`aw-canvas-design`](./aw-canvas-design/) | `1.8.0` | 在流程模式审查业务分支，或平铺真实页面、Dialog、Sheet 做比较，提供 canvas-kit、隔离预览与覆盖记录 | 复用项目能力和共享展示；类型组下直接业务模块，一流程一行；区分源码记录与交互覆盖；Dialog 用法变化按需指导/审查；业务迁移须明确要求 |
-| [`aw-component-advisor`](./aw-component-advisor/) | `1.0.0` | 实现前指导 AaronUI-Web 组件用法，实现后通过同一实时知识源审查 | 本轮仅 Dialog；只保存方法，无规则副本或旧 Reference 兜底；源码是精确 API 依据；未覆盖和待验证不算通过 |
+| [`aw-component-advisor`](./aw-component-advisor/) | `1.2.1` | 实现前指导 AaronUI-Web 组件用法，实现后通过同一实时知识源审查 | 从实时 Gallery 目录读取 Example 与明确规则并回校简报；只保存方法，无规则副本或旧 Reference 兜底；源码是精确 API 依据；未覆盖和待验证不算通过 |
 | [`aw-ux-info-redundancy-audit`](./aw-ux-info-redundancy-audit/) | `1.8.0` | 审计信息任务价值、语义重复、适用阶段与视觉承载物必要性 | 实施前交付证据与最小改动决策；Dialog 用法受影响时交接组件审查，不替代信息价值判断 |
 | [`aw-flow-completeness-audit`](./aw-flow-completeness-audit/) | `1.2.0` | 审查步骤、分支、转换、交接、恢复与可观察结果，交付证据和最小补全建议 | 已实现界面优先；人工 Review 后才实施获准修复；同步已有简报；Dialog 用法变化局部复核，不替代流程结果验证 |
 | [`aw-task-walkthrough`](./aw-task-walkthrough/) | `1.2.0` | 独立走查用户选定的可交互原型或产品任务，判断理解、发现、负担与结果 | 文案前以新会话执行；可读完整 PRD，简报仅辅助规划；不预读组件规则或旧审查；真实交互后交人工 review，默认只报问题不修复 |
@@ -32,13 +32,7 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 
 统一入口为 [`aw-design-orchestrator`](./aw-design-orchestrator/)，调用时附带 `/help` 可单独查看新手帮助。
 
-建议顺序：塑形 → `aw-component-advisor guidance` → 当前执行者用 AaronUI-Web 真实组件与 DESIGN.md 实现 → 信息冗余审计 → `aw-component-advisor audit` → 流程完整性审查 → 人工 Review 与获准修复 → 独立任务走查 → 人工 Review 与获准修复 → 文案收敛。两模式读取同一规范；后续改动影响 Dialog 用法时局部复核，未变证据复用。关键决定变化同步简报；Wording 保留一致化规则，包括必要的解释性重复。首次独立走查不预读组件规则或前序发现。
-
-### 不再维护
-
-| Skill | 版本 | 它解决什么问题 | 关键边界 |
-| --- | --- | --- | --- |
-| [`aw-component-checker`](./aw-component-checker/) | `1.25.0` | 弃用的旧名称兼容入口，将指导/审查转发给 `aw-component-advisor` | 无组件规则、静态索引或知识兜底；旧编辑请求指向 AaronUI-Web 规范源；新入口缺失时明确报告 |
+建议顺序：塑形 → `aw-component-advisor guidance` → 当前执行者用 AaronUI-Web 真实组件与 DESIGN.md 实现 → 信息冗余审计 → `aw-component-advisor audit` → 流程完整性审查 → 人工 Review 与获准修复 → 独立任务走查 → 人工 Review 与获准修复 → 文案收敛。两模式读取同一规范；后续改动影响组件用法时局部复核，未变证据复用。关键决定变化同步简报；Wording 保留一致化规则，包括必要的解释性重复。首次独立走查不预读组件规则、Example 参考或前序发现。
 
 ## 依赖与校验
 
@@ -46,9 +40,12 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 
 `aw-design-fake` 等设计支撑 Skill 仍在 [AaronSkill](https://github.com/AaronXu-Lab/AaronSkill)，需要时单独安装，不假设相邻仓库目录存在。Skill 维护使用 AaronSkill 中的 `aw-meta-skill` 和基础 `skill-creator` 校验器。
 
-[AaronUI-Web 知识 MCP](https://github.com/AaronXu-Lab/AaronUI-Web/tree/main/mcp) 手动启动，提供 `list_documents({type?})` 和 `get_document({type,id})`。默认 Streamable HTTP 端点为 `http://127.0.0.1:7331/mcp`，端口可用 `MCP_PORT` 修改。在该仓库执行 `npm ci --prefix mcp` 安装依赖，再执行 `npm --prefix mcp start`，按服务文档配置宿主 MCP 客户端。无需云端服务、自动启动或外部设计生成器。
+[AaronUI-Web 知识 MCP](https://github.com/AaronXu-Lab/AaronUI-Web/tree/main/mcp) 手动启动，以 v3 的 `list_documents` 和 `get_document({type,id,sections})` 发现并选读组件章节；通用 Example 发现/读取使用 `list_examples` 和 `get_example`，参数以当前服务 schema 为准。默认 Streamable HTTP 端点为 `http://127.0.0.1:7331/mcp`，端口可用 `MCP_PORT` 修改。在该仓库执行 `npm ci --prefix mcp` 安装依赖，再执行 `npm --prefix mcp start`，按服务文档配置宿主 MCP 客户端。无需云端服务、自动启动或外部设计生成器。
 
-当前仅支持 `component/dialog`。Gallery 继续展示更多组件；Button、Input、ModalActions 可作为 Dialog 依赖使用真实 API，但没有独立知识覆盖。[Dialog 唯一规范](https://github.com/AaronXu-Lab/AaronUI-Web/blob/main/gallery/content/components/dialog.md) 同时服务 Gallery 和 MCP；精确 API/行为来自 TypeScript 源码。未知资源返回 `NOT_SUPPORTED_YET`，来源不可用、正文无效或行为证据缺失仍为待验证。Skill 不保存组件规则副本，也不回退旧 checker。旧包的整个 `references/components/` 目录与静态索引已移出当前包，Git 历史保留原文；非 Dialog 知识未迁移。响应和引用字段见 [访问契约](./aw-component-advisor/references/knowledge-access.md)。
+塑形只指明方向并补足空白，简单明确任务不新增确认关口。用户真正明确的要求优先，其次默认采用匹配 Example 的明确规则和结构，AI 提案不能覆盖。guidance 回校简报并记录决定来源与差异。按当前 MCP 契约区分无规则与规则证据缺失/不可读；未完成规则读取保持待验证。
+
+
+规范覆盖与 Example 参考以当前服务目录为准。advisor 读完整分页目录后选择相关实现；没有明显候选时，读完任务组件范围内的全部实现才判定无适用参考。未通过移植验证的源码仍可参考，直接移植需独立证据。匹配 Example 后默认沿用其结构与组件组合，只按用户需求和适用规范调整；`source-reference` 仅表示需要适配依赖，不代表需要重新设计。实现或修复完成后对照原 Example 的实际渲染，简要说明必要差异；无法对照时标记待验证。精确 API/行为来自当前 TypeScript 源码。不支持的资源类型记为未覆盖；来源不可用、正文无效或证据缺失仍为待验证。Skill 不保存组件规则副本，也不回退旧 checker。旧包的整个 `references/components/` 目录与静态索引已移出当前包，Git 历史保留原文；Example 可读取不代表独立规范已覆盖。MCP 不返回 Docs 目录、正文或 Docs requirements；Gallery Docs 页面与文案规则不变。响应和引用字段见 [访问契约](./aw-component-advisor/references/knowledge-access.md)。
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py ./<skill-name>

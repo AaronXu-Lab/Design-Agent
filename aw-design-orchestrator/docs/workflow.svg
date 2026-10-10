@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1570" role="img" aria-labelledby="title desc">
-<title id="title">AW Design Orchestrator · 设计流程入口</title><desc id="desc">帮助单独展示并结束；正常流程塑形、组件 guidance、当前执行者用 AaronUI-Web 真实组件生成初版、信息审计、同源组件 audit、流程完整性。保留人工 Review、获准修复与局部复核、独立任务走查和最终文案收敛。Dialog-only 知识缺口不得算通过。</desc>
+<title id="title">AW Design Orchestrator · 设计流程入口</title><desc id="desc">帮助单独展示并结束；正常流程塑形、组件 guidance、当前执行者用 AaronUI-Web 真实组件生成初版、信息审计、同源组件 audit、流程完整性。保留人工 Review、获准修复与局部复核、独立任务走查和最终文案收敛。用户明确要求优先，Example 规则与结构优先于 AI 提案；回校简报，交接来源与差异；知识缺口不得算通过。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
 <rect width="1200" height="1570" fill="#f7f9fb"/>
@@ -19,11 +19,11 @@
 <text class="note" x="625" y="312">否</text>
 <rect x="340" y="325" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="355">aw-design-shaping</text>
-<text class="note" x="600.0" y="380">用户确认方向，交付当前简报</text>
+<text class="note" x="600.0" y="380">只指明方向与补足空白；明确任务直接推进</text>
 <path class="edge" d="M600 401V435"/>
 <rect x="340" y="435" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="465">aw-component-advisor · guidance</text>
-<text class="note" x="600.0" y="490">本地 MCP 当前 Dialog 规范 + 真实源码</text>
+<text class="note" x="600.0" y="490">匹配 Example 规则与结构优先；回校 AI 简报</text>
 <path class="edge" d="M600 511V545"/>
 <rect x="340" y="545" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="575">当前执行者生成可交互初版</text>
@@ -64,5 +64,5 @@
 <text class="label" x="600.0" y="1415">交付当前版本与流程结果</text>
 <text class="note" x="600.0" y="1440">入口、简报、报告、覆盖与未验证事项</text>
 <text class="note" x="600" y="1502">未覆盖 / 待验证不算通过 · 无旧 Reference 兜底 · 不依赖外部设计生成服务</text>
-<text class="note" x="600" y="1531">首次走查不预读规范或前序报告 · 未变部分复用有效证据</text>
+<text class="note" x="600" y="1531">首次走查不预读规范、参考或前序报告 · 未变部分复用有效证据</text>
 </svg>
