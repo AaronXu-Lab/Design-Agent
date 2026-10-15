@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1670" role="img" aria-labelledby="title desc">
 <title id="title">交互式画布双模式设计</title>
-<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程建模和 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收；Dialog 用法变化按需从 MCP 指导并局部审查，不复制规范，失败修复或报告阻塞。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
+<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程建模和 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收；Dialog 用法变化按需从 MCP 指导并局部审查，不复制规范，失败修复或报告阻塞。可选状态目录仅用户明确要求时启用，默认关闭；按组件平铺自身状态，操作弹窗留在流程中，明确审阅的弹窗组件也可比较其状态。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;fill:#243746;text-anchor:middle}.title{font-size:30px;font-weight:700}.node{font-size:18px;font-weight:600}.detail{font-size:14px}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}.join{fill:none;stroke:#52606d;stroke-width:2.5}</style>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <path fill="#f7f9fb" d="M0 0H1200V1670H0Z"/>
@@ -91,4 +91,5 @@
 <text class="detail" x="910.0" y="1495">复用已审阅展示，逐入口验证</text>
 <text class="detail" x="600" y="1575">混合任务保留两视图边界，分别验收 · 参考实现不限定技术栈</text>
 <text class="detail" x="600" y="1604">文本为事实源 · Dialog 规范来自本地 MCP · 其他组件未覆盖不算通过</text>
+<text class="detail" x="600" y="1633">可选状态目录：只平铺组件自身状态；操作弹窗留在流程中（需明确要求）</text>
 </svg>

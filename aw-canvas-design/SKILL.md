@@ -2,7 +2,7 @@
 name: aw-canvas-design
 description: "Use an interactive canvas of real components to review business flows or tile pages, Dialogs, and Sheets for aligned design comparison, with isolated previews and explicit coverage. Not for plain flowcharts or styling a single dialog."
 metadata:
-  version: "1.8.0"
+  version: "1.9.1"
   author: "aaron_xu"
   creation_context: "源于在 ADM 画布中并列操作真实弹窗、分支与结果并通过评论迭代的实践，将可复用画布基础设施与多弹层业务设计分离，支持流程审查与设计平铺比较，以及不同业务和技术栈。"
 ---
@@ -15,6 +15,8 @@ metadata:
 - **设计平铺模式 `tiles`**：收集页面、Dialog、Sheet 并对齐比较；用独立条目与场景清单、有序逐行布局和类型 → 业务模块目录，明确源码记录与真实交互预览。不能把它当作空边流程图继续套流程布局，也不虚构关系、入口旗或流程出口。
 
 `/<业务路由>/design-canvas` 是 Step 1 的设计整理入口；流程用 `?preview={name}` 独立走查，平铺可用 `?item={id}` 独立查看条目。混合任务提供边界明确的两种视图，按各自模式验收。初始化即建立与实际页面共用的展示组件，分别注入业务或预览数据与回调；只有明确要求应用时，Step 2 才接入实际业务入口。
+
+可选的“状态”Sidebar Section 仅在用户明确要求时启用，默认不触发；Section 按组件提供入口，画布只平铺所选组件自身的状态样式，操作弹窗留在业务流程中；真实弹窗组件本身也可作为明确的审阅对象。规则见[工作流](references/workflow.md#可选状态目录默认不启用)。
 
 ## 执行入口
 
