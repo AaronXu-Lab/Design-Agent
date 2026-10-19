@@ -11,6 +11,8 @@ export interface IDemoTarget { screen: string; scenario?: string }
 export const FLOWS: TCanvasFlows<IDemoTarget> = {
   main: {
     label: '主流程',
+    kind: 'main',
+    section: 'main',
     preview: { screen: 'account' },
     nodes: [
       screen('account', '输入账号', { screen: 'account' }, { entry: '/login', detail: '邮箱或手机号均可' }),
@@ -32,7 +34,8 @@ export const FLOWS: TCanvasFlows<IDemoTarget> = {
   },
   registration: {
     label: '注册',
-    parent: 'main',
+    kind: 'subflow',
+    parent: 'main', // 示例归属须由当前业务证据确认，不能按步骤名称自动推断。
     preview: { screen: 'register' },
     nodes: [
       screen('register', '填写注册邮箱', { screen: 'register' }, { entry: '注册', exits: [exit('登录', '输入账号')] }),

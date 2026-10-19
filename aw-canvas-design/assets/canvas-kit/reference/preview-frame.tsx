@@ -1,12 +1,14 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useLayoutEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useReactFlow } from '@xyflow/react'
-import { isPreviewSizeMessage } from './preview-protocol'
+import { commitPreviewSize, isPreviewSizeMessage, type IPreviewSizeMessage } from './preview-protocol'
 
 /**
  * 画布节点内的隔离预览：独立文档承载弹层、焦点与滚动锁；点击预览内部时选中所属节点。
- * - 原样尺寸回写仅适用于根尺寸无视口依赖的测量壳；响应式弹层须按原组件留白回算并检查稳定，见 kit README。
+ * - 尺寸契约见 component-design.md；viewport 可将稳定渲染视口和动态展示区域分开。
  * - width/height 初始值须足以保留原组件声明宽度，不能依靠第一次上报修复已压缩的视口。
- * - 预览页会上报内容尺寸：收到第一次上报才算渲染完成，此前一直显示骨架（kit.css 的 .ck-skeleton）。
+ * - 预览页会上报内容尺寸：收到内容就绪的有效上报才算渲染完成，此前一直显示骨架（kit.css 的 .ck-skeleton）。
+ * - 外层按稳定卡片身份保留；src 变化仅替换内部 iframe，已提交几何跨场景保留。
+ * - 同一 iframe 内异步重置/重载的代次隔离由宿主补齐，见尺寸契约。
  * - `scale` 把预览缩成缩略图，外框按缩放后的尺寸占位，内部仍按实际尺寸渲染与交互。
  * - iframe 透明、无边框，不垫白底；预览区的浅灰底由卡片的 .ck-card-body 提供。
  */
@@ -29,12 +31,14 @@ function releaseSlot() {
 const PreviewFrame = forwardRef<HTMLIFrameElement, IPreviewFrameProps>(function PreviewFrame({ nodeId, title, src, width, height, scale = 1 }, ref) {
   const { setNodes } = useReactFlow()
   const [ready, setReady] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [size, setSize] = useState<{ width: number; height: number }>()
+  const [loadedSrc, setLoadedSrc] = useState<string>()
+  const loaded = loadedSrc === src
+  const [size, setSize] = useState<Pick<IPreviewSizeMessage, 'width' | 'height' | 'viewport'>>()
   const frame = useRef<HTMLIFrameElement>(null)
   const release = useRef<(() => void) | undefined>(undefined)
   const cleanup = useRef<(() => void) | undefined>(undefined)
-  useImperativeHandle(ref, () => frame.current!, [])
+  useImperativeHandle(ref, () => frame.current!, [src, ready])
+  useLayoutEffect(() => { setLoadedSrc(undefined) }, [src])
 
   useEffect(() => {
     let cancelled = false
@@ -64,20 +68,25 @@ const PreviewFrame = forwardRef<HTMLIFrameElement, IPreviewFrameProps>(function 
     const receive = (event: MessageEvent) => {
       if (event.origin !== window.location.origin || event.source !== frame.current?.contentWindow) return
       if (!isPreviewSizeMessage(event.data)) return
-      setSize({ width: Math.ceil(event.data.width), height: Math.ceil(event.data.height) })
-      setLoaded(true)
-      release.current?.()
+      const message = event.data
+      // loading 只改变就绪状态，卡片和 iframe 共用最后提交的整组几何。
+      setSize((previous) => commitPreviewSize(previous, message))
+      setLoadedSrc(message.ready === false ? undefined : src)
+      if (message.ready !== false) release.current?.()
     }
     window.addEventListener('message', receive)
     return () => window.removeEventListener('message', receive)
-  }, [])
+  }, [src])
 
   const frameWidth = size?.width ?? width
   const frameHeight = size?.height ?? height
-  return <div className="ck-preview nodrag nopan" style={{ width: frameWidth * scale, height: frameHeight * scale }}>
+  const viewport = size?.viewport
+  return <div className="ck-preview nodrag nopan" style={{ width: frameWidth * scale, height: frameHeight * scale,
+    ...(viewport ? { overflow: 'hidden' } : {}) }}>
     {!loaded && <div className="ck-skeleton" aria-hidden><i /><i /><i /><i /></div>}
-    <iframe ref={frame} title={title} src={ready ? src : undefined}
-      style={{ width: frameWidth, height: frameHeight, visibility: loaded ? undefined : 'hidden', transform: scale === 1 ? undefined : `scale(${scale})`, transformOrigin: '0 0' }}
+    <iframe key={src} ref={frame} title={title} src={ready ? src : undefined}
+      style={{ width: viewport?.width ?? frameWidth, height: viewport?.height ?? frameHeight,
+        ...(viewport ? { position: 'absolute', left: -viewport.x * scale, top: -viewport.y * scale } as const : {}), visibility: loaded ? undefined : 'hidden', transform: scale === 1 ? undefined : `scale(${scale})`, transformOrigin: '0 0' }}
       onLoad={(event) => {
         if (!event.currentTarget.src) return
         cleanup.current?.()

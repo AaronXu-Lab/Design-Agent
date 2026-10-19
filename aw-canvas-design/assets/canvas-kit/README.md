@@ -31,6 +31,14 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 4. **填模式数据**：流程参照 `reference/flows.example.ts`；平铺参照 `reference/tiles.example.ts`，类型组下直接模块，模块内每个流程/相关场景组一行；接好真实组件、独立入口与尺寸/重置桥接。平铺实现细则见下节。
 5. **逐项对照**：打开对应 HTML 标准件与自己的画布并排比较，再按 SKILL 的验收矩阵检查。
 
+## 流程目录接入（仅 flow）
+
+规则事实源为 [流程归属](../../references/modeling.md#流程目录归属仅-flow) 与 [目录呈现](../../references/canvas-presentation.md#flow-目录)。新流程显式设置 `kind: 'main' | 'subflow' | 'branch'`；根项用 `section: 'main' | 'other'`，从属项用 `parent` 跟随父项 Section。旧数据省略这些新增字段仍兼容：根项默认 main/主流程，从属项默认 subflow；实际业务归属不能靠兼容默认值代替审查。引用既有流程使用节点 `link`，不复制整套画布。
+
+`directory.ts` 保留原 ID，按主流程/其他流程构建两级目录，拒绝悬空 parent、三级关系及从属项跨 Section；`sidebar.tsx` 保留首项主入口和全部缩进类型图标，无从属项直接导航。默认 Path / ArrowSquareOut / GitBranch 为 18px regular；换图标须语义等价且三类不同。`sectionLabels` 由宿主传入本地化标签，`icons` 也须遵守类型语义。组数计根任务，文件夹数量计主入口加从属入口。直达/切换目标时展开其父文件夹与 Section；URL、预览和返回仍由宿主回调管理。
+
+`sidebar.html` 与 `canvas-shell.html` 使用另一个通用登录示例展示三类图标与两个任务 Section；具体已确认连接器案例仅见 [回归案例](../../tests/flow-directory.md)。这些静态标准件不提供实际业务路由，React 参考也不替代宿主 URL/返回/引用验收。
+
 ## 设计平铺接入
 
 读取 [平铺建模与比较](../../references/design-tiling.md)。`types.ts`、`layout.ts`、`board.tsx`、`sidebar.tsx` 与流程路由例子仍是流程专用实现，不能传空 `edges` 当作平铺。平铺改用 `tiles.ts` 的独立集合/类型/模块/行/条目模型及 `layoutTiles`，目录参照 `tiles-sidebar.tsx`；组下仅直接模块 Item，卡片实例由模块内的行、清单/搜索及独立查看入口逐项呈现。
@@ -47,7 +55,11 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 
 ## 尺寸桥接适用范围
 
-`preview-protocol.ts` 原样上报根元素矩形，`preview-frame.tsx` 收到后直接调整 iframe，适用于根尺寸不依赖 iframe 视口的测量壳。响应式 Dialog/Sheet 不应原样套用：先按原组件声明宽度和响应式留白给出安全视口，再按 [稳定尺寸规则](../../references/component-design.md#预览视口与稳定尺寸) 适配回算并有界检查收敛；否则 `vw/vh` 或百分比宽度可能持续缩小。首次尺寸上报撤骨架不是稳定性验收。两模式都需检查动态内容与底部操作。
+尺寸与动态高度以 [尺寸契约](../../references/component-design.md#预览视口与稳定尺寸) 为准。`preview-protocol.ts` 的 `usePreviewBridge(onReset, { ready, measure })` 默认只适用于首报即就绪、根尺寸无视口依赖的同步壳。异步场景显式传 `ready`；响应式 Dialog/Sheet 提供 `measure(element)`，在项目验证过的自然视口返回展示 `width/height` 与可选 `viewport: { width, height, x, y }`（未缩放坐标），无通用固定视口值。旧调用保留兼容；不能据此宣称异步场景就绪。
+
+`preview-frame.tsx` 验证消息后，保持 `viewport.width/height` 为渲染尺寸，按 `x/y` 外部偏移并用展示宽高占位，再应用缩略比例；外框可双向增减。`ready:false` 保留最后提交几何并显示骨架，首次无提交值时保留安全初始尺寸；目标内容和布局就绪后才发 `ready:true` 并提交完整几何，稳定采样仍单独验收。外层按稳定卡片身份保存几何，`src` 切换只用 key 重挂内部 iframe，不能重建整张卡片丢失尺寸。所有尺寸消费者在提交前共用 readiness 判断；异步发送方在切换/重置前清除 readiness。参考实现未提供同一 iframe 重载/异步重置的代次握手与失败重试 UI，宿主按尺寸契约补齐 token 隔离及加载失败保留几何的反馈，不能将参考文件当作这些能力已完成。
+
+桥接观察根元素的 ResizeObserver、DOM 变化、字体就绪、窗口变化和重置；Portal 不在根内或组件替换时，宿主须扩展到当前实际组件的观察范围。测量器应返回完整组件、必要留白及交互范围，不能对组件库内部样式作补丁；外部区域不足以容纳菜单时须动态扩展或采用经验证的承载方案。接入后按验收矩阵验证动态内容、原有内部滚动、操作可达与收敛，不把参考实现当作完整宿主验证。
 
 ## 参考实现（`reference/`）
 
@@ -57,13 +69,15 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 | --- | --- |
 | `tiles.ts` / `tiles.example.ts` | 平铺独立模型与示例：类型组、业务模块、显式行和来源/能力；实测行列布局、完整条目排序及分离覆盖计数，不依赖 ELK |
 | `tiles-sidebar.tsx` | 平铺类型 Section Group → 直接业务模块 Item；无文件夹/折叠树，使用国际化键 |
-| `types.ts` | 数据模型：节点四类（页面、判断、引用、说明）、边三类（主路径、分支、异常）、`exits`、`variants`、`parent` 两级；数据工厂函数 |
+| `types.ts` | 数据模型：节点四类（页面、判断、引用、说明）、边三类（主路径、分支、异常）、`exits`、`variants`、`parent` 两级及可选 `kind`/`section`；数据工厂函数 |
+| `directory.ts` | flow 主流程/其他流程分组、两级归属校验与兼容类型推断 |
 | `layout.ts` | ELK 选项与端口：24px 基线端口、右侧下半部分支端口、按条件分组的入口、单行节点底边入口、标签放末段 |
 | `metrics.ts` | 连线指标自检，结果写到画板根节点的 `data-checks` |
 | `reroute.ts` | 拖动后只平移首末段的 `rerouteOf`，以及拖动几何自检 `checkDragGeometry` |
 | `edge.tsx` | 圆角正交路径与统一样式的标签 |
 | `node.tsx` | 四类节点、入口小旗、info Dialog、重置场景、场景切换、出口（悬停去向线或提示）、nodrag 拖动命中区 |
-| `preview-frame.tsx` | 隔离的 iframe 预览：限流加载、骨架、尺寸上报后撤骨架、0.5 缩放 |
+| `preview-frame.tsx` | 隔离的 iframe 预览：限流加载、就绪骨架、独立渲染视口与动态展示区域、外部缩放 |
+| `preview-size.ts` | 无运行时依赖的尺寸消息类型、边界校验与 readiness 提交门槛，供消费者及测试共用 |
 | `preview-protocol.ts` | 画布与预览的 postMessage 协议：`size`（预览 → 画布）与 `reset`（画布 → 预览） |
 | `sidebar.tsx` / `legend.tsx` | 目录与图例（通用 HTML 版；有设计系统时换成其组件） |
 | `board.tsx` | 画板：默认视口适配全图、Shift+1 / Shift+2、右下控件、筛选与聚焦、悬停出口的临时线、拖动 reroute、`data-checks` |
@@ -76,7 +90,9 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 布局行为检查（运行时支持 TypeScript 类型擦除的 Node；其他环境用已有 TS 测试运行器）：
 
 ```bash
-node --experimental-strip-types --test aw-canvas-design/tests/tiles.test.mjs
+node --experimental-strip-types --test aw-canvas-design/tests/tiles.test.mjs aw-canvas-design/tests/preview-size.test.mjs aw-canvas-design/tests/flow-directory.test.mjs
 ```
 
-测试覆盖逐行排列、宽卡片不压缩、动态尺寸后的不重叠、源码记录保留、完整条目覆盖、计数区分及无效关系拒绝。模式选择与边界自查见 [走查用例](../../tests/mode-routing.md)；这些检查不替代宿主浏览器中的组件交互和尺寸收敛验收。
+测试覆盖逐行排列、宽卡片不压缩、动态尺寸后的不重叠、源码记录保留、完整条目覆盖、计数区分及无效关系拒绝；尺寸协议另验独立视口下展示高度双向变化、loading 保留初始/已提交值、切换/重置/重载及失败后的恢复、后续双向变化、旧消息兼容、有限正尺寸、就绪类型、展示原点和边界拒绝。模式选择与边界自查见 [走查用例](../../tests/mode-routing.md)；这些检查不替代宿主浏览器中的组件交互和尺寸收敛验收。
+
+流程目录测试覆盖根任务聚合、主入口保留、子/分支归属、跨流程引用不复制、原 ID 与预览不变、旧模型兼容及非法层级拒绝；浏览器仍需实测图标、折叠、选中、URL 和预览返回。

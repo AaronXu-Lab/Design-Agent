@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1670" role="img" aria-labelledby="title desc">
 <title id="title">交互式画布双模式设计</title>
-<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程建模和 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收；Dialog 用法变化按需从 MCP 指导并局部审查，不复制规范，失败修复或报告阻塞。可选状态目录仅用户明确要求时启用，默认关闭；按组件平铺自身状态，操作弹窗留在流程中，明确审阅的弹窗组件也可比较其状态。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
+<desc id="desc">复用或初始化共享展示与隔离预览能力，按意图选择流程模式或设计平铺模式。流程按主流程/其他流程聚合，文件夹保留主入口，主、子、分支使用不同图标，并做 ELK 连线验收；平铺按组件类型直接导航业务模块，模块内一流程一行且全部条目可查看。共用组件、评论和基础验收；渲染视口与展示边界分离，加载与切换保留已提交尺寸，目标内容和布局就绪才提交，后续增减持续重测，不收敛则修复或报告阻塞；Dialog 用法变化按需从 MCP 指导并局部审查，不复制规范，失败修复或报告阻塞。可选状态目录仅用户明确要求时启用，默认关闭；按组件平铺自身状态，操作弹窗留在流程中，明确审阅的弹窗组件也可比较其状态。画布设计完成后，仅明确要求才迁移实际业务入口。</desc>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;fill:#243746;text-anchor:middle}.title{font-size:30px;font-weight:700}.node{font-size:18px;font-weight:600}.detail{font-size:14px}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}.join{fill:none;stroke:#52606d;stroke-width:2.5}</style>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <path fill="#f7f9fb" d="M0 0H1200V1670H0Z"/>
@@ -37,8 +37,8 @@
 <path class="line" d="M750 455H910V560"/>
 <text class="detail" x="1010" y="505">收集与对齐比较</text>
 <rect x="60" y="560" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
-<text class="node" x="290.0" y="590">流程 · 追踪实际入口与状态</text>
-<text class="detail" x="290.0" y="615">节点、判断、边和出口均需依据</text>
+<text class="node" x="290.0" y="590">流程 · 主流程 / 其他流程归属</text>
+<text class="detail" x="290.0" y="615">追踪实际入口，节点、边与归属均需依据</text>
 <rect x="680" y="560" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="910.0" y="590">平铺 · 类型 → 业务模块目录</text>
 <text class="detail" x="910.0" y="615">Section Group 下直接 Item，无树</text>
@@ -46,7 +46,7 @@
 <path class="line" d="M910 636V670"/>
 <rect x="60" y="670" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="290.0" y="700">流程 · 分层布局与连线指标</text>
-<text class="detail" x="290.0" y="725">适用 ELK、主路径、分支及覆盖验收</text>
+<text class="detail" x="290.0" y="725">文件夹保留主入口，主 / 子 / 分支异形图标</text>
 <rect x="680" y="670" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="910.0" y="700">平铺 · 模块内每个流程一行</text>
 <text class="detail" x="910.0" y="725">真实顺序从左到右，未知顺序标明</text>
@@ -69,8 +69,8 @@
 <path class="line" d="M450 1085H330"/>
 <text class="detail" x="389" y="1068">否</text>
 <path class="line" d="M185 1047V968H370"/>
-<text class="detail" x="950" y="1068">两模式均检查稳定尺寸</text>
-<text class="detail" x="950" y="1092">内容与底部操作完整可用</text>
+<text class="detail" x="950" y="1068">加载保留尺寸，就绪后提交</text>
+<text class="detail" x="950" y="1092">切换 / 重置 / 失败回归，增减持续重测</text>
 <path class="line" d="M600 1130V1180"/>
 <text class="detail" x="625" y="1157">是</text>
 <rect x="370" y="1180" width="460" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>

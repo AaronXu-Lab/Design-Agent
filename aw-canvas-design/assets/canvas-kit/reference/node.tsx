@@ -116,7 +116,7 @@ export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode
     {/* 判断节点没有预览，判断依据直接写在标题下。 */}
     {kind === ENodeKind.decision && detail && <p className="ck-decision-detail">{detail}</p>}
     {src && <div className="ck-card-body">
-      <PreviewFrame ref={frame} key={src} nodeId={id} title={title} width={PREVIEW_WIDTH} height={PREVIEW_HEIGHT} src={src} scale={PREVIEW_SCALE} />
+      <PreviewFrame ref={frame} nodeId={id} title={title} width={PREVIEW_WIDTH} height={PREVIEW_HEIGHT} src={src} scale={PREVIEW_SCALE} />
     </div>}
     {footer && <footer className="ck-card-foot nodrag nopan">
       {variants?.map((item, index) => <button key={item.label} type="button" className="ck-variant" aria-pressed={index === variant}

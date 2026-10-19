@@ -20,21 +20,24 @@
   </div>
   <div class="ck-sidebar-title"><span>登录流程画布 · 6 个流程</span></div>
   <nav class="ck-sidebar-body" aria-label="流程">
-    <section class="ck-section" aria-label="流程">
-      <button type="button" class="ck-section-header" data-ck-collapse aria-expanded="true"><span>流程</span><span>3</span></button>
+    <section class="ck-section" aria-label="主流程">
+      <button type="button" class="ck-section-header" data-ck-collapse aria-expanded="true"><span>主流程</span><span>3</span></button>
       <div class="ck-section-items">
         <div class="ck-group">
-          <button type="button" class="ck-item" data-ck-collapse aria-expanded="true"><svg class="ck-icon" aria-hidden="true"><use data-ck-folder href="#ck-folder-open"/></svg><span>通用登录</span><span class="ck-item-trailing">4</span></button>
+          <button type="button" class="ck-item" data-ck-collapse aria-expanded="true"><svg class="ck-icon" aria-hidden="true"><use data-ck-folder href="#ck-folder-open"/></svg><span>通用登录</span><span class="ck-item-trailing">3</span></button>
           <div class="ck-group-items">
-            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="true"><span>主流程</span></button>
-            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="false"><span>注册与找回</span></button>
-            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="false"><span>邀请与申请</span></button>
-            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="false"><span>选择与开通组织</span></button>
+            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="true"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-main"/></svg><span>通用登录</span></button>
+            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-sub"/></svg><span>验证身份</span></button>
+            <button type="button" class="ck-item" data-indent data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-branch"/></svg><span>组织条件分支</span></button>
           </div>
         </div>
-        <button type="button" class="ck-item" data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-buildings"/></svg><span>企业登录</span></button>
-        <button type="button" class="ck-item" data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-desktop"/></svg><span>客户端连接</span></button>
+        <button type="button" class="ck-item" data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-main"/></svg><span>企业登录</span></button>
+        <button type="button" class="ck-item" data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-main"/></svg><span>客户端连接</span></button>
       </div>
+    </section>
+    <section class="ck-section" aria-label="其他流程">
+      <button type="button" class="ck-section-header" data-ck-collapse aria-expanded="true"><span>其他流程</span><span>1</span></button>
+      <div class="ck-section-items"><button type="button" class="ck-item" data-ck-select="aria-current" aria-current="false"><svg class="ck-icon" aria-hidden="true"><use href="#ck-flow-main"/></svg><span>跨流程异常修复</span></button></div>
     </section>
     <section class="ck-section" aria-label="连线">
       <button type="button" class="ck-section-header" data-ck-collapse aria-expanded="true"><span>连线</span></button>
@@ -47,7 +50,7 @@
   </nav>
 </aside><figcaption>当前流程用白底标出</figcaption></figure>
 </div>
-<ul class="ck-rules"><li>面板：宽 280px、凹陷底色、圆角 16px、无描边，只用最淡一档投影；浮在画布上，上下左各距 20px，不挤占布局。</li><li>头部 64px、左右各 12px：左侧「收起目录」，右侧只有「单独预览」；不放返回业务页、画布说明。头部下方是 12px 淡色的画布名与流程数。</li><li>分组标题 13px 淡色、32px 高，可收起，右侧可带数量。目录项 40px 高、16px 字，常态中灰，悬停浅底；当前项白底深色，不能只改文字颜色。</li><li>有子流程的顶层流程是可折叠分组（文件夹图标 + 数量），父流程本身作为分组第一项，与子流程同级缩进（38px）；最多两级。</li><li>连线筛选组默认项「全部」放第一位：全部 / 主路径 / 仅异常分支。当前位置只由目录选中态表达，画布内不放面包屑。</li></ul>
+<ul class="ck-rules"><li>面板：宽 280px、凹陷底色、圆角 16px、无描边，只用最淡一档投影；浮在画布上，上下左各距 20px，不挤占布局。</li><li>头部 64px、左右各 12px：左侧「收起目录」，右侧只有「单独预览」；不放返回业务页、画布说明。头部下方是 12px 淡色的画布名与流程数。</li><li>分组标题 13px 淡色、32px 高，可收起，右侧可带数量。目录项 40px 高、16px 字，常态中灰，悬停浅底；当前项白底深色，不能只改文字颜色。</li><li>仅 flow：主流程 / 其他流程分组；有子或分支流程才建文件夹。文件夹首项保留主入口，随后从属项缩进（38px），Path / 方框跳转 / 分叉图标始终显示且尺寸线重一致；最多两级。tiles 保持类型组下业务模块平铺，无文件夹。</li><li>连线筛选组默认项「全部」放第一位：全部 / 主路径 / 仅异常分支。当前位置只由目录选中态表达，画布内不放面包屑。</li></ul>
 </section>
 <section class="ck-demo">
 <h2>收起态</h2>

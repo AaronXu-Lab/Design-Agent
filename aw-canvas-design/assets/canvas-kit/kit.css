@@ -217,7 +217,7 @@
 .ck-mock-page i[data-w="input"] { width: 100%; height: 20px; margin-top: 8px; border: 1px solid #dde3ea; background: #fff; border-radius: 10px; }
 .ck-mock-page i[data-w="button"] { width: 100%; height: 18px; background: var(--ck-ink); border-radius: 9px; }
 .ck-mock-page i[data-w="line"] { width: 44%; }
-/* 加载骨架：收到预览的首次尺寸上报前显示，不留空白框。 */
+/* 加载骨架：内容就绪前显示；临时尺寸消息不撤骨架，见组件设计尺寸契约。 */
 .ck-skeleton {
   position: absolute;
   inset: 0;

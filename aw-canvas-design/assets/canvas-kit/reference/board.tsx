@@ -23,6 +23,7 @@ interface ICanvasBoardProps<TTarget> {
   onPreviewFlow: (flow: string) => void
   icons?: Record<string, ReactNode>
   groupLabels?: Record<string, string>
+  sectionLabels?: Partial<Record<'main' | 'other', string>>
 }
 interface ILayoutState { result: IFlowLayout; sizes: Record<string, ISize> }
 
@@ -50,7 +51,7 @@ const moved = (offset?: IPoint) => Boolean(offset && (offset.x || offset.y))
  * 流程画板。切换流程时用 `key={flow}` 重新挂载；不要用父级 `visibility: hidden` 保留已访问流程的画板——
  * 画布库会在节点上写行内 visibility，其他流程的卡片会透出来。
  */
-export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange, previewSrc, onPreviewFlow, icons, groupLabels }: ICanvasBoardProps<TTarget>) {
+export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange, previewSrc, onPreviewFlow, icons, groupLabels, sectionLabels }: ICanvasBoardProps<TTarget>) {
   const definition = flows[flow]
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [filter, setFilter] = useState(EEdgeFilter.all)
@@ -206,7 +207,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
     <main className="ck-canvas ck-page" style={chrome} data-checks={checks} data-dragging={nodes.some((node) => node.dragging) || undefined}
       onKeyDown={(event) => { if (event.key === 'Escape') clearSelection() }}>
       <CanvasSidebar title={title} flows={flows} flow={flow} filter={filter} open={sidebarOpen} onOpenChange={setSidebarOpen}
-        onFilterChange={setFilter} onFlowChange={onFlowChange} onPreview={() => onPreviewFlow(flow)} icons={icons} groupLabels={groupLabels} />
+        onFilterChange={setFilter} onFlowChange={onFlowChange} onPreview={() => onPreviewFlow(flow)} icons={icons} groupLabels={groupLabels} sectionLabels={sectionLabels} />
       <div ref={frame} style={{ position: 'relative', flex: 1, minWidth: 0, opacity: layout ? 1 : 0 }}>
         <ReactFlow
           nodes={positioned} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes}

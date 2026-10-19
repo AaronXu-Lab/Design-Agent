@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
 <title id="title">AW Design Shaping · 设计塑形</title>
-<desc id="desc">从需求、想法或竞品建立理解，按需确定探索方式，简单明确任务直接交接；按需交替追问、研究与可视化；能力或 Example 影响主方案时请求指导，修正需求和方案。关键问题未解决则继续探索，关键取舍明确后交付标清来源的方向简报，后续 guidance 读取适用规范并由当前执行者使用真实组件实现；暂停时保存探索进度。</desc>
+<desc id="desc">从需求、想法或竞品建立理解，按需确定探索方式，简单明确任务直接交接；按需交替追问、研究与会话内 inline-html 可视化；仅宿主不支持时说明限制并降级；能力或 Example 影响主方案时请求指导，修正需求和方案。关键问题未解决则继续探索，关键取舍明确后交付标清来源的方向简报，后续 guidance 读取适用规范并由当前执行者使用真实组件实现；暂停时保存探索进度。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;fill:#203243;text-anchor:middle}.heading{font-size:30px;font-weight:700}.title{font-size:18px;font-weight:600}.note{font-size:14px}.box{stroke-width:2;rx:14}.input{fill:#fff;stroke:#9eacb8}.step{fill:#edf6ff;stroke:#287bbb}.done{fill:#edf9f1;stroke:#2e8b54}.pause{fill:#fff0ef;stroke:#c94b43}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}</style>
 <rect width="1200" height="1200" fill="#f7f9fb"/>
@@ -17,8 +17,8 @@
 <text x="600" y="342" class="title">围绕当前未决问题选择行动</text>
 <rect x="315" y="365" width="170" height="65" rx="14" class="box input"/><text x="400" y="392" class="title">聚焦追问</text><text x="400" y="415" class="note">依赖关系与取舍</text>
 <rect x="515" y="365" width="170" height="65" rx="14" class="box input"/><text x="600" y="392" class="title">竞品研究</text><text x="600" y="415" class="note">观察、解释与借鉴</text>
-<rect x="715" y="365" width="170" height="65" rx="14" class="box input"/><text x="800" y="392" class="title">可视化探索</text><text x="800" y="415" class="note">线框图与低保真交互</text>
-<text x="600" y="460" class="note">按需交替；能力或 Example 影响主方案时请求 guidance</text>
+<rect x="715" y="365" width="170" height="65" rx="14" class="box input"/><text x="800" y="392" class="title">可视化探索</text><text x="800" y="415" class="note">会话内 inline HTML</text>
+<text x="600" y="460" class="note">宿主不支持时说明后降级；能力或 Example 影响主方案时请求 guidance</text>
 <path d="M600 480V520" class="line"/>
 <rect x="370" y="520" width="460" height="70" rx="14" class="box step"/>
 <text x="600" y="549" class="title">修正需求与方案</text><text x="600" y="573" class="note">对照目标、比较方向，同步图稿与决定</text>

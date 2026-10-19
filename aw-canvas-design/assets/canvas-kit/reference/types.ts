@@ -29,9 +29,15 @@ export interface ICanvasNodeData<TTarget> extends Record<string, unknown> {
 }
 export interface ICanvasNodeDef<TTarget> extends ICanvasNodeData<TTarget> { id: string }
 export interface ICanvasEdgeDef { id: string; source: string; target: string; label: string; kind: EEdgeKind }
-/** `parent` 是引用它的上级流程，用于目录分组；流程最多两级，子流程不再有子流程。 */
+export type TFlowKind = 'main' | 'subflow' | 'branch'
+export type TFlowSection = 'main' | 'other'
+/** `parent` 是目录所属主流程，引用关系另用节点 `link`；流程最多两级。 */
 export interface ICanvasFlowDef<TTarget> {
   label: string
+  /** 新数据明确类型；旧数据缺省时根项为 main、从属项为 subflow。 */
+  kind?: TFlowKind
+  /** 仅根项指定；从属项跟随父流程，默认 main。 */
+  section?: TFlowSection
   parent?: string
   /** 单流程预览（`?preview={flow}`）从这里开始。 */
   preview: TTarget
