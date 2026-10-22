@@ -24,7 +24,7 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 | [`aw-design-orchestrator`](./aw-design-orchestrator/) | `1.4.0` | 顺序编排塑形、实时组件指导、AaronUI-Web 实现、审查、任务走查与文案收敛，提供独立 `/help` | 沿用 shaping 图稿交付规则并交接展示/验证状态；保留人工 Review 与新会话交接；guidance 按匹配 Example 规则回校 AI 提案，交接来源、差异和知识缺口；后续改动只触发受影响组件复核 |
 | [`aw-design-shaping`](./aw-design-shaping/) | `1.5.0` | 通过聚焦追问、竞品研究与线框图，共同塑形 UI/UX 方向 | 线框图与低保真比较以会话内 inline-html 展示，宿主限制说明后才降级；仅指明方向与补足空白；明确任务直接推进；AI 提案服从匹配 Example 规则，简报标清来源和实施状态；交接组件指导，不复制规则或自动实施正式界面 |
 | [`aw-canvas-design`](./aw-canvas-design/) | `1.12.0` | 在流程模式审查业务分支，或平铺真实页面、Dialog、Sheet 做比较，提供 canvas-kit、隔离预览与覆盖记录 | 复用项目能力和共享展示；卡片高度跟随真实内容，分离渲染视口与展示边界；加载、切换和重置保留已提交几何，目标内容和布局就绪才更新；流程按主流程/其他流程分组，主/子/分支异形图标，文件夹保留主入口；平铺类型组下直接业务模块，一流程一行；可选组件状态平铺不混入操作弹窗，明确审阅弹窗自身时除外；Dialog 用法变化按需指导/审查；业务迁移须明确要求 |
-| [`aw-component-advisor`](./aw-component-advisor/) | `1.2.1` | 实现前指导 AaronUI-Web 组件用法，实现后通过同一实时知识源审查 | 从实时 Gallery 目录读取 Example 与明确规则并回校简报；只保存方法，无规则副本或旧 Reference 兜底；源码是精确 API 依据；未覆盖和待验证不算通过 |
+| [`aw-component-advisor`](./aw-component-advisor/) | `1.2.2` | 实现前指导 AaronUI-Web 组件用法，实现后通过同一实时知识源审查 | 从实时 Gallery 目录读取 Example 与明确规则并回校简报；只保存方法，无规则副本或旧 Reference 兜底；源码是精确 API 依据；未覆盖和待验证不算通过 |
 | [`aw-ux-info-redundancy-audit`](./aw-ux-info-redundancy-audit/) | `1.8.0` | 审计信息任务价值、语义重复、适用阶段与视觉承载物必要性 | 实施前交付证据与最小改动决策；Dialog 用法受影响时交接组件审查，不替代信息价值判断 |
 | [`aw-flow-completeness-audit`](./aw-flow-completeness-audit/) | `1.2.0` | 审查步骤、分支、转换、交接、恢复与可观察结果，交付证据和最小补全建议 | 已实现界面优先；人工 Review 后才实施获准修复；同步已有简报；Dialog 用法变化局部复核，不替代流程结果验证 |
 | [`aw-task-walkthrough`](./aw-task-walkthrough/) | `1.2.0` | 独立走查用户选定的可交互原型或产品任务，判断理解、发现、负担与结果 | 文案前以新会话执行；可读完整 PRD，简报仅辅助规划；不预读组件规则或旧审查；真实交互后交人工 review，默认只报问题不修复 |
@@ -45,7 +45,7 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 塑形只指明方向并补足空白，简单明确任务不新增确认关口。用户真正明确的要求优先，其次默认采用匹配 Example 的明确规则和结构，AI 提案不能覆盖。guidance 回校简报并记录决定来源与差异。按当前 MCP 契约区分无规则与规则证据缺失/不可读；未完成规则读取保持待验证。
 
 
-规范覆盖与 Example 参考以当前服务目录为准。advisor 读完整分页目录后选择相关实现；没有明显候选时，读完任务组件范围内的全部实现才判定无适用参考。未通过移植验证的源码仍可参考，直接移植需独立证据。匹配 Example 后默认沿用其结构与组件组合，只按用户需求和适用规范调整；`source-reference` 仅表示需要适配依赖，不代表需要重新设计。实现或修复完成后对照原 Example 的实际渲染，简要说明必要差异；无法对照时标记待验证。精确 API/行为来自当前 TypeScript 源码。不支持的资源类型记为未覆盖；来源不可用、正文无效或证据缺失仍为待验证。Skill 不保存组件规则副本，也不回退旧 checker。旧包的整个 `references/components/` 目录与静态索引已移出当前包，Git 历史保留原文；Example 可读取不代表独立规范已覆盖。MCP 不返回 Docs 目录、正文或 Docs requirements；Gallery Docs 页面与文案规则不变。响应和引用字段见 [访问契约](./aw-component-advisor/references/knowledge-access.md)。
+规范覆盖与 Example 参考以当前服务目录为准。advisor 读完整分页目录后选择相关实现；没有明显候选时，读完任务组件范围内的全部实现才判定无适用参考。未通过移植验证的源码仍可参考，直接移植需独立证据。匹配 Example 后默认沿用其结构与组件组合，只按用户需求和适用规范调整；`source-reference` 仅表示需要适配依赖，不代表需要重新设计。实现或修复完成后，按适用维度对照原 Example 的实际渲染，无差异也保留证据。逐项说明差异的对齐、用户明确要求或有效业务保留依据、或证据缺口；仅公开 API 支持不足以支持偏离。无法对照时标记待验证。精确 API/行为来自当前 TypeScript 源码。不支持的资源类型记为未覆盖；来源不可用、正文无效或证据缺失仍为待验证。Skill 不保存组件规则副本，也不回退旧 checker。旧包的整个 `references/components/` 目录与静态索引已移出当前包，Git 历史保留原文；Example 可读取不代表独立规范已覆盖。MCP 不返回 Docs 目录、正文或 Docs requirements；Gallery Docs 页面与文案规则不变。响应和引用字段见 [访问契约](./aw-component-advisor/references/knowledge-access.md)。
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py ./<skill-name>
