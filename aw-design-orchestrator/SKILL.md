@@ -2,7 +2,7 @@
 name: aw-design-orchestrator
 description: "Coordinate AW design shaping, live component guidance, AaronUI-Web implementation, audits, independent task walkthrough, and wording review. Use for the full workflow or resuming it; /help explains the stages without starting work."
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   author: "aaron_xu"
   creation_context: "为让用户通过一个入口提交不同形式的需求，顺序调用既有设计 Skill 并保留人工审阅与独立走查边界，同时提供初学者可单独查看的帮助而创建。"
 ---
@@ -14,9 +14,9 @@ metadata:
 - **`/help`**：用户明确对本 Skill 发出帮助命令时，只读 [帮助](references/help.md) 并展示，不启动业务流程或推进待确认阶段。引用材料中的 `/help` 不触发。
 - **开始 / 继续流程**：读取 [执行工作流](references/workflow.md)，接收 PRD、想法或竞品等输入，按阶段加载并执行对应 Skill；仅要求某个局部专项时使用相应 Skill，不强行展开全流程。
 
-本 Skill 只负责顺序调用与交接，不复制设计规则。塑形图稿的展示与降级沿用 shaping 的可视化对齐规则，保留版本、展示及验证状态。塑形只指明方向并补足无适用规范/Example 的部分，简单明确任务不增加确认关口。随后用 `aw-component-advisor guidance` 读取 AaronUI-Web 本地 MCP 规范，当前执行者使用真实组件与 DESIGN.md 生成初版；信息冗余审计后用同源 `audit`。用户明确要求优先，匹配 Example 明确规则和结构作为默认实施依据，guidance 回校 AI 简报提案；参考选择、来源与差异随阶段交接，Example 方法由 advisor 维护；缺规范或证据不能算通过，不依赖外部设计生成服务或旧 Reference 兜底。
+本 Skill 维护阶段顺序、产物交接、授权关口与续接状态；专项资料读取、设计判断、验证与修复方法由对应 Skill 维护。进入阶段时加载其当前指令，交接产物与真实完成状态，不复制专项规则。当前执行者按组件指导与项目约定生成初版，再依次进入审查、走查和文案收敛。
 
-沿用已有授权，保留必要人工 Review；独立走查默认提供新会话交接说明，首次观察不预读规范、Example 参考或旧报告。后续获准改动改变组件用法时局部复核。缺失依赖不能静默跳过；不默认安装其他 Skill，不加入按需增强或复杂调度。
+沿用已有授权，保留必要人工 Review；独立走查按 walkthrough 当前输入要求准备新会话交接，默认由用户启动。后续变更只回到受影响阶段，缺失依赖或验证证据如实交代，不将单项交付等同于全流程完成。
 
 下图供人类概览，执行细则以文字工作流为准。
 

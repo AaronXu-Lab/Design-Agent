@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1570" role="img" aria-labelledby="title desc">
-<title id="title">AW Design Orchestrator · 设计流程入口</title><desc id="desc">帮助单独展示并结束；正常流程按 shaping 规则展示并交接图稿状态、组件 guidance、当前执行者用 AaronUI-Web 真实组件生成初版、信息审计、同源组件 audit、流程完整性。保留人工 Review、获准修复与局部复核、独立任务走查和最终文案收敛。用户明确要求优先，Example 规则与结构优先于 AI 提案；回校简报，交接来源与差异；知识缺口不得算通过。</desc>
+<title id="title">AW Design Orchestrator · 设计流程入口</title><desc id="desc">帮助单独展示并结束；正常流程依次执行塑形、组件指导、当前执行者生成初版、信息与组件审查、流程补全、独立任务走查及文案收敛。编排层负责阶段、交接、人工 Review 与续接状态，专项方法和证据要求由对应 Skill 维护。获准改动后局部复查，缺失证据如实交付。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
 <rect width="1200" height="1570" fill="#f7f9fb"/>
@@ -19,11 +19,11 @@
 <text class="note" x="625" y="312">否</text>
 <rect x="340" y="325" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="355">aw-design-shaping</text>
-<text class="note" x="600.0" y="380">按 shaping 规则展示图稿，交接版本与验证状态</text>
+<text class="note" x="600.0" y="380">交接当前简报、必要图稿与未决项</text>
 <path class="edge" d="M600 401V435"/>
 <rect x="340" y="435" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="465">aw-component-advisor · guidance</text>
-<text class="note" x="600.0" y="490">匹配 Example 规则与结构优先；回校 AI 简报</text>
+<text class="note" x="600.0" y="490">交接实施依据、组件指导与验证计划</text>
 <path class="edge" d="M600 511V545"/>
 <rect x="340" y="545" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="575">当前执行者生成可交互初版</text>
@@ -45,24 +45,24 @@
 <text class="label" x="1045.0" y="913">等待用户审阅与决定</text>
 <text class="note" x="1045.0" y="938">已有获准修复完成后继续</text>
 <path class="edge" d="M600 970V1020"/>
-<text class="note" x="275" y="1000">是 · 完成获准修复，用法变化局部 audit</text>
+<text class="note" x="275" y="1000">是 · 完成获准修复与受影响阶段复查</text>
 <rect x="340" y="1020" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="1050">新会话 · aw-task-walkthrough</text>
-<text class="note" x="600.0" y="1075">准备最小交接，用户选任务，实际观察</text>
+<text class="note" x="600.0" y="1075">按 walkthrough 输入要求准备独立会话</text>
 <path class="edge" d="M600 1096V1125"/>
 <path d="M600 1125L775 1175L600 1225L425 1175Z" fill="#fff7e6" stroke="#c98312" stroke-width="2"/>
 <text class="label" x="600" y="1181">人工 Review 已处理？</text>
 <path class="edge" d="M775 1175H1045V959"/>
 <text class="note" x="843" y="1159">否</text>
 <path class="edge" d="M600 1225V1275"/>
-<text class="note" x="275" y="1255">是 · 完成获准修复，用法变化局部 audit</text>
+<text class="note" x="275" y="1255">是 · 完成获准修复与受影响阶段复查</text>
 <rect x="340" y="1275" width="520" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="label" x="600.0" y="1305">aw-wording-reviewer</text>
-<text class="note" x="600.0" y="1330">最后收敛文案，用法变化再局部复核</text>
+<text class="note" x="600.0" y="1330">按本阶段授权完成审查、修改与验证</text>
 <path class="edge" d="M600 1351V1385"/>
 <rect x="340" y="1385" width="520" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/>
 <text class="label" x="600.0" y="1415">交付当前版本与流程结果</text>
 <text class="note" x="600.0" y="1440">入口、简报、报告、覆盖与未验证事项</text>
-<text class="note" x="600" y="1502">未覆盖 / 待验证不算通过 · 无旧 Reference 兜底 · 不依赖外部设计生成服务</text>
-<text class="note" x="600" y="1531">首次走查不预读规范、参考或前序报告 · 未变部分复用有效证据</text>
+<text class="note" x="600" y="1502">专项方法由对应 Skill 维护 · 编排层交接产物与真实完成状态</text>
+<text class="note" x="600" y="1531">独立走查使用单独交接 · 受影响阶段局部复查 · 有效证据复用</text>
 </svg>

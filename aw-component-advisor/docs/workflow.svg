@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1650" role="img" aria-labelledby="title desc">
-<title id="title">组件指导与审查 · 当前目录与参考</title><desc id="desc">从当前知识源读完整分页 Example 目录，选择候选后读实现；无明显候选则分批读完任务组件范围全部实现，记录已读未读。可参考与可移植分开。guidance 回校简报并标清来源与差异；用户明确要求优先，默认沿用匹配 Example 的明确规则与结构，AI 提案只补空白；source-reference 仅表示适配依赖。audit 按适用维度对照原 Example 实际渲染，每项差异说明对齐、业务保留依据或待验证；公开 API 合法不足以支持偏离，无差异也需实际证据；缺口如实交付，获准改动完成验证。</desc>
+<title id="title">组件指导与审查 · 当前目录与参考</title><desc id="desc">从当前知识源读完整分页 Example 目录，选择候选后读实现；无明显候选则分批读完任务组件范围全部实现，记录已读未读。可参考与可移植分开。guidance 回校简报并标清来源与差异；用户明确要求优先，默认沿用匹配 Example 的明确规则与结构，AI 提案只补空白；source-reference 仅表示适配依赖。audit 按适用维度对照原 Example 实际渲染，每项差异说明对齐、业务保留依据或待验证；公开 API 合法不足以支持偏离，无差异也需实际证据；Dialog / Sheet 指导交接动效计划，初版立即检查进入、退出与再次打开；audit 需要动态证据，减少动态效果与静态预览分开记录。缺口如实交付，获准改动完成验证。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
 <rect width="1200" height="1650" fill="#f7f9fb"/><text class="title" x="600" y="48">组件指导与审查 · 当前目录与参考</text>
@@ -24,8 +24,8 @@
 <text class="note" x="345" y="760">guidance</text>
 <path class="edge" d="M775 780H920V875"/>
 <text class="note" x="855" y="760">audit</text>
-<rect x="60" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="280.0" y="905">回校简报并形成用法</text><text class="note" x="280.0" y="930">用户明确要求优先；匹配规则优先于 AI 提案</text>
-<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">核对实际实现与参考关系</text><text class="note" x="920.0" y="930">实际对照；逐项说明差异处理依据</text>
+<rect x="60" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="280.0" y="905">回校简报并形成用法</text><text class="note" x="280.0" y="930">用户要求优先；匹配规则与动效接入计划</text>
+<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">核对实际实现与参考关系</text><text class="note" x="920.0" y="930">实际对照；Dialog / Sheet 动效须有动态证据</text>
 <path class="join" d="M280 951V990H600"/>
 <path class="join" d="M920 951V990H600"/>
 <path class="edge" d="M600 990V1030"/>
@@ -35,12 +35,12 @@
 <path class="edge" d="M775 1080H920V1175"/>
 <text class="note" x="855" y="1060">是</text>
 <rect x="60" y="1175" width="440" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/><text class="label" x="280.0" y="1205">交付指导 / 审查结论</text><text class="note" x="280.0" y="1230">来源与证据缺口如实说明</text>
-<rect x="700" y="1175" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="1205">完成获准改动与适用验证</text><text class="note" x="920.0" y="1230">用法变化局部复核；验证失败记录缺口</text>
+<rect x="700" y="1175" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="1205">完成获准改动与适用验证</text><text class="note" x="920.0" y="1230">初版即查进入 / 退出 / 重开；修复后复验</text>
 <path class="join" d="M280 1251V1290H600"/>
 <path class="join" d="M920 1251V1290H600"/>
 <path class="edge" d="M600 1290V1330"/>
 <rect x="350" y="1330" width="500" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/><text class="label" x="600.0" y="1360">交付可追溯结果与剩余事项</text><text class="note" x="600.0" y="1385">差异与依据 / 实际证据；未覆盖或待验证不算通过</text>
 <text class="note" x="600" y="1480">服务或源码读取失败：保留未读与待验证项，不伪称无参考或已通过</text>
 <text class="note" x="600" y="1512">source-reference 仅表示适配依赖，不代表重新设计；可读不代表独立规范覆盖</text>
-<text class="note" x="600" y="1544">保留相邻 Skill 职责与人工 Review；不回退旧规则</text>
+<text class="note" x="600" y="1544">减少动态效果单独核实；静态预览不证明动效；保留人工 Review</text>
 </svg>
