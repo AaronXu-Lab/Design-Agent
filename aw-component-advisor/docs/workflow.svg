@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1650" role="img" aria-labelledby="title desc">
-<title id="title">组件指导与审查 · 当前目录与参考</title><desc id="desc">从当前知识源读完整分页 Example 目录，选择候选后读实现；无明显候选则分批读完任务组件范围全部实现，记录已读未读。可参考与可移植分开。guidance 回校简报并标清来源与差异；用户明确要求优先，默认沿用匹配 Example 的明确规则与结构，AI 提案只补空白；source-reference 仅表示适配依赖。audit 按适用维度对照原 Example 实际渲染，每项差异说明对齐、业务保留依据或待验证；公开 API 合法不足以支持偏离，无差异也需实际证据；Dialog / Sheet 指导交接动效计划，初版立即检查进入、退出与再次打开；audit 需要动态证据，减少动态效果与静态预览分开记录。缺口如实交付，获准改动完成验证。</desc>
+<title id="title">组件指导与审查 · 当前目录与参考</title><desc id="desc">从当前知识源读完整分页 Example 目录，选择候选后读实现；无明显候选则分批读完任务组件范围全部实现，记录已读未读。可参考与可移植分开。guidance 回校简报并标清来源与差异；用户明确要求优先，默认沿用匹配 Example 的明确规则与结构，AI 提案只补空白；source-reference 仅表示适配依赖。audit 按适用维度对照原 Example 实际渲染，每项差异说明对齐、业务保留依据或待验证；公开 API 合法不足以支持偏离，无差异也需实际证据；Dialog / Sheet 指导交接动效计划，初版立即检查实例连续性、进入、退出、再次打开及目标切换；直接访问单列；audit 以过渡创建、完成或取消和卸载的事件取证，减少动态效果与静态预览分开记录。缺口如实交付，获准改动完成验证。</desc>
 <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52606d"/></marker></defs>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#243746}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px}.edge,.join{fill:none;stroke:#52606d;stroke-width:2.5}.edge{marker-end:url(#arrow)}</style>
 <rect width="1200" height="1650" fill="#f7f9fb"/><text class="title" x="600" y="48">组件指导与审查 · 当前目录与参考</text>
@@ -24,8 +24,8 @@
 <text class="note" x="345" y="760">guidance</text>
 <path class="edge" d="M775 780H920V875"/>
 <text class="note" x="855" y="760">audit</text>
-<rect x="60" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="280.0" y="905">回校简报并形成用法</text><text class="note" x="280.0" y="930">用户要求优先；匹配规则与动效接入计划</text>
-<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">核对实际实现与参考关系</text><text class="note" x="920.0" y="930">实际对照；Dialog / Sheet 动效须有动态证据</text>
+<rect x="60" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="280.0" y="905">回校简报并形成用法</text><text class="note" x="280.0" y="930">用户要求优先；匹配规则、动效与实例连续性</text>
+<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">核对实际实现与参考关系</text><text class="note" x="920.0" y="930">实际对照；动效以完成 / 取消及卸载事件取证</text>
 <path class="join" d="M280 951V990H600"/>
 <path class="join" d="M920 951V990H600"/>
 <path class="edge" d="M600 990V1030"/>
