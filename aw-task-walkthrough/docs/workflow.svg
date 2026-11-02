@@ -18,7 +18,7 @@
   </style>
   <path fill="#f7f9fb" d="M0 0H1200V1130H0Z"/>
   <text x="600" y="48" class="heading">独立任务走查</text>
-  <text x="600" y="76" class="note">流程补全后 · 独立会话 · 真实交互 · 文案收敛前</text>
+  <text x="600" y="76" class="note">独立会话 · 真实交互 · 人工 review</text>
 
   <rect x="380" y="106" width="440" height="76" rx="14" class="input"/>
   <text x="600" y="136" class="label">准备独立会话与目标入口</text>
@@ -64,6 +64,6 @@
   <path d="M600 954V996" class="line"/>
   <rect x="380" y="996" width="440" height="82" rx="14" class="input"/>
   <text x="600" y="1027" class="label">等待人工 review</text>
-  <text x="600" y="1053" class="note">默认不附方案；获准修复后再做 Wording 收敛</text>
-<text class="note" x="600" y="1092">首次观察不预读组件规范 · 后续获准修复改变 Dialog 用法再局部 audit</text>
+  <text x="600" y="1053" class="note">默认不附方案，不修改产品</text>
+<text class="note" x="600" y="1092">首次观察不预读组件规范与旧报告 · 用户另行要求后再讨论方案或修复</text>
 </svg>

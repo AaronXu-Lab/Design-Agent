@@ -9,8 +9,20 @@
 - 每次版本号发生变化，都必须主动通知用户并报告“旧版本 → 新版本”，不得静默升级。
 - 只修改仓库级文件且没有改变任何 Skill 时，不提升 Skill 版本。
 - 版本变化后，同步更新根目录 `README.md` 和 `README.zh-CN.md` 的 Skill 版本列，确保两者均与 `SKILL.md` 一致。
-- 工作流发生变化时，先更新 `references/workflow.md`，再同步 `docs/workflow.svg` 和 `SKILL.md` 中的相关说明。
+- 工作流发生变化时，先更新 `references/workflow.md`，再同步 `docs/workflow.svg`；`SKILL.md` 只在交付物、资料路由或红线变化时修改。
 - 交付前同时运行 `skill-creator` 的基础校验器和 `aw-meta-skill/scripts/validate_aw_skill.py`，不得把校验失败的 Skill 标记为完成。
+
+## 上下文精简
+
+- `SKILL.md` 只写交付物、模式分流、按需资料表和 1～2 条红线；执行规则只写在 `references/` 中，不在入口复述。
+- 每条规则只在负责它的 Skill 中写一次，其他 Skill 不复述：
+  - 阶段顺序、阶段间交接、变更回流（组件用法变化交 advisor 局部复核、简报同步）、续接方式：`aw-design-orchestrator`。
+  - 简报格式与更新规则：`aw-design-shaping`。
+  - 来源优先级、组件证据状态、MCP 访问与 Dialog / Sheet 动效：`aw-component-advisor`。
+  - 各自的人工 Review 关口：`aw-flow-completeness-audit`、`aw-task-walkthrough`。
+- 当前执行者承担、且没有独立 Skill 负责的初版实现约定，保留在 orchestrator 的实现阶段。
+- 专项 Skill 不写自己在流程中的位置；单独调用时至多保留一句交接提示。
+- 只服务维护者的内容（方法来源、情境走查、验证记录）放在 `sources.md`、`tests/` 等运行时不加载的文件中。
 
 ## Skill 分类
 
