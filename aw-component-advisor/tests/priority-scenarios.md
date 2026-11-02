@@ -79,3 +79,11 @@
 - README、TypeScript 契约、严格 schema 与消费说明中的四种状态语义一致，特别是 `not-declared` 不证明无规则、`unavailable` 可伴随外层 `ok:true`。
 
 本次证明同源响应及消费契约可用，不证明产品实现合规或独立模型行为。未在本次集成复核中人为制造服务端无规则/未声明/读取失败状态；这些状态已完成契约核对，真实 Rename 响应验证覆盖 available 路径。
+
+## 文案交接与公开契约复核（1.5.0）
+
+组件文案回归夹具及八项自走查见 [wording 交接情境](../../aw-wording-reviewer/tests/component-handoff-scenarios.md)。该文件仅供维护，不作为运行时组件规则。
+
+2026-11-01 只读核对本地 AaronUI-Web 的 `mcp/README.md`、`mcp/contracts.ts`、`mcp/server.mjs` 与 `mcp/schemas.mjs`：当前公开服务源码标记 4.1.0，支持 doc/Wording/core-rules；server 通过 presentResult 返回直接 JSON，工具输入不含 expectedRevision。schemas 中仍有内部带 envelope/revision 的结构，不能当作公开客户端输出。以上旧 3.1.0 集成记录仅描述当时基线，不证明当前部署可用。当前宿主工具未暴露该知识 MCP，本次未调用运行服务、未改源项目或启动服务。
+
+本次结构双校验及 SVG 渲染目视复核覆盖两个修改 Skill；图中局部文案路径跳过无关 Example 与动效检查，完整组件路径及既有授权分支保留。author、creation_context 均保持原值。此为维护自检，不是独立盲评。

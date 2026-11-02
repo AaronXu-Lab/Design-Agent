@@ -2,7 +2,7 @@
 name: aw-canvas-design
 description: "Use an interactive canvas of real components to review business flows or tile pages, Dialogs, and Sheets for aligned design comparison, with isolated previews and explicit coverage. Not for plain flowcharts or styling a single dialog."
 metadata:
-  version: "1.12.0"
+  version: "1.13.0"
   author: "aaron_xu"
   creation_context: "源于在 ADM 画布中并列操作真实弹窗、分支与结果并通过评论迭代的实践，将可复用画布基础设施与多弹层业务设计分离，支持流程审查与设计平铺比较，以及不同业务和技术栈。"
 ---
@@ -31,6 +31,7 @@ metadata:
 | 实现或修改预览组件 | [场景设计](references/component-design.md)：实际组件、字段、滚动、Fake 与条件式步骤 |
 | 生成新画布，或调整卡片、目录、视口与图例 | 复制 [canvas-kit](assets/canvas-kit/) 的适用模式及共用部分再填数据：视觉以 HTML 标准件为准，逻辑以 `reference/` 为准，有设计系统时用其组件与 token 实现同等效果；规则见 [画布呈现规范](references/canvas-presentation.md) |
 | 评论修改或明确要求业务迁移 | [评论与迁移](references/iteration-and-migration.md)：逐项闭环与授权边界 |
+| 实现或修复节点标题栏预览入口 | [逐卡入口契约](references/workflow.md#节点容器打开预览入口)与 [kit 按钮](assets/canvas-kit/README.md#节点容器打开预览)：当前场景、真实 screen/item 路由、新标签及拖拽隔离 |
 | 验收当前改动 | [验收矩阵](references/verification.md)：按影响范围验证并清理临时资源 |
 
 已有画布先核实就绪记录；能力满足则跳过初始化细节，只在缺口处增量补齐。只初始化的请求以环境就绪为出口，不自动进入业务设计。

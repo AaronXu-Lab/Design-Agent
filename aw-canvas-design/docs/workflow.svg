@@ -55,7 +55,7 @@
 <path class="line" d="M600 780V820"/>
 <rect x="370" y="820" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="600.0" y="850">共用真实组件与隔离交互</text>
-<text class="detail" x="600.0" y="875">真实组件，Dialog 用法按需 guidance / audit</text>
+<text class="detail" x="600.0" y="875">逐卡右上角打开当前场景，新标签预览</text>
 <path class="line" d="M600 896V930"/>
 <rect x="370" y="930" width="460" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/>
 <text class="node" x="600.0" y="960">评论迭代与模式覆盖回核</text>

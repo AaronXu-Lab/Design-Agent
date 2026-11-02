@@ -165,7 +165,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* 顶栏右侧的次要图标按钮：info 在左、重置场景在右。 */
+/* 顶栏右侧的次要图标按钮：info、重置在前，打开预览在最右。 */
 .ck-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -183,6 +183,8 @@
   transition: background-color var(--ck-motion-fast), color var(--ck-motion-fast);
 }
 .ck-icon-btn:hover, .ck-icon-btn:focus-visible { background: var(--ck-hover-overlay); color: var(--ck-ink); }
+.ck-icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+a.ck-icon-btn { text-decoration: none; }
 .ck-card-body {
   display: flex;
   justify-content: center;

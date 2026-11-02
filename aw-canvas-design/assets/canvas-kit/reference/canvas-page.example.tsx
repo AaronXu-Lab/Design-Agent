@@ -10,7 +10,7 @@ import { FLOWS, type IDemoTarget } from './flows.example'
  * - `?screen=...`：节点 iframe 内的单屏预览。
  * 旧地址重定向到新路径并原样保留 query。这里用 URLSearchParams 演示，项目里换成自己的路由库。
  */
-const CANVAS_PATH = '/login/design-canvas'
+// Mounted at the host's actual business canvas route, including its deployment prefix.
 
 function ScreenPreview({ target }: { target: IDemoTarget }) {
   // 在这里渲染项目的真实页面组件与 Fake 状态；重置时回到 target 定义的场景。
@@ -20,8 +20,20 @@ function ScreenPreview({ target }: { target: IDemoTarget }) {
 
 export default function CanvasPage() {
   const params = new URLSearchParams(window.location.search)
-  const go = useCallback((query: string) => { window.location.search = query }, [])
-  const previewSrc = useCallback((target: IDemoTarget) => `${CANVAS_PATH}?${new URLSearchParams({ screen: target.screen, ...(target.scenario ? { scenario: target.scenario } : {}) })}`, [])
+  const go = useCallback((query: string) => {
+    const url = new URL(window.location.href)
+    for (const key of ['flow', 'preview']) url.searchParams.delete(key)
+    new URLSearchParams(query).forEach((value, key) => url.searchParams.set(key, value))
+    window.location.assign(url.href)
+  }, [])
+  // Example for path routing; use the actual project router for hash routes.
+  const previewSrc = useCallback((target: IDemoTarget) => {
+    const url = new URL(window.location.href)
+    for (const key of ['flow', 'preview', 'item', 'scenario']) url.searchParams.delete(key)
+    url.searchParams.set('screen', target.screen)
+    if (target.scenario) url.searchParams.set('scenario', target.scenario)
+    return url.href
+  }, [])
   if (params.has('screen')) return <ScreenPreview target={{ screen: params.get('screen')!, scenario: params.get('scenario') ?? undefined }} />
   const preview = params.get('preview')
   if (preview) {

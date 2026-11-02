@@ -31,6 +31,28 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 4. **填模式数据**：流程参照 `reference/flows.example.ts`；平铺参照 `reference/tiles.example.ts`，类型组下直接模块，模块内每个流程/相关场景组一行；接好真实组件、独立入口与尺寸/重置桥接。平铺实现细则见下节。
 5. **逐项对照**：打开对应 HTML 标准件与自己的画布并排比较，再按 SKILL 的验收矩阵检查。
 
+## 节点容器打开预览
+
+规则事实源见[逐卡入口契约](../../references/workflow.md#节点容器打开预览入口)。`reference/node-preview-button.tsx` 是 flow / tiles / 状态视图共用的标题栏操作，放在 info、重置之后的最右端。`node.tsx` 已以当前 variant 的 `src` 接入，点击在新标签打开实际节点预览，`nodrag`/`nopan` 和事件隔离避免标题捕获或重置；整流程 `?preview={flow}` 的原入口保留。
+
+平铺的真实页面/Dialog/Sheet 容器也复用此按钮。宿主根据该卡片当前 target/scenario 解析真实独立地址；沿用已有 screen/item 路由及 base path、hash、语言/主题/Fake 上下文，不能取整流程目标、全局选中项或硬编码另一个路径。示意（`resolveItemPreview` 是项目已有路由适配器，不是本 kit 新规定的路由）：
+
+```tsx
+import NodePreviewButton from './reference/node-preview-button'
+
+// currentTarget 是 THIS card 当前 variant 的 target，随场景切换重新计算。
+const href = item.capability.kind === 'interactive'
+  ? resolveItemPreview(item, currentTarget)
+  : undefined
+return <header className="ck-card-bar ck-drag">
+  <h2>{t(item.titleKey)}</h2>
+  <NodePreviewButton href={href} label={t('canvas.openPreview')}
+    unavailableReason={t('canvas.noRealPreviewForScene')} />
+</header>
+```
+
+无可用预览目标的内容卡传入 `undefined` 并提供禁用原因；判断/说明/引用等语义节点不挂载该按钮，不给源码记录伪造预览链接。HTML 标准件未接入业务场景，展示禁用态；接入实际项目后才启用。项目有设计系统时映射到实际图标按钮/Tooltip，保留无障碍名称、新标签及拖拽隔离行为。按验收矩阵真实点击并检查新标签 URL/内容、刷新恢复及原卡片输入和位置；URL 含 screen/item 本身不是失败。
+
 ## 流程目录接入（仅 flow）
 
 规则事实源为 [流程归属](../../references/modeling.md#流程目录归属仅-flow) 与 [目录呈现](../../references/canvas-presentation.md#flow-目录)。新流程显式设置 `kind: 'main' | 'subflow' | 'branch'`；根项用 `section: 'main' | 'other'`，从属项用 `parent` 跟随父项 Section。旧数据省略这些新增字段仍兼容：根项默认 main/主流程，从属项默认 subflow；实际业务归属不能靠兼容默认值代替审查。引用既有流程使用节点 `link`，不复制整套画布。

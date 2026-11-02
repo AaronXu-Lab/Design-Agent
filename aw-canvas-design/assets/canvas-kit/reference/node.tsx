@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { ArrowCounterClockwiseIcon, ArrowRightIcon, ArrowSquareOutIcon, ArrowUDownLeftIcon, GitForkIcon, InfoIcon } from '@phosphor-icons/react'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import PreviewFrame from './preview-frame'
+import NodePreviewButton from './node-preview-button'
 import { resetPreview } from './preview-protocol'
 import { ENodeKind, type ICanvasExit, type ICanvasNodeData, type TCanvasFlows } from './types'
 
@@ -102,7 +103,7 @@ export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode
   const hasInfo = kind === ENodeKind.screen && !!detail
   return <section {...common}>
     {handles}{flag}
-    {/* 方向 C：顶栏放标题与次要操作（info 在左、重置场景在右），中间是预览，底栏放场景切换与出口。 */}
+    {/* 方向 C：顶栏放标题与次要操作（info、重置在前，打开预览在最右），中间是预览，底栏放场景切换与出口。 */}
     <header {...dragHandle} className="ck-card-bar ck-drag">
       {kind === ENodeKind.decision && <GitForkIcon aria-hidden weight="bold" className="ck-kind-icon" />}
       <h2 title={title}>{title}</h2>
@@ -112,6 +113,7 @@ export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode
       {src && <button type="button" className="ck-icon-btn nodrag nopan" aria-label={`重置${title}的场景`} title="重置场景" onClick={() => resetPreview(frame.current)}>
         <ArrowCounterClockwiseIcon size={16} />
       </button>}
+      {kind === ENodeKind.screen && <NodePreviewButton href={src} />}
     </header>
     {/* 判断节点没有预览，判断依据直接写在标题下。 */}
     {kind === ENodeKind.decision && detail && <p className="ck-decision-detail">{detail}</p>}
