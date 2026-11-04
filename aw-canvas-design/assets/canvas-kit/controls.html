@@ -9,31 +9,29 @@
 </head>
 <body class="ck-page">
 <main class="ck-spec">
-<header><h1>视口控件</h1><p>视口与布局操作统一在右下角控件组；不做节点内的「放大」按钮。</p><nav><a href="index.html">目录</a><a href="page-card.html">页面卡片</a><a href="decision-node.html">判断节点</a><a href="reference-node.html">引用节点</a><a href="note-node.html">说明节点</a><a href="edge-styles.html">连线与标签</a><a href="sidebar.html">目录面板</a><a href="legend.html">图例</a><a href="controls.html">视口控件</a><a href="canvas-shell.html">整页组合</a></nav></header>
+<header><h1>视口控件</h1><p>右下角 Canvas Control：竖排缩小 / 百分比 Menu / 放大；缩略图操作时向左淡入；不做节点内的「放大」按钮。</p><nav><a href="index.html">目录</a><a href="page-card.html">页面卡片</a><a href="decision-node.html">判断节点</a><a href="reference-node.html">引用节点</a><a href="note-node.html">说明节点</a><a href="edge-styles.html">连线与标签</a><a href="sidebar.html">目录面板</a><a href="legend.html">图例</a><a href="controls.html">视口控件</a><a href="canvas-shell.html">整页组合</a></nav></header>
 <section class="ck-demo">
 <h2>状态</h2>
 <div class="ck-demo-stage ck-canvas" data-static-dots>
-<figure><div class="ck-controls" data-inline role="toolbar" aria-label="视口">
-  <button type="button" class="ck-control" title="放大" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
-  <button type="button" class="ck-control" title="缩小" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
-  <button type="button" class="ck-control" title="适配全图（Shift+1）" aria-label="适配全图"><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrows-out"/></svg></button>
-  <button type="button" class="ck-control" title="缩放到选中卡片（Shift+2）" aria-label="缩放到选中卡片" disabled><svg class="ck-icon" aria-hidden="true"><use href="#ck-frame-corners"/></svg></button>
-  <button type="button" class="ck-control" title="重置布局" aria-label="重置布局" disabled><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrow-counter-clockwise"/></svg></button>
-</div><figcaption>未选中卡片、未手动调整</figcaption></figure><figure><div class="ck-controls" data-inline role="toolbar" aria-label="视口">
-  <button type="button" class="ck-control" title="放大" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
-  <button type="button" class="ck-control" title="缩小" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
-  <button type="button" class="ck-control" title="适配全图（Shift+1）" aria-label="适配全图"><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrows-out"/></svg></button>
-  <button type="button" class="ck-control" title="缩放到选中卡片（Shift+2）" aria-label="缩放到选中卡片"><svg class="ck-icon" aria-hidden="true"><use href="#ck-frame-corners"/></svg></button>
-  <button type="button" class="ck-control" title="重置布局" aria-label="重置布局" disabled><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrow-counter-clockwise"/></svg></button>
-</div><figcaption>已选中卡片</figcaption></figure><figure><div class="ck-controls" data-inline role="toolbar" aria-label="视口">
-  <button type="button" class="ck-control" title="放大" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
-  <button type="button" class="ck-control" title="缩小" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
-  <button type="button" class="ck-control" title="适配全图（Shift+1）" aria-label="适配全图"><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrows-out"/></svg></button>
-  <button type="button" class="ck-control" title="缩放到选中卡片（Shift+2）" aria-label="缩放到选中卡片"><svg class="ck-icon" aria-hidden="true"><use href="#ck-frame-corners"/></svg></button>
-  <button type="button" class="ck-control" title="重置布局" aria-label="重置布局"><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrow-counter-clockwise"/></svg></button>
-</div><figcaption>已手动拖动过节点</figcaption></figure>
+<figure><div class="ck-nav" data-inline role="group" aria-label="画布导航"><div class="ck-nav-wrap"><div class="ck-nav-rail">
+  <button type="button" class="ck-nav-btn" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
+  <button type="button" class="ck-nav-btn" aria-label="缩放选项，39%"><span class="ck-nav-zoom" aria-hidden="true">%</span></button>
+  <button type="button" class="ck-nav-btn" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
+</div></div></div><figcaption>空闲：百分比按钮显示 % 图标</figcaption></figure><figure><div class="ck-nav" data-inline role="group" aria-label="画布导航"><div class="ck-nav-wrap"><div class="ck-nav-rail">
+  <button type="button" class="ck-nav-btn" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
+  <button type="button" class="ck-nav-btn" aria-label="缩放选项，39%"><span class="ck-nav-zoom" aria-hidden="true">39</span></button>
+  <button type="button" class="ck-nav-btn" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
+</div></div></div><figcaption>刚缩放或悬停：显示当前数值</figcaption></figure><figure><div class="ck-nav" data-inline role="group" aria-label="画布导航"><div class="ck-nav-wrap"><div class="ck-nav-minimap" aria-hidden="true"><i style="left:14%;top:26%;width:20%;height:22%"></i><i style="left:44%;top:26%;width:20%;height:22%"></i><i style="left:44%;top:58%;width:20%;height:22%"></i><i style="left:74%;top:26%;width:14%;height:22%"></i><b style="left:6%;top:14%;width:62%;height:56%"></b></div><div class="ck-nav-rail">
+  <button type="button" class="ck-nav-btn" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
+  <button type="button" class="ck-nav-btn" aria-label="缩放选项，39%"><span class="ck-nav-zoom" aria-hidden="true">39</span></button>
+  <button type="button" class="ck-nav-btn" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
+</div></div></div><figcaption>操作中：缩略图向左淡入</figcaption></figure><figure><div class="ck-nav" data-inline role="group" aria-label="画布导航"><div class="ck-nav-extra"><button type="button" class="ck-nav-btn" title="重置布局" aria-label="重置布局"><svg class="ck-icon" aria-hidden="true"><use href="#ck-arrow-counter-clockwise"/></svg></button></div><div class="ck-nav-wrap"><div class="ck-nav-rail">
+  <button type="button" class="ck-nav-btn" aria-label="缩小"><svg class="ck-icon" aria-hidden="true"><use href="#ck-minus"/></svg></button>
+  <button type="button" class="ck-nav-btn" aria-label="缩放选项，39%"><span class="ck-nav-zoom" aria-hidden="true">39</span></button>
+  <button type="button" class="ck-nav-btn" aria-label="放大"><svg class="ck-icon" aria-hidden="true"><use href="#ck-plus"/></svg></button>
+</div></div></div><figcaption>有手动拖动：上方多一枚重置布局</figcaption></figure><figure><div class="ck-menu" data-inline role="menu"><button type="button" role="menuitem">适配全图<span style="margin-left:auto;color:var(--ck-ink-faint)">Shift+1</span></button><button type="button" role="menuitem">缩放到选中卡片<span style="margin-left:auto;color:var(--ck-ink-faint)">Shift+2</span></button><hr style="border:0;border-top:var(--ck-border-subtle);margin:4px 0"><button type="button" role="menuitem">缩放到 25%</button><button type="button" role="menuitem">缩放到 50%</button><button type="button" role="menuitem">缩放到 100%<span style="margin-left:auto;color:var(--ck-ink-faint)">Shift+0</span></button><button type="button" role="menuitem">缩放到 200%</button></div><figcaption>点百分比：Menu</figcaption></figure>
 </div>
-<ul class="ck-rules"><li>顺序：放大、缩小、适配全图（Shift+1）、缩放到选中卡片（Shift+2）、重置布局；快捷键参考 Figma，写在按钮提示里。</li><li>缩放到选中卡片在未选中时置灰；重置布局在没有手动调整时置灰；置灰透明度 0.4。</li><li>按钮 26px、图标 12px、横排，距画布右下角 20px。</li></ul>
+<ul class="ck-rules"><li>用设计系统的 CanvasNavigation（Canvas Control）：三枚 sm Ghost 图标按钮竖排，28px、图标 16px，外层浮起容器圆角 12px、内边距 2px。</li><li>百分比按钮的 Menu：适配全图（Shift+1）、缩放到选中卡片（Shift+2，未选中时置灰）、25 / 50 / 100（Shift+0）/ 200%；缩放范围按画布设定，流程画布取 10%–250%。</li><li>缩略图用 CanvasMinimap，与控件栏等高的正方形，空闲隐藏、平移缩放或操作控件时出现，约 1.5 秒无操作后淡出；右下角时向左展开，不超出画布右缘。</li><li>重置布局不属于 Canvas Control：画布自己的附加操作，仅在手动拖动过节点后出现，叠在控件栏上方。</li><li>切换流程或页面不重新适配：保留上一次的平移与缩放，只有「适配全图」才重新适配。</li></ul>
 </section>
 
 </main>

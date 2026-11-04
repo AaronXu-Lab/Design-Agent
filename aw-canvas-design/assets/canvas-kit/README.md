@@ -15,8 +15,8 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 | `note-node.html` | 说明节点（单行，正文折叠） |
 | `edge-styles.html` | 主路径 / 分支 / 异常三种线、扇出主干、同条件汇入、标签、呈现状态、悬停出口的临时去向线 |
 | `sidebar.html` | 目录面板（侧栏组合、文件夹分组、连线筛选）与收起后的展开按钮 |
-| `legend.html` | 一行图例（节点 + 连线两组，可收起） |
-| `controls.html` | 右下角视口控件组及置灰态 |
+| `legend.html` | 左下角折叠图例（收起胶囊 / 展开两栏竖排，样例与画布同形） |
+| `controls.html` | 右下角 Canvas Control（缩小 / 百分比 / 放大、缩略图、Menu、重置布局附加操作） |
 | `canvas-shell.html` | 整页组合：中性淡灰画布、点阵、浮动目录、卡片与连线、图例、控件 |
 | `reference/` | React + @xyflow/react + elkjs 参考实现（见下文） |
 
@@ -33,7 +33,9 @@ aw-canvas-design 的画布标准件，包含流程模式和设计平铺模式。
 
 ## 节点容器打开预览
 
-规则事实源见[逐卡入口契约](../../references/workflow.md#节点容器打开预览入口)。`reference/node-preview-button.tsx` 是 flow / tiles / 状态视图共用的标题栏操作，放在 info、重置之后的最右端。`node.tsx` 已以当前 variant 的 `src` 接入，点击在新标签打开实际节点预览，`nodrag`/`nopan` 和事件隔离避免标题捕获或重置；整流程 `?preview={flow}` 的原入口保留。
+规则事实源见[逐卡入口契约](../../references/workflow.md#节点容器打开预览入口)。`reference/node-preview-button.tsx` 是 flow / tiles / 状态视图共用的标题栏操作，是标题栏上唯一直接放置的操作，其余（说明、重置）收进其右侧的「更多操作」菜单。`node.tsx` 已以当前 variant 的 `src` 接入，点击在新标签打开实际节点预览，`nodrag`/`nopan` 和事件隔离避免标题捕获或重置；整流程 `?preview={flow}` 的原入口保留。
+
+按住 Command（Ctrl）悬停时按钮变成「复制链接」（复制绝对地址、不打开新页面），逻辑已写在 `reference/node-preview-button.tsx` 里。
 
 平铺的真实页面/Dialog/Sheet 容器也复用此按钮。宿主根据该卡片当前 target/scenario 解析真实独立地址；沿用已有 screen/item 路由及 base path、hash、语言/主题/Fake 上下文，不能取整流程目标、全局选中项或硬编码另一个路径。示意（`resolveItemPreview` 是项目已有路由适配器，不是本 kit 新规定的路由）：
 
@@ -102,7 +104,8 @@ return <header className="ck-card-bar ck-drag">
 | `preview-size.ts` | 无运行时依赖的尺寸消息类型、边界校验与 readiness 提交门槛，供消费者及测试共用 |
 | `preview-protocol.ts` | 画布与预览的 postMessage 协议：`size`（预览 → 画布）与 `reset`（画布 → 预览） |
 | `sidebar.tsx` / `legend.tsx` | 目录与图例（通用 HTML 版；有设计系统时换成其组件） |
-| `board.tsx` | 画板：默认视口适配全图、Shift+1 / Shift+2、右下控件、筛选与聚焦、悬停出口的临时线、拖动 reroute、`data-checks` |
+| `view-controls.tsx` | 右下角 Canvas Control 预设：设计系统 `CanvasNavigation` + `CanvasMinimap`，缩略图向左展开，附加操作槽 |
+| `board.tsx` | 画板：首次进入适配全图、**切换流程保留视口**、右下 Canvas Control、筛选与聚焦、悬停出口的临时线、拖动 reroute、`data-checks` |
 | `flows.example.ts` / `canvas-page.example.tsx` | 示例流程与画布页路由（`?flow=`、`?preview=`、`?screen=`） |
 
 不要用父级 `visibility: hidden` 保留已访问流程的画板：画布库会在节点上写行内 `visibility`，其他流程的卡片会透出来。想加快加载，优先给预览做轻量的独立入口页，避免每个 iframe 都启动整个应用。

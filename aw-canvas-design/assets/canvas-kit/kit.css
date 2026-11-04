@@ -165,7 +165,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* 顶栏右侧的次要图标按钮：info、重置在前，打开预览在最右。 */
+/* 顶栏右侧只直接放「打开预览」；说明、重置等其余操作收进「更多操作」菜单（最右）。 */
 .ck-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -540,91 +540,144 @@ details.ck-compact[open] { height: auto; padding-bottom: var(--ck-space-sm); }
 }
 .ck-sidebar-trigger[data-hidden] { opacity: 0; transform: scale(0.97); pointer-events: none; }
 
-/* ───────── 图例（一行，只解释图形） ───────── */
+/* ───────── 图例（左下角折叠卡片：收起是胶囊，展开分两栏竖排） ───────── */
 .ck-legend {
   position: absolute;
   z-index: 5;
   left: calc(var(--ck-sidebar-space, 0px) + var(--ck-inset));
   bottom: var(--ck-inset);
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 0;
-  min-height: 40px;
-  padding: 0 6px 0 14px;
-  border: var(--ck-border-subtle);
-  border-radius: 20px;
-  background: var(--ck-surface);
-  box-shadow: var(--ck-shadow-floating);
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: var(--ck-space-xs);
   font-size: 12px;
   color: var(--ck-ink-muted);
   transition: left var(--ck-motion-base);
 }
 .ck-legend[data-inline] { position: static; display: inline-flex; }
-.ck-legend section { display: flex; align-items: center; gap: 8px; padding: 0 12px; border-left: var(--ck-border-subtle); }
-.ck-legend h3 { margin: 0; font-size: 11px; font-weight: 500; color: var(--ck-ink-faint); }
-.ck-legend ul { display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.ck-legend li { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-.ck-legend:not([data-open]) section { display: none; }
-.ck-legend:not([data-open]) .ck-legend-toggle { padding-right: 12px; }
 .ck-legend-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  height: 28px;
-  padding: 0 14px 0 0;
-  border: 0;
-  background: none;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px 0 10px;
+  border: var(--ck-border-subtle);
+  border-radius: var(--ck-radius-full);
+  background: var(--ck-surface);
+  box-shadow: var(--ck-shadow-floating);
   color: var(--ck-ink);
   font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
 }
+.ck-legend-toggle .ck-icon { width: 16px; height: 16px; }
+.ck-legend-toggle:hover { background: color-mix(in srgb, var(--ck-black) 3%, var(--ck-surface)); }
+.ck-legend-caret { transition: transform var(--ck-motion-base); }
+.ck-legend[data-open] .ck-legend-caret { transform: rotate(180deg); }
+.ck-legend-body {
+  display: none;
+  gap: calc(var(--ck-space-lg) * 2);
+  padding: var(--ck-space-lg) 16px;
+  border: var(--ck-border-subtle);
+  border-radius: var(--ck-radius-lg);
+  background: var(--ck-surface);
+  box-shadow: var(--ck-shadow-floating);
+}
+.ck-legend[data-open] .ck-legend-body { display: flex; }
+.ck-legend section { display: flex; flex-direction: column; gap: var(--ck-space-xs); min-width: 72px; }
+.ck-legend h3 { margin: 0; font-size: 11px; font-weight: 500; color: var(--ck-ink-faint); }
+.ck-legend ul { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.ck-legend li { display: flex; align-items: center; gap: 8px; height: 20px; white-space: nowrap; color: var(--ck-ink); }
 .ck-legend-node {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 14px;
-  border-radius: 4px;
-  font-size: 9px;
+  box-sizing: border-box;
+  width: 32px;
+  height: 20px;
+  border-radius: 5px;
 }
-.ck-legend-node[data-kind="screen"] { border: var(--ck-border-default); background: var(--ck-surface); }
+.ck-legend-node .ck-icon { width: 11px; height: 11px; }
+.ck-legend-node[data-kind="screen"] { border: 1.5px solid var(--ck-line-default); background: var(--ck-surface); box-shadow: var(--ck-shadow-floating); }
 .ck-legend-node[data-kind="decision"] { border: 1.5px solid var(--ck-accent); background: var(--ck-accent-subtle); color: var(--ck-accent); }
 .ck-legend-node[data-kind="reference"] { border: 1.5px dashed var(--ck-primary); color: var(--ck-primary); }
 .ck-legend-node[data-kind="note"] { border: 1px solid var(--ck-warning); background: var(--ck-warning-subtle); color: var(--ck-warning-ink); }
-.ck-legend-line { width: 20px; border-top: 1.5px solid var(--ck-ink-muted); }
-.ck-legend-line[data-kind="main"] { border-top: 2.5px solid var(--ck-ink-strong); }
-.ck-legend-line[data-kind="fault"] { border-top: 1.5px dashed var(--ck-error); }
+/* 连线样例是带箭头的短线，与画布上的线同粗细、同虚实。 */
+.ck-legend-edge { flex: none; width: 32px; height: 10px; overflow: visible; }
+.ck-legend-edge line { stroke: var(--ck-ink-muted); stroke-width: 2; }
+.ck-legend-edge path { fill: var(--ck-ink-muted); }
+.ck-legend-edge[data-kind="main"] line { stroke: var(--ck-ink-strong); stroke-width: 3; }
+.ck-legend-edge[data-kind="main"] path { fill: var(--ck-ink-strong); }
+.ck-legend-edge[data-kind="fault"] line { stroke: var(--ck-error); stroke-dasharray: 5 3; }
+.ck-legend-edge[data-kind="fault"] path { fill: var(--ck-error); }
+@media (prefers-reduced-motion: reduce) { .ck-legend, .ck-legend-caret { transition: none; } }
 
-/* ───────── 右下角视口控件组 ───────── */
-.ck-controls {
+/* ───────── 右下角视口控件：设计系统 Canvas Control（CanvasNavigation）的静态同形 ─────────
+   竖排三枚 sm Ghost 按钮：缩小、百分比（Menu）、放大；缩略图在空闲时隐藏，操作时向左淡入。
+   有设计系统时直接用 CanvasNavigation + CanvasMinimap，这里只是视觉参照。 */
+.ck-nav {
   position: absolute;
+  z-index: 5;
   right: var(--ck-inset);
   bottom: var(--ck-inset);
-  z-index: 5;
   display: flex;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ck-space-md);
 }
-.ck-controls[data-inline] { position: static; display: inline-flex; }
-.ck-control {
+.ck-nav[data-inline] { position: static; display: inline-flex; }
+.ck-nav-wrap { position: relative; display: inline-flex; }
+.ck-nav-rail {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  border: var(--ck-border-subtle);
+  border-radius: var(--ck-radius-lg);
+  background: var(--ck-surface);
+  box-shadow: var(--ck-shadow-floating);
+}
+.ck-nav-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  padding: 4px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   border: 0;
-  border-right: 1px solid #eeeeee;
-  background: #fefefe;
+  border-radius: var(--ck-radius-md);
+  background: transparent;
   color: var(--ck-ink);
+  font: inherit;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
-.ck-control:last-child { border-right: 0; }
-.ck-control:hover { background: #f4f4f4; }
-.ck-control:disabled { opacity: var(--ck-opacity-disabled); cursor: default; background: #fefefe; }
+.ck-nav-btn .ck-icon { width: 16px; height: 16px; }
+.ck-nav-btn:hover { background: var(--ck-hover-overlay); }
+.ck-nav-btn:disabled { opacity: var(--ck-opacity-disabled); cursor: default; background: transparent; }
+/* 百分比按钮：空闲时是 % 图标，缩放后或悬停时换成当前数值，点击区域不变。 */
+.ck-nav-zoom { font-weight: 500; }
+/* 缩略图：与控件栏等高的正方形，放在控件栏左侧，仅操作时出现。 */
+.ck-nav-minimap {
+  position: absolute;
+  right: calc(100% + 8px);
+  bottom: 0;
+  height: 100%;
+  aspect-ratio: 1;
+  border: var(--ck-border-subtle);
+  background: color-mix(in srgb, var(--ck-black) 4%, var(--ck-surface));
+}
+.ck-nav-minimap i { position: absolute; border-radius: 1px; background: var(--ck-line-default); }
+.ck-nav-minimap b { position: absolute; border: 1px solid var(--ck-surface); box-shadow: 0 0 0 1px var(--ck-ink-muted); }
+/* 画布自己的附加操作（如重置布局）：叠在控件栏上方，同样是 sm Ghost 图标按钮。 */
+.ck-nav-extra {
+  padding: 2px;
+  border: var(--ck-border-subtle);
+  border-radius: var(--ck-radius-lg);
+  background: var(--ck-surface);
+  box-shadow: var(--ck-shadow-floating);
+}
 
 /* ───────── 说明 Dialog（点卡片 info 打开，只有「知道了」） ───────── */
 .ck-dialog-backdrop {
@@ -700,3 +753,43 @@ dialog.ck-dialog::backdrop { background: color-mix(in srgb, var(--ck-black) 32%,
 .ck-peek-host > .ck-node { outline: 2px dashed var(--ck-accent); outline-offset: 6px; }
 /* 拖动节点期间让出指针，避免 iframe 吞掉 pointer 事件。 */
 .ck-canvas[data-dragging] .ck-preview iframe { pointer-events: none; }
+
+/* 「更多操作」菜单：说明、重置等顶栏次要操作的容器，项目有设计系统 Menu 时用它实现同等效果。 */
+.ck-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: 4px;
+  border: var(--ck-border-subtle);
+  border-radius: var(--ck-radius-md);
+  background: var(--ck-surface);
+  box-shadow: var(--ck-shadow-floating, 0 8px 24px rgba(0, 0, 0, 0.12));
+}
+.ck-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ck-radius-md);
+  background: transparent;
+  color: var(--ck-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ck-menu button:hover, .ck-menu button:focus-visible { background: var(--ck-hover-overlay); }
+
+/* 参考实现的容器：设计系统 CanvasNavigation 竖排固定在右下角；缩略图翻到左侧；贴右下角，不为调试入口预留空间。 */
+.ck-nav-host {
+  position: absolute;
+  z-index: 5;
+  right: var(--ck-inset);
+  bottom: var(--ck-inset);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ck-space-md);
+}
+.ck-nav-host [data-slot='canvas-navigation'] > :first-child:not(:last-child) { left: auto; right: calc(100% + 8px); }

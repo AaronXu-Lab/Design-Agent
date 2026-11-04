@@ -19,13 +19,23 @@ const MAX_LOADING = 5
 const LOAD_TIMEOUT = 8000
 let loading = 0
 const waiting: (() => void)[] = []
-function acquire(start: () => void) {
-  if (loading < MAX_LOADING) { loading += 1; start() } else waiting.push(start)
+function pump() {
+  while (loading < MAX_LOADING && waiting.length) {
+    loading += 1
+    waiting.shift()!()
+  }
 }
+function acquire(start: () => void) {
+  waiting.push(start)
+  pump()
+}
+/**
+ * 空出的名额推迟到微任务再交接：StrictMode 会同步卸载再重挂全部节点，
+ * 若当场把名额交给排队者，排队者被卸载前的 `setReady(true)` 会保留下来，闸门形同虚设。
+ */
 function releaseSlot() {
-  const next = waiting.shift()
-  if (next) next()
-  else loading -= 1
+  loading -= 1
+  queueMicrotask(pump)
 }
 
 const PreviewFrame = forwardRef<HTMLIFrameElement, IPreviewFrameProps>(function PreviewFrame({ nodeId, title, src, width, height, scale = 1 }, ref) {

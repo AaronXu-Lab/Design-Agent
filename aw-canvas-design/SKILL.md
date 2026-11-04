@@ -2,7 +2,7 @@
 name: aw-canvas-design
 description: "Use an interactive canvas of real components to review business flows or tile pages, Dialogs, and Sheets for aligned design comparison, with isolated previews and explicit coverage. Not for plain flowcharts or styling a single dialog."
 metadata:
-  version: "1.13.0"
+  version: "1.16.0"
   author: "aaron_xu"
   creation_context: "源于在 ADM 画布中并列操作真实弹窗、分支与结果并通过评论迭代的实践，将可复用画布基础设施与多弹层业务设计分离，支持流程审查与设计平铺比较，以及不同业务和技术栈。"
 ---

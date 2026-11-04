@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { ReactFlow, Background, BackgroundVariant, Controls, ControlButton, MiniMap, MarkerType, applyNodeChanges, type NodeChange, type ReactFlowInstance, type Viewport } from '@xyflow/react'
+import { ReactFlow, Background, BackgroundVariant, MarkerType, applyNodeChanges, type NodeChange, type ReactFlowInstance, type Viewport } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { ArrowCounterClockwiseIcon, ArrowsOutIcon, FrameCornersIcon } from '@phosphor-icons/react'
+import { Button } from '@ai-indeed/axo-ui'
+import { ArrowCounterClockwiseIcon } from '@phosphor-icons/react'
 import CanvasNode, { CanvasContext, DRAG_HANDLE, PREVIEW_SCALE, type IPeek, type TCanvasNode } from './node'
 import CanvasEdge, { type TCanvasEdge } from './edge'
 import CanvasLegend from './legend'
+import CanvasViewControls from './view-controls'
 import CanvasSidebar from './sidebar'
 import { ENodeKind, EEdgeFilter, EEdgeKind, EEdgeTone, type TCanvasFlows } from './types'
 import { LABEL_FONT_SIZE, MINOR_TITLE_FONT_SIZE, TITLE_FONT_SIZE, PORT_BASELINE, PORT_GAP, compactKind, estimateSize, layoutFlow, type IFlowLayout, type IPoint, type IRect, type ISize } from './layout'
@@ -27,6 +29,12 @@ interface ICanvasBoardProps<TTarget> {
 }
 interface ILayoutState { result: IFlowLayout; sizes: Record<string, ISize> }
 
+/**
+ * 切换流程（页面）时保留视口：画板按流程重新挂载，上一次的平移与缩放存在这里，
+ * 新流程首次布局完成后原样套用，不再默认缩放到适配全图；只有「适配全图」才重新适配。
+ */
+let keptViewport: Viewport | undefined
+
 const nodeTypes = { card: CanvasNode }
 const edgeTypes = { routed: CanvasEdge }
 /** 目录浮在画布上占去的左侧宽度（面板 280 + 外边距）与收起后展开按钮占去的宽度。 */
@@ -41,10 +49,6 @@ const EDGE_STYLES: Record<EEdgeKind, { stroke: string; strokeWidth: number; stro
 }
 /** 悬停出口时临时画出的去向线：强调色虚线，其余连线淡化。 */
 const PEEK_STYLE = { stroke: 'var(--ck-edge-peek)', strokeWidth: 2, strokeDasharray: '6 4' }
-const MINIMAP_COLORS: Record<ENodeKind, string> = {
-  [ENodeKind.screen]: 'var(--ck-line-default)', [ENodeKind.decision]: 'var(--ck-accent)',
-  [ENodeKind.reference]: 'var(--ck-hover-overlay)', [ENodeKind.note]: 'var(--ck-warning-subtle)',
-}
 const moved = (offset?: IPoint) => Boolean(offset && (offset.x || offset.y))
 
 /**
@@ -71,7 +75,8 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
   }))
   const [layout, setLayout] = useState<ILayoutState>()
   const [offsets, setOffsets] = useState<Record<string, IPoint>>({})
-  const [viewport, setViewport] = useState<Viewport>()
+  const [viewport, setViewport] = useState<Viewport | undefined>(keptViewport)
+  const [moving, setMoving] = useState(false)
   const instance = useRef<ReactFlowInstance<TCanvasNode<TTarget>, TCanvasEdge>>(undefined)
   const frame = useRef<HTMLDivElement>(null)
   // 用户平移或缩放前，默认视口随实测尺寸的重新布局一起更新。
@@ -96,9 +101,17 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
     return () => { current = false; window.clearTimeout(timer) }
   }, [definition, sizeKey])
 
-  // 未手动平移缩放前，默认视口跟着布局结果、目录收起 / 展开和窗口尺寸重新适配。
+  // 有保留的视口时首次布局完成就原样套用（无动画）并视为用户已定视口；否则按布局结果、目录收起 / 展开和窗口尺寸适配。
+  const restored = useRef(false)
   useEffect(() => {
     if (!layout) return
+    if (!restored.current) {
+      restored.current = true
+      if (keptViewport && instance.current) {
+        userMoved.current = true
+        void instance.current.setViewport(keptViewport, { duration: 0 })
+      }
+    }
     if (!userMoved.current) placeViewport(layout.result, layout.sizes)
     const refit = () => { if (!userMoved.current) placeViewport(layout.result, layout.sizes) }
     window.addEventListener('resize', refit)
@@ -193,8 +206,6 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
   // 缩略图只在内容超出当前视口时出现。
   const area = frame.current?.getBoundingClientRect()
   const box = layout && bounds(layout.result, layout.sizes)
-  const overflow = Boolean(viewport && area && box && (box.x * viewport.zoom + viewport.x < 0 || box.y * viewport.zoom + viewport.y < 0
-    || (box.x + box.width) * viewport.zoom + viewport.x > area.width || (box.y + box.height) * viewport.zoom + viewport.y > area.height))
   const fitZoom = area && box ? Math.min(1, (area.width - margin.left - margin.right) / box.width, (area.height - margin.top - margin.bottom) / box.height) : 1
   const screenFont = Math.round(fitZoom * Math.min(TITLE_FONT_SIZE, MINOR_TITLE_FONT_SIZE, LABEL_FONT_SIZE) * 10) / 10
   // 连线指标与全图字号是验收数据：不上界面，写在画板根节点的 data-checks 上供脚本读取；全图字号只作参考。
@@ -211,24 +222,26 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
       <div ref={frame} style={{ position: 'relative', flex: 1, minWidth: 0, opacity: layout ? 1 : 0 }}>
         <ReactFlow
           nodes={positioned} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes}
-          onInit={(value) => { instance.current = value }} onMoveStart={(event) => { if (event) userMoved.current = true }}
-          onMove={(_, next) => setViewport(next)}
+          onInit={(value) => { instance.current = value }} onMoveStart={(event) => { setMoving(true); if (event) userMoved.current = true }}
+          onMove={(_, next) => { keptViewport = next; setViewport(next) }} onMoveEnd={() => setMoving(false)}
           onPaneClick={clearSelection} multiSelectionKeyCode={null} onNodesChange={changeNodes}
           minZoom={0.1} maxZoom={2.5} nodesDraggable nodeDragThreshold={2} nodesConnectable={false} deleteKeyCode={null}
           panOnDrag panOnScroll zoomOnScroll={false} zoomActivationKeyCode={['Meta', 'Control']} selectionOnDrag={false}
           proOptions={{ hideAttribution: true }}
         >
-          {/* 视口与布局操作统一在右下角；不可用时置灰。 */}
-          <Controls showInteractive={false} showFitView={false} orientation="horizontal" position="bottom-right" style={{ margin: 'var(--ck-inset)' }}>
-            <ControlButton title="适配全图（Shift+1）" aria-label="适配全图" onClick={resetViewport}><ArrowsOutIcon /></ControlButton>
-            <ControlButton title="缩放到选中卡片（Shift+2）" aria-label="缩放到选中卡片" disabled={!focusedId} onClick={zoomToSelection}><FrameCornersIcon /></ControlButton>
-            <ControlButton title="重置布局" aria-label="重置布局" disabled={!adjusted} onClick={() => setOffsets({})}><ArrowCounterClockwiseIcon /></ControlButton>
-          </Controls>
           {/* 点阵跟随画布平移与缩放：间距 27、点色 6% 黑。 */}
           <Background variant={BackgroundVariant.Dots} gap={27} size={1.5} />
-          {overflow && <MiniMap position="bottom-right" pannable zoomable ariaLabel="缩略图" style={{ margin: '0 var(--ck-inset) 64px 0' }}
-            nodeColor={(node) => MINIMAP_COLORS[(node as TCanvasNode<TTarget>).data.kind]} />}
         </ReactFlow>
+        {/* 右下角：设计系统 Canvas Control（缩小 / 百分比 Menu / 放大）+ 缩略图；重置布局是画布自己的附加操作。 */}
+        {layout && area && viewport && <CanvasViewControls zoom={viewport.zoom}
+          onZoomChange={(zoom) => { userMoved.current = true; void instance.current?.zoomTo(zoom, { duration: 160 }) }}
+          onZoomToFit={resetViewport} onZoomToSelection={focusedId ? zoomToSelection : undefined}
+          nodes={positioned.map((node) => ({ id: node.id, x: node.position.x, y: node.position.y, ...layout.sizes[node.id] }))}
+          viewport={{ x: -viewport.x / viewport.zoom, y: -viewport.y / viewport.zoom, width: area.width / viewport.zoom, height: area.height / viewport.zoom }}
+          onViewportChange={(rect) => { userMoved.current = true
+            void instance.current?.setViewport({ zoom: viewport.zoom, x: -rect.x * viewport.zoom, y: -rect.y * viewport.zoom }, { duration: 0 }) }}
+          isInteracting={moving}
+          extra={adjusted && <Button size="sm" variant="ghost" contentType="icon" aria-label="重置布局" title="重置布局" onClick={() => setOffsets({})}><ArrowCounterClockwiseIcon /></Button>} />}
       </div>
       <CanvasLegend />
     </main>

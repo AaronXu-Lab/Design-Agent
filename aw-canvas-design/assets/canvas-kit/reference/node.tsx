@@ -4,6 +4,7 @@ import { ArrowCounterClockwiseIcon, ArrowRightIcon, ArrowSquareOutIcon, ArrowUDo
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import PreviewFrame from './preview-frame'
 import NodePreviewButton from './node-preview-button'
+import MoreMenu from './more-menu'
 import { resetPreview } from './preview-protocol'
 import { ENodeKind, type ICanvasExit, type ICanvasNodeData, type TCanvasFlows } from './types'
 
@@ -29,7 +30,8 @@ export type TCanvasNode<TTarget = unknown> = Node<ICanvasNodeData<TTarget> & { m
 /** 拖动标题栏时捕获指针，划过预览 iframe 也不断；按在控件上（.nodrag）时不捕获，否则控件要点两次。 */
 const dragHandle = {
   onPointerDown: (event: PointerEvent<HTMLElement>) => {
-    if (event.button === 0 && !(event.target as Element).closest('.nodrag')) event.currentTarget.setPointerCapture(event.pointerId)
+    // 菜单等 Portal 内容在 DOM 上不在标题栏里，但 React 事件仍会冒泡到这里；只处理标题栏自身 DOM 内的按下，否则菜单项收不到 click。
+    if (event.button === 0 && event.target instanceof Element && event.currentTarget.contains(event.target) && !event.target.closest('.nodrag')) event.currentTarget.setPointerCapture(event.pointerId)
   },
 }
 export const DRAG_HANDLE = '.ck-drag'
@@ -103,17 +105,16 @@ export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode
   const hasInfo = kind === ENodeKind.screen && !!detail
   return <section {...common}>
     {handles}{flag}
-    {/* 方向 C：顶栏放标题与次要操作（info、重置在前，打开预览在最右），中间是预览，底栏放场景切换与出口。 */}
+    {/* 方向 C：顶栏放标题与「打开预览」「更多操作」，中间是预览，底栏放场景切换与出口。 */}
     <header {...dragHandle} className="ck-card-bar ck-drag">
       {kind === ENodeKind.decision && <GitForkIcon aria-hidden weight="bold" className="ck-kind-icon" />}
       <h2 title={title}>{title}</h2>
-      {hasInfo && <button type="button" className="ck-icon-btn nodrag nopan" aria-label="查看说明" title="说明" onClick={() => info.current?.showModal()}>
-        <InfoIcon size={16} />
-      </button>}
-      {src && <button type="button" className="ck-icon-btn nodrag nopan" aria-label={`重置${title}的场景`} title="重置场景" onClick={() => resetPreview(frame.current)}>
-        <ArrowCounterClockwiseIcon size={16} />
-      </button>}
       {kind === ENodeKind.screen && <NodePreviewButton href={src} />}
+      {/* 标题栏只直接放「打开预览」；说明、重置收进「更多操作」菜单。项目有设计系统 Menu 时用它实现，无可放项时不显示。 */}
+      {(hasInfo || src) && <MoreMenu items={[
+        hasInfo && { label: '查看说明', icon: <InfoIcon size={16} />, onSelect: () => info.current?.showModal() },
+        src && { label: '重置场景', icon: <ArrowCounterClockwiseIcon size={16} />, onSelect: () => resetPreview(frame.current) },
+      ]} />}
     </header>
     {/* 判断节点没有预览，判断依据直接写在标题下。 */}
     {kind === ENodeKind.decision && detail && <p className="ck-decision-detail">{detail}</p>}

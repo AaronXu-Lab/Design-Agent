@@ -81,8 +81,14 @@ export async function layoutFlow<T>(flow: ICanvasFlowDef<T>, sizes: Record<strin
   const targets = new Map<string, string>()
   const unlabeled = new Set<string>()
   const depths = new Map<string, number>()
+  const visiting = new Set<string>()
   const depth = (id: string): number => {
-    if (!depths.has(id)) depths.set(id, Math.max(0, ...flow.edges.filter((edge) => edge.target === id).map((edge) => depth(edge.source) + 1)))
+    if (!depths.has(id)) {
+      // 有环（如「重试」回到入口）时，沿回边走回正在计算的节点就停下，不再递归。
+      visiting.add(id)
+      depths.set(id, Math.max(0, ...flow.edges.filter((edge) => edge.target === id && !visiting.has(edge.source)).map((edge) => depth(edge.source) + 1)))
+      visiting.delete(id)
+    }
     return depths.get(id)!
   }
   const mainIds = new Set(flow.edges.flatMap((edge) => edge.kind === EEdgeKind.main ? [edge.source, edge.target] : []))
