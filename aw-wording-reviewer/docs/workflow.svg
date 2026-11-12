@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1940" role="img" aria-labelledby="title desc">
 <title id="title">AW Wording Reviewer 工作流程</title>
-<desc id="desc">按范围审查文案；组件语义先复用或获取组件及关联 Wording Docs，纯标点跳过，缺证据的相关结论待验证；已授权时先完成独立字符串修改与验证，仅审查则交付结论。必要的非字符串实现项单独列出问题、建议、实现与影响范围；已有具体授权直接执行，否则明确请求同意并等待。批准后实施和验证，未批准保留未修状态。</desc>
+<desc id="desc">按范围审查文案；一般 Wording Docs 先发现再选读，项目文章优先于内置规则；组件语义先复用或获取组件及关联 Wording Docs，纯标点跳过，缺证据的相关结论待验证；已授权时先完成独立字符串修改与验证，仅审查则交付结论。必要的非字符串实现项单独列出问题、建议、实现与影响范围；已有具体授权直接执行，否则明确请求同意并等待。批准后实施和验证，未批准保留未修状态。</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#52606d"/></marker>
 <style>
 text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#17212b}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400;fill:#52606d}.input{fill:#fff;stroke:#9eacb8}.step{fill:#edf6ff;stroke:#287bbb}.decision{fill:#fff7e6;stroke:#c98312}.stop{fill:#fff0ef;stroke:#c94b43}.result{fill:#edf9f1;stroke:#2e8b54}rect,polygon{stroke-width:2}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}.join{fill:none;stroke:#52606d;stroke-width:2.5}
@@ -13,7 +13,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-
 <path class="line" d="M790 232H870"/><text class="note" x="832" y="218">否</text>
 <rect class="stop" x="870" y="198" width="280" height="68" rx="14"/><text class="label" x="1010" y="226">说明缺口或不适用</text><text class="note" x="1010" y="249">缺少目标时再澄清</text>
 <path class="line" d="M600 286V320"/><text class="note" x="622" y="307">是</text>
-<rect class="step" x="390" y="320" width="420" height="68" rx="14"/><text class="label" x="600" y="348">按任务读取规则与相关约束</text><text class="note" x="600" y="371">纯排版轻量处理；组件语义先取专属依据</text>
+<rect class="step" x="390" y="320" width="420" height="68" rx="14"/><text class="label" x="600" y="348">按任务读取规则与相关约束</text><text class="note" x="600" y="371">轻量发现相关项目文章；组件语义取专属依据</text>
 <path class="line" d="M390 354H330"/><text class="note" x="230" y="305">用户仅要求预检</text>
 <rect class="result" x="50" y="320" width="280" height="68" rx="14"/><text class="label" x="190" y="348">交付预检</text><text class="note" x="190" y="371">规则、项目例外与范围</text>
 <path class="line" d="M600 388V420"/>

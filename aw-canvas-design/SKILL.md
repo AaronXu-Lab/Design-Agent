@@ -2,7 +2,7 @@
 name: aw-canvas-design
 description: "Use an interactive canvas of real components to review business flows or tile pages, Dialogs, and Sheets for aligned design comparison, with isolated previews and explicit coverage. Not for plain flowcharts or styling a single dialog."
 metadata:
-  version: "1.16.0"
+  version: "1.15.0"
   author: "aaron_xu"
   creation_context: "源于在 ADM 画布中并列操作真实弹窗、分支与结果并通过评论迭代的实践，将可复用画布基础设施与多弹层业务设计分离，支持流程审查与设计平铺比较，以及不同业务和技术栈。"
 ---
@@ -28,6 +28,7 @@ metadata:
 | 只搭建环境，或发现现有能力缺失/失效 | [独立初始化模块](references/initialization.md)：检测复用、依赖与路由、隔离、操作、所选模式布局与共用交互；产出就绪记录 |
 | 新流程或分支变化 | [流程建模](references/modeling.md)：实际入口、可达性、节点与覆盖表 |
 | 收集、对齐或比较页面/弹层 | [平铺建模与比较](references/design-tiling.md)：类型/模块/行/条目模型、完整覆盖、比较尺度与目录规则 |
+| 预览激活、回收或状态恢复 | [预览生命周期](references/preview-lifecycle.md) |
 | 实现或修改预览组件 | [场景设计](references/component-design.md)：实际组件、字段、滚动、Fake 与条件式步骤 |
 | 生成新画布，或调整卡片、目录、视口与图例 | 复制 [canvas-kit](assets/canvas-kit/) 的适用模式及共用部分再填数据：视觉以 HTML 标准件为准，逻辑以 `reference/` 为准，有设计系统时用其组件与 token 实现同等效果；规则见 [画布呈现规范](references/canvas-presentation.md) |
 | 评论修改或明确要求业务迁移 | [评论与迁移](references/iteration-and-migration.md)：逐项闭环与授权边界 |

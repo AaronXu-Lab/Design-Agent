@@ -68,6 +68,8 @@
 
 ## MCP 3.1.0 集成复核（2026-10-10）
 
+以下是旧服务版本的历史验证记录，不定义当前 MCP 工具签名、传输响应字段或来源元数据要求；当前契约以 [知识访问契约](../references/knowledge-access.md) 及 AaronUI-Web 当前工具 schema 为准。
+
 通过官方 MCP SDK 1.32.1 的 Streamable HTTP 客户端连接本地服务，确认服务版本 3.1.0；完整读取 9 页、831 个目录项后，使用发现所得 ID 与目录 revision 请求 Rename。客户端在 finally 中关闭，未修改源仓或重启服务。
 
 - 实际 ID：`scenarios/dialog-scenario/example-1/rename`（本次发现结果，不是生产访问常量）。
@@ -75,7 +77,7 @@
 - 正文含 `Action wording. Use “Rename” for confirmation and “Cancel” for cancellation.`；返回正文与原 Markdown 内容一致。
 - 来源为 `gallery/content/components/dialog-basic.md`；revision 为 `sha256:f32e3bfc7953c6f276e98d1b26e4d05d8047ebf1a257ee0e7f68076ce638a00b`，已与原文件 SHA-256 核对，并出现在响应 sources。
 - 本次目录 revision：`sha256:6596582501d464df196e8adf131bae867f55b6229803087abaafc17ac8217528`；所有页保持同一版本。
-- `structuredContent` 与文本 JSON 一致；实际响应通过当前严格输出 schema；发布的 list_examples/get_example 输出 schema 与源码一致。移除 rules、添加未知字段或使用未知 status 均被本地严格校验拒绝。
+- 当时的客户端测试记录了 `structuredContent` 与文本 JSON 一致及严格 schema 校验。这仅描述 MCP 3.1.0 的历史响应，不能作为 MCP 4 的响应契约或要求。
 - README、TypeScript 契约、严格 schema 与消费说明中的四种状态语义一致，特别是 `not-declared` 不证明无规则、`unavailable` 可伴随外层 `ok:true`。
 
 本次证明同源响应及消费契约可用，不证明产品实现合规或独立模型行为。未在本次集成复核中人为制造服务端无规则/未声明/读取失败状态；这些状态已完成契约核对，真实 Rename 响应验证覆盖 available 路径。

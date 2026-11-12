@@ -2,7 +2,7 @@
 name: aw-wording-reviewer
 description: "Review or, when requested, revise Simplified Chinese UI copy to standardize typography, terminology, microcopy, and data display formats. Use for copy proofreading and Chinese i18n reviews; not for other languages, code naming, or information architecture reviews."
 metadata:
-  version: "0.16.0"
+  version: "0.17.0"
   author: "aaron_xu"
   creation_context: "中文界面的排版与微文案约定通常散落在各项目的设计文档和语料惯例里，每次改文案都要重新推断混排空格、分隔符和日期格式的边界。为把这些通用规则固化成与具体项目无关、可机械校验的审查流程而创建。"
 ---
@@ -16,6 +16,7 @@ metadata:
 | 本次任务 | 所需资料 |
 | --- | --- |
 | Dialog 标题 / CTA、按钮或内容职责、通知 / 确认 / 编辑语义 | [组件文案交接](references/workflow.md#组件文案的按需交接)，先取得专属依据再润色 |
+| 一般 Wording 项目约束 | [项目文章](references/workflow.md#一般-wording-项目文章)：轻量发现与选读 |
 | 单句、粘贴片段或截图 | [规则索引](references/rules.md#按任务查找)及对应条目 |
 | 指定规则、文件或批量中文词条 | 对应规则章节；源码扫描读 [扫描器用法](references/scanner.md) |
 | 时间、周期或跨组件展示 | 规则集 D / H 相关条目；接入时读 [时间审查与接入](references/time-integration.md) |

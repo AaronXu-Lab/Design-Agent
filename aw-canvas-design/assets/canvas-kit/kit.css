@@ -793,3 +793,8 @@ dialog.ck-dialog::backdrop { background: color-mix(in srgb, var(--ck-black) 32%,
   gap: var(--ck-space-md);
 }
 .ck-nav-host [data-slot='canvas-navigation'] > :first-child:not(:last-child) { left: auto; right: calc(100% + 8px); }
+
+.ck-preview-activate { position:absolute; inset:40% 12px auto; padding:12px; border:1px solid #bbc8d8; border-radius:8px; background:white; color:#2453a4; cursor:pointer; }
+.ck-preview-error { position:relative; z-index:1; padding:12px; background:#fff0ef; color:#9b2923; font-size:12px; }
+
+.ck-preview > .ck-preview-error { position:absolute; inset:auto 0 0; margin:0; max-height:30%; overflow:auto; box-sizing:border-box; }

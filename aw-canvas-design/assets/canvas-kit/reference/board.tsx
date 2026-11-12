@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { PreviewSession, usePreviewPool } from './preview-session'
+import { layoutInWorker } from './layout-client'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ReactFlow, Background, BackgroundVariant, MarkerType, applyNodeChanges, type NodeChange, type ReactFlowInstance, type Viewport } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { Button } from '@ai-indeed/axo-ui'
@@ -9,7 +11,7 @@ import CanvasLegend from './legend'
 import CanvasViewControls from './view-controls'
 import CanvasSidebar from './sidebar'
 import { ENodeKind, EEdgeFilter, EEdgeKind, EEdgeTone, type TCanvasFlows } from './types'
-import { LABEL_FONT_SIZE, MINOR_TITLE_FONT_SIZE, TITLE_FONT_SIZE, PORT_BASELINE, PORT_GAP, compactKind, estimateSize, layoutFlow, type IFlowLayout, type IPoint, type IRect, type ISize } from './layout'
+import { LABEL_FONT_SIZE, MINOR_TITLE_FONT_SIZE, TITLE_FONT_SIZE, PORT_BASELINE, PORT_GAP, compactKind, estimateSize, type IFlowLayout, type IPoint, type IRect, type ISize } from './layout'
 import { checkLayout, countViolations } from './metrics'
 import { rerouteOf } from './reroute'
 
@@ -55,7 +57,15 @@ const moved = (offset?: IPoint) => Boolean(offset && (offset.x || offset.y))
  * 流程画板。切换流程时用 `key={flow}` 重新挂载；不要用父级 `visibility: hidden` 保留已访问流程的画板——
  * 画布库会在节点上写行内 visibility，其他流程的卡片会透出来。
  */
-export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange, previewSrc, onPreviewFlow, icons, groupLabels, sectionLabels }: ICanvasBoardProps<TTarget>) {
+export default function CanvasBoard<TTarget>(props: ICanvasBoardProps<TTarget>) {
+  return <PreviewSession><CanvasBoardContent {...props} /></PreviewSession>
+}
+function CanvasBoardContent<TTarget>({ title, flows, flow, onFlowChange, previewSrc, onPreviewFlow, icons, groupLabels, sectionLabels }: ICanvasBoardProps<TTarget>) {
+  const pool = usePreviewPool()
+  const [navigationError, setNavigationError] = useState('')
+  const navigate = useCallback((next: string) => {
+    void pool.saveAll().then(() => { setNavigationError(''); onFlowChange(next) }).catch(error => setNavigationError(error.message))
+  }, [pool, onFlowChange])
   const definition = flows[flow]
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [filter, setFilter] = useState(EEdgeFilter.all)
@@ -84,7 +94,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
   const sizes = Object.fromEntries(nodes.map((node) => [node.id, node.measured?.width && node.measured.height
     ? { width: Math.round(node.measured.width), height: Math.round(node.measured.height) } : estimateSize(node.data.kind)]))
   const sizeKey = JSON.stringify(sizes)
-  const context = useMemo(() => ({ flows, previewSrc, openFlow: onFlowChange, onPeek: setPeek }), [flows, previewSrc, onFlowChange])
+  const context = useMemo(() => ({ scope: flow, flows, previewSrc, openFlow: navigate, onPeek: setPeek }), [flow, flows, previewSrc, navigate])
 
   // 节点实测尺寸变化（预览载入、内容增高）后重新交给布局引擎；旧结果晚到时丢弃。
   useEffect(() => {
@@ -92,7 +102,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
     const measured: Record<string, ISize> = JSON.parse(sizeKey)
     const timer = window.setTimeout(async () => {
       try {
-        const result = await layoutFlow(definition, measured)
+        const result = await layoutInWorker(definition, measured)
         if (current) setLayout({ result, sizes: measured })
       } catch (error) {
         console.error('画布布局失败', error)
@@ -201,7 +211,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
     markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16, markerUnits: 'userSpaceOnUse', color: PEEK_STYLE.stroke },
   }] : flowEdges
   const adjusted = Object.values(offsets).some(moved)
-  const report = layout && !adjusted ? checkLayout(definition, layout.result, layout.sizes) : undefined
+  const report = useMemo(() => layout && !adjusted ? checkLayout(definition, layout.result, layout.sizes) : undefined, [definition, layout, adjusted])
   const violations = report ? countViolations(report) : 0
   // 缩略图只在内容超出当前视口时出现。
   const area = frame.current?.getBoundingClientRect()
@@ -218,7 +228,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
     <main className="ck-canvas ck-page" style={chrome} data-checks={checks} data-dragging={nodes.some((node) => node.dragging) || undefined}
       onKeyDown={(event) => { if (event.key === 'Escape') clearSelection() }}>
       <CanvasSidebar title={title} flows={flows} flow={flow} filter={filter} open={sidebarOpen} onOpenChange={setSidebarOpen}
-        onFilterChange={setFilter} onFlowChange={onFlowChange} onPreview={() => onPreviewFlow(flow)} icons={icons} groupLabels={groupLabels} sectionLabels={sectionLabels} />
+        onFilterChange={setFilter} onFlowChange={navigate} onPreview={() => onPreviewFlow(flow)} icons={icons} groupLabels={groupLabels} sectionLabels={sectionLabels} />
       <div ref={frame} style={{ position: 'relative', flex: 1, minWidth: 0, opacity: layout ? 1 : 0 }}>
         <ReactFlow
           nodes={positioned} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes}
@@ -243,6 +253,7 @@ export default function CanvasBoard<TTarget>({ title, flows, flow, onFlowChange,
           isInteracting={moving}
           extra={adjusted && <Button size="sm" variant="ghost" contentType="icon" aria-label="重置布局" title="重置布局" onClick={() => setOffsets({})}><ArrowCounterClockwiseIcon /></Button>} />}
       </div>
+      {navigationError && <p role="alert" className="ck-preview-error">{navigationError}</p>}
       <CanvasLegend />
     </main>
   </CanvasContext.Provider>

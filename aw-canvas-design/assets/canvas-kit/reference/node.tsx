@@ -5,7 +5,7 @@ import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import PreviewFrame from './preview-frame'
 import NodePreviewButton from './node-preview-button'
 import MoreMenu from './more-menu'
-import { resetPreview } from './preview-protocol'
+import { usePreviewPool } from './preview-session'
 import { ENodeKind, type ICanvasExit, type ICanvasNodeData, type TCanvasFlows } from './types'
 
 /** 节点内预览按 0.5 缩放：全图下预览是缩略图，Shift+2 缩放到选中卡片后按实际尺寸阅读。 */
@@ -16,6 +16,7 @@ const PREVIEW_HEIGHT = 560
 export interface IPeek { source: string; target: string; label: string }
 /** 画板向节点提供的上下文：流程表、预览地址、打开其他流程、悬停出口时的临时去向线。 */
 export interface ICanvasContext<TTarget> {
+  scope: string
   flows: TCanvasFlows<TTarget>
   previewSrc: (target: TTarget) => string
   openFlow: (flow: string) => void
@@ -47,9 +48,10 @@ function Hint({ text, children }: { text: string; children: (props: { onPointerE
 }
 
 export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode>) {
+  const pool = usePreviewPool()
   const context = useContext(CanvasContext)
   if (!context) throw new Error('CanvasNode 需要在 CanvasContext 内渲染')
-  const { flows, previewSrc, openFlow, onPeek } = context
+  const { scope, flows, previewSrc, openFlow, onPeek } = context
   const { kind, title, entry, detail, exits, target, variants, link, minHeight, exitTargets } = data
   const [variant, setVariant] = useState(0)
   const info = useRef<HTMLDialogElement>(null)
@@ -113,17 +115,17 @@ export default function CanvasNode({ id, data, selected }: NodeProps<TCanvasNode
       {/* 标题栏只直接放「打开预览」；说明、重置收进「更多操作」菜单。项目有设计系统 Menu 时用它实现，无可放项时不显示。 */}
       {(hasInfo || src) && <MoreMenu items={[
         hasInfo && { label: '查看说明', icon: <InfoIcon size={16} />, onSelect: () => info.current?.showModal() },
-        src && { label: '重置场景', icon: <ArrowCounterClockwiseIcon size={16} />, onSelect: () => resetPreview(frame.current) },
+        !!src && { label: '重置场景', icon: <ArrowCounterClockwiseIcon size={16} />, onSelect: () => pool.reset(`${scope}:${id}:${src}`) },
       ]} />}
     </header>
     {/* 判断节点没有预览，判断依据直接写在标题下。 */}
     {kind === ENodeKind.decision && detail && <p className="ck-decision-detail">{detail}</p>}
     {src && <div className="ck-card-body">
-      <PreviewFrame ref={frame} nodeId={id} title={title} width={PREVIEW_WIDTH} height={PREVIEW_HEIGHT} src={src} scale={PREVIEW_SCALE} />
+      <PreviewFrame ref={frame} stateKey={`${scope}:${id}:${src}`} nodeId={id} title={title} width={PREVIEW_WIDTH} height={PREVIEW_HEIGHT} src={src} scale={PREVIEW_SCALE} />
     </div>}
     {footer && <footer className="ck-card-foot nodrag nopan">
       {variants?.map((item, index) => <button key={item.label} type="button" className="ck-variant" aria-pressed={index === variant}
-        onClick={() => setVariant(index)}>{item.label}</button>)}
+        onClick={() => { void pool.saveAll().then(() => setVariant(index)).catch(error => window.alert(error.message)) }}>{item.label}</button>)}
       {!!exits?.length && <ul className="ck-exits" aria-label="出口">{exits.map(exitControl)}</ul>}
     </footer>}
     {/* 说明只有一个「知道了」；有设计系统时换成其 Dialog。Dialog 必须盖在画布之上（画布根不设高于浮层的 z-index）。 */}

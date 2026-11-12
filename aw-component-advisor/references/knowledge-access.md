@@ -8,14 +8,14 @@
 
 | 工具 | 用途与要点 |
 | --- | --- |
-| `search` | 按任务语义、组件名发现 Component / Doc / Style / Scenario；只返回元信息，不代表已读规则。无匹配可换词或浏览目录 |
+| `search` | 按任务语义、组件名发现 Component / Doc / Style / Scenario；按当前服务支持的名称、description、关键词和章节标题检索，不把它当作全文或语义检索；只返回元信息，不代表已读规则。无匹配可换词或浏览目录 |
 | `list_documents` | 按需筛选 `type`、`group`、`relatedTo`，分页到 `nextCursor=null`；Wording Docs 用 `type:doc`、`group:Wording` 发现 |
 | `get_document` | 使用发现的 ID、章节或 `read.arguments` 选读；跟进适用的 `related[].read`。Doc 的显式规则通过目录提供的 `core-rules` 读取，不把普通文章、演示或预览值升格为规则 |
 | `get_design_rules` | 涉及 Gallery 设计选项到 Props 映射时读取公共约定，纯文案取证不必调用 |
 | `list_examples` | 当前专用源码入口仅支持 Dialog Basic / Dialog 场景；选择 Example 时读完整分页目录；其他类型以实际服务支持范围为准 |
 | `get_example` | 使用发现的 `exampleId`；`files` 只选响应的 `availableFiles`，每次上限按 schema。源码依赖 Gallery 上下文，不等于可直接移植 |
 
-组件相关章节和关联 Docs 均按判断需要读取。related/search 只提供发现线索，不自动展开规则；没有 related 也不证明没有 Wording 规则。Example 的存在不证明独立组件规范或 Docs 已覆盖。局部文案路径不要求无关 Example 实现遍历，完整组件 guidance / audit 的参考选择仍按工作流执行。
+发现结果先看名称、description、适用时机、章节及可调用的读取引用，再判断相关性。组件相关章节和关联 Docs 均按判断需要读取。related/search 只提供发现线索，不自动展开规则；没有 related 也不证明没有 Wording 规则。Example 的存在不证明独立组件规范或 Docs 已覆盖。局部文案路径不要求无关 Example 实现遍历，完整组件 guidance / audit 的参考选择仍按工作流执行。
 
 ## 响应与证据
 

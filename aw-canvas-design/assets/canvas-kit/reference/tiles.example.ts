@@ -1,9 +1,10 @@
 import type { ITileCollection } from './tiles'
+import type { IDemoTarget } from './preview-fixtures.example'
 
 /** Illustrative paths / translation keys only; replace with actual evidence.
- * No original component is implemented by this data example.
+ * The interactive item is a kit fixture, not a host business component.
  */
-export const TILE_COLLECTION: ITileCollection<{ component: string; scenario: string }> = {
+export const TILE_COLLECTION: ITileCollection<IDemoTarget> = {
   mode: 'tiles', id: 'overlays', titleKey: 'canvas.overlays.title',
   scope: { included: ['registered overlays in the selected modules'], excluded: ['unscanned modules'] },
   groups: [
@@ -21,9 +22,9 @@ export const TILE_COLLECTION: ITileCollection<{ component: string; scenario: str
   items: [
     {
       id: 'confirm-default', componentId: 'confirm', scenarioId: 'default', moduleId: 'files-dialogs',
-      titleKey: 'canvas.confirm.default', change: 'existing',
-      source: { path: 'src/confirm.tsx', symbol: 'ConfirmDialog', reachability: 'reachable', evidence: ['src/actions.tsx: ConfirmDialog import and render'] },
-      capability: { kind: 'interactive', target: { component: 'confirm', scenario: 'default' },
+      titleKey: 'canvas.confirm.default', change: 'proposed',
+      source: { path: 'reference/preview-scene.example.tsx', symbol: 'FixtureSceneView', reachability: 'tool', evidence: ['Canvas-kit synthetic example; replace with the host display component'] },
+      capability: { kind: 'interactive', target: { screen: 'confirm' },
         viewport: { width: 800, height: 640 }, viewportRule: 'Example only: adapt to original declaration and responsive gutters' },
       verification: { status: 'unverified', evidence: [] },
     },

@@ -1,46 +1,67 @@
-import { useCallback } from 'react'
+import { PreviewSession, usePreviewPool } from './preview-session'
+import { useCallback, useEffect, useState } from 'react'
 import CanvasBoard from './board'
-import { usePreviewBridge } from './preview-protocol'
+import { FixturePreview } from './preview-scene.example'
+import { resolvePreviewRoute } from './preview-routes.example'
+import { TILE_COLLECTION } from './tiles.example'
 import { FLOWS, type IDemoTarget } from './flows.example'
 
-/**
- * 画布页的路由约定（挂在所属业务路由下：`/<业务路由>/design-canvas`）：
- * - 无参数或 `?flow={id}`：完整画布；
- * - `?preview={flow}`：单流程预览，只渲染该流程，从入口起以实际尺寸逐步操作，未知名称列出可用流程；
- * - `?screen=...`：节点 iframe 内的单屏预览。
- * 旧地址重定向到新路径并原样保留 query。这里用 URLSearchParams 演示，项目里换成自己的路由库。
+/** Mount under the host business route. Preserve its deployment prefix and context.
+ * ?flow= shows the canvas; ?preview= walks a flow; ?screen= and ?item= are independent.
+ * This example uses path routing; adapt it to the actual project router for hash routes.
  */
-// Mounted at the host's actual business canvas route, including its deployment prefix.
-
-function ScreenPreview({ target }: { target: IDemoTarget }) {
-  // 在这里渲染项目的真实页面组件与 Fake 状态；重置时回到 target 定义的场景。
-  const root = usePreviewBridge<HTMLDivElement>(() => { /* 回到 target 的场景 */ })
-  return <div ref={root} style={{ width: 'max-content', padding: 12 }}>{target.screen}</div>
+const selectors = ['flow', 'preview', 'screen', 'item', 'scenario']
+function canvasUrl(query = '') {
+  const url = new URL(window.location.href)
+  for (const key of selectors) url.searchParams.delete(key)
+  new URLSearchParams(query).forEach((value, key) => url.searchParams.set(key, value))
+  return url
 }
-
 export default function CanvasPage() {
-  const params = new URLSearchParams(window.location.search)
-  const go = useCallback((query: string) => {
-    const url = new URL(window.location.href)
-    for (const key of ['flow', 'preview']) url.searchParams.delete(key)
-    new URLSearchParams(query).forEach((value, key) => url.searchParams.set(key, value))
-    window.location.assign(url.href)
-  }, [])
-  // Example for path routing; use the actual project router for hash routes.
-  const previewSrc = useCallback((target: IDemoTarget) => {
-    const url = new URL(window.location.href)
-    for (const key of ['flow', 'preview', 'item', 'scenario']) url.searchParams.delete(key)
-    url.searchParams.set('screen', target.screen)
-    if (target.scenario) url.searchParams.set('scenario', target.scenario)
-    return url.href
-  }, [])
-  if (params.has('screen')) return <ScreenPreview target={{ screen: params.get('screen')!, scenario: params.get('scenario') ?? undefined }} />
-  const preview = params.get('preview')
-  if (preview) {
-    const flow = FLOWS[preview]
-    return flow ? <ScreenPreview target={flow.preview} /> : <ul>{Object.entries(FLOWS).map(([id, value]) => <li key={id}><a href={`?preview=${id}`}>{id} · {value.label}</a></li>)}</ul>
+  return <PreviewSession><CanvasPageContent /></PreviewSession>
+}
+function CanvasPageContent() {
+  const pool = usePreviewPool()
+  const [error, setError] = useState('')
+  const [query, setQuery] = useState(window.location.search)
+  useEffect(() => {
+    const pop = () => {
+      const next = window.location.search
+      void pool.saveAll().then(() => { setError(''); setQuery(next) }).catch(error => {
+        const previous = new URL(window.location.href)
+        previous.search = query
+        window.history.pushState(null, '', previous.href)
+        setError(error.message)
+      })
+    }
+    window.addEventListener('popstate', pop)
+    return () => window.removeEventListener('popstate', pop)
+  }, [pool, query])
+  const go = useCallback((next: string) => {
+    void pool.saveAll().then(() => {
+      const url = canvasUrl(next)
+      window.history.pushState(null, '', url.href)
+      setError(''); setQuery(url.search)
+    }).catch(error => setError(error.message))
+  }, [pool])
+  const previewSrc = useCallback((target: IDemoTarget) => canvasUrl(new URLSearchParams({ screen: target.screen,
+    ...(target.scenario ? { scenario: target.scenario } : {}) }).toString()).href, [])
+  const params = new URLSearchParams(query)
+  const route = resolvePreviewRoute(params, FLOWS, TILE_COLLECTION.items)
+  if (route.kind === 'fixture') return <FixturePreview key={query} entry={route.entry} walk={route.walk} />
+  if (route.kind === 'source') {
+    const { titleKey, source, capability } = route.item
+    return <main><h2>{titleKey}</h2><p>仅源码记录 · {capability.kind === 'source-only' && capability.reasonKey}</p>
+      <p><code>{source.path}</code> · <code>{source.symbol}</code></p>
+      <ul>{source.evidence.map(line => <li key={line}>{line}</li>)}</ul>
+      <a href={canvasUrl().href}>返回画布</a></main>
   }
-  const flow = FLOWS[params.get('flow') ?? ''] ? params.get('flow')! : 'main'
-  return <CanvasBoard key={flow} title="登录流程画布" flows={FLOWS} flow={flow} previewSrc={previewSrc}
-    onFlowChange={(next) => go(`flow=${next}`)} onPreviewFlow={(next) => go(`preview=${next}`)} />
+  if (route.kind === 'missing') return <main><p role="status">没有可用的预览场景。</p><a href={canvasUrl().href}>返回画布</a>
+    {route.mode === 'preview' && <ul>{Object.entries(FLOWS).map(([id, value]) => <li key={id}><a href={canvasUrl(`preview=${id}`).href}>{value.label}</a></li>)}</ul>}
+    {route.mode === 'item' && <ul>{TILE_COLLECTION.items.map(({ id, titleKey }) => <li key={id}><a href={canvasUrl(`item=${id}`).href}>{titleKey}</a></li>)}</ul>}
+  </main>
+  const requestedFlow = params.get('flow') ?? ''
+  const flow = Object.hasOwn(FLOWS, requestedFlow) ? requestedFlow : 'main'
+  return <><CanvasBoard key={flow} title="登录流程画布" flows={FLOWS} flow={flow} previewSrc={previewSrc}
+    onFlowChange={next => go(`flow=${next}`)} onPreviewFlow={next => go(`preview=${next}`)} />{error && <p role="alert">{error}</p>}</>
 }

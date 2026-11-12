@@ -77,11 +77,17 @@ return <header className="ck-card-bar ck-drag">
 
 `tiles.ts` 是框架中立的布局/模型参考，`tiles-sidebar.tsx` 是侧栏组合示例；宿主原组件适配器、平铺画板/卡片渲染及路由需按项目实现，不宣称这些文件是完整可运行应用。
 
+## 按需预览与隔离夹具
+
+会话根用 `PreviewSession` 包住带 key 的流程/模块画板，两模式共用最多三个活跃文档；初次不挂载，点击激活，回收前保存完整场景状态，恢复提交与就绪尺寸消息均确认后才显示。`usePreviewBridge(onReset, { state, restore, ready, measure })` 将两套选项合并，已有 ready/measure 调用保持兼容；未提供状态适配器的实例可查看但不可安全回收。接入和失败处理见 [预览生命周期](../../references/preview-lifecycle.md)。
+
+参考入口支持 `?preview=main`（模拟登录流程）、`?screen=credentials&scenario=no-password`（单屏/iframe）、`?item=confirm-default`（模拟归档）及 `?item=confirm-result`（源码记录）。共同登记场景与内存适配器，未知目标为空态；合成数据不调用业务服务或存储。将 `FixtureSceneView` 换为业务入口共享的纯展示组件，沿用宿主已验证的主题、i18n、样式顺序与 token 启动链路，在预览分支隔离业务控制器与副作用。
+
 ## 尺寸桥接适用范围
 
 尺寸与动态高度以 [尺寸契约](../../references/component-design.md#预览视口与稳定尺寸) 为准。`preview-protocol.ts` 的 `usePreviewBridge(onReset, { ready, measure })` 默认只适用于首报即就绪、根尺寸无视口依赖的同步壳。异步场景显式传 `ready`；响应式 Dialog/Sheet 提供 `measure(element)`，在项目验证过的自然视口返回展示 `width/height` 与可选 `viewport: { width, height, x, y }`（未缩放坐标），无通用固定视口值。旧调用保留兼容；不能据此宣称异步场景就绪。
 
-`preview-frame.tsx` 验证消息后，保持 `viewport.width/height` 为渲染尺寸，按 `x/y` 外部偏移并用展示宽高占位，再应用缩略比例；外框可双向增减。`ready:false` 保留最后提交几何并显示骨架，首次无提交值时保留安全初始尺寸；目标内容和布局就绪后才发 `ready:true` 并提交完整几何，稳定采样仍单独验收。外层按稳定卡片身份保存几何，`src` 切换只用 key 重挂内部 iframe，不能重建整张卡片丢失尺寸。所有尺寸消费者在提交前共用 readiness 判断；异步发送方在切换/重置前清除 readiness。参考实现未提供同一 iframe 重载/异步重置的代次握手与失败重试 UI，宿主按尺寸契约补齐 token 隔离及加载失败保留几何的反馈，不能将参考文件当作这些能力已完成。
+`preview-frame.tsx` 验证消息后，保持 `viewport.width/height` 为渲染尺寸，按 `x/y` 外部偏移并用展示宽高占位，再应用缩略比例；外框可双向增减。`ready:false` 保留最后提交几何并显示骨架，首次无提交值时保留安全初始尺寸；恢复提交并且目标内容和布局就绪后才发 `ready:true` 并提交完整几何，稳定采样仍单独验收。外层按稳定卡片身份保存几何，`src` 切换只用 key 重挂内部 iframe，不能重建整张卡片丢失尺寸。所有尺寸消费者在提交前共用 readiness 判断；异步发送方在切换/重置前清除 readiness。参考实现提供加载/通信失败反馈与显式重置，但未提供同一 iframe 异步重置的代次 token 隔离，宿主按尺寸契约补齐 token 隔离及加载失败保留几何的反馈，不能将参考文件当作这些能力已完成。
 
 桥接观察根元素的 ResizeObserver、DOM 变化、字体就绪、窗口变化和重置；Portal 不在根内或组件替换时，宿主须扩展到当前实际组件的观察范围。测量器应返回完整组件、必要留白及交互范围，不能对组件库内部样式作补丁；外部区域不足以容纳菜单时须动态扩展或采用经验证的承载方案。接入后按验收矩阵验证动态内容、原有内部滚动、操作可达与收敛，不把参考实现当作完整宿主验证。
 
@@ -100,22 +106,25 @@ return <header className="ck-card-bar ck-drag">
 | `reroute.ts` | 拖动后只平移首末段的 `rerouteOf`，以及拖动几何自检 `checkDragGeometry` |
 | `edge.tsx` | 圆角正交路径与统一样式的标签 |
 | `node.tsx` | 四类节点、入口小旗、info Dialog、重置场景、场景切换、出口（悬停去向线或提示）、nodrag 拖动命中区 |
-| `preview-frame.tsx` | 隔离的 iframe 预览：限流加载、就绪骨架、独立渲染视口与动态展示区域、外部缩放 |
+| `preview-pool.ts` / `preview-session.tsx` | 会话内三实例预算、串行激活、内存快照、保存与重置 |
+| `preview-frame.tsx` | 点击激活的隔离 iframe，恢复确认与就绪骨架、独立渲染视口和动态展示区域、外部缩放 |
 | `preview-size.ts` | 无运行时依赖的尺寸消息类型、边界校验与 readiness 提交门槛，供消费者及测试共用 |
-| `preview-protocol.ts` | 画布与预览的 postMessage 协议：`size`（预览 → 画布）与 `reset`（画布 → 预览） |
+| `preview-protocol.ts` | 同源尺寸、ready、snapshot、restore、reset 桥接；完整状态与独立视口可同时接入 |
+| `layout-client.ts` / `worker-import.d.ts` | 后台 ELK、有界布局缓存与 Worker 导入声明；路线细化仍在主线程 |
+| `preview-fixtures.example.ts` / `preview-routes.example.ts` / `preview-scene.example.tsx` | 合成状态、独立入口解析与共享展示夹具；宿主替换为真实展示组件 |
 | `sidebar.tsx` / `legend.tsx` | 目录与图例（通用 HTML 版；有设计系统时换成其组件） |
 | `view-controls.tsx` | 右下角 Canvas Control 预设：设计系统 `CanvasNavigation` + `CanvasMinimap`，缩略图向左展开，附加操作槽 |
 | `board.tsx` | 画板：首次进入适配全图、**切换流程保留视口**、右下 Canvas Control、筛选与聚焦、悬停出口的临时线、拖动 reroute、`data-checks` |
 | `flows.example.ts` / `canvas-page.example.tsx` | 示例流程与画布页路由（`?flow=`、`?preview=`、`?screen=`） |
 
-不要用父级 `visibility: hidden` 保留已访问流程的画板：画布库会在节点上写行内 `visibility`，其他流程的卡片会透出来。想加快加载，优先给预览做轻量的独立入口页，避免每个 iframe 都启动整个应用。
+不要用父级 `visibility: hidden` 保留已访问流程的画板：画布库会在节点上写行内 `visibility`，其他流程的卡片会透出来。想加快加载，使用按需激活与会话预算，并在共享启动链路中跳过已验证与预览无关的副作用；不另写会漂移的样式/主题入口。
 
 ## 平铺参考验证
 
 布局行为检查（运行时支持 TypeScript 类型擦除的 Node；其他环境用已有 TS 测试运行器）：
 
 ```bash
-node --experimental-strip-types --test aw-canvas-design/tests/tiles.test.mjs aw-canvas-design/tests/preview-size.test.mjs aw-canvas-design/tests/flow-directory.test.mjs
+node --experimental-strip-types --test aw-canvas-design/tests/tiles.test.mjs aw-canvas-design/tests/preview-size.test.mjs aw-canvas-design/tests/flow-directory.test.mjs aw-canvas-design/tests/preview-pool.test.mjs
 ```
 
 测试覆盖逐行排列、宽卡片不压缩、动态尺寸后的不重叠、源码记录保留、完整条目覆盖、计数区分及无效关系拒绝；尺寸协议另验独立视口下展示高度双向变化、loading 保留初始/已提交值、切换/重置/重载及失败后的恢复、后续双向变化、旧消息兼容、有限正尺寸、就绪类型、展示原点和边界拒绝。模式选择与边界自查见 [走查用例](../../tests/mode-routing.md)；这些检查不替代宿主浏览器中的组件交互和尺寸收敛验收。

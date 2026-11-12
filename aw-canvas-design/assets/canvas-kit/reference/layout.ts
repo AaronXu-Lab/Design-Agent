@@ -1,3 +1,4 @@
+import ElkWorker from 'elkjs/lib/elk-worker.min.js?worker'
 /**
  * 分层布局（ELK layered + 正交路由 + 固定端口），从登录画布抽出的通用版。
  * - 主路径节点先声明，按模型顺序排在每层最上方；所有端口距节点顶端 24px 的基线，主路径因此是一条直线。
@@ -42,7 +43,7 @@ export function estimateSize(kind: ENodeKind): ISize {
   return { width: 200, height: 48 }
 }
 
-const elk = new ELK()
+const elk = new ELK({ workerFactory: () => new ElkWorker() })
 export const LAYOUT_OPTIONS: Record<string, string> = {
   'elk.algorithm': 'layered',
   'elk.direction': 'RIGHT',

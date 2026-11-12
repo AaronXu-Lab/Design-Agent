@@ -1,111 +1,128 @@
-import { forwardRef, useEffect, useLayoutEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState, useSyncExternalStore } from 'react'
 import { useReactFlow } from '@xyflow/react'
 import { commitPreviewSize, isPreviewSizeMessage, type IPreviewSizeMessage } from './preview-protocol'
+import { usePreviewPool } from './preview-session'
 
-/**
- * 画布节点内的隔离预览：独立文档承载弹层、焦点与滚动锁；点击预览内部时选中所属节点。
- * - 尺寸契约见 component-design.md；viewport 可将稳定渲染视口和动态展示区域分开。
- * - width/height 初始值须足以保留原组件声明宽度，不能依靠第一次上报修复已压缩的视口。
- * - 预览页会上报内容尺寸：收到内容就绪的有效上报才算渲染完成，此前一直显示骨架（kit.css 的 .ck-skeleton）。
- * - 外层按稳定卡片身份保留；src 变化仅替换内部 iframe，已提交几何跨场景保留。
- * - 同一 iframe 内异步重置/重载的代次隔离由宿主补齐，见尺寸契约。
- * - `scale` 把预览缩成缩略图，外框按缩放后的尺寸占位，内部仍按实际尺寸渲染与交互。
- * - iframe 透明、无边框，不垫白底；预览区的浅灰底由卡片的 .ck-card-body 提供。
+interface Props { stateKey?: string; nodeId: string; title: string; src: string; width: number; height: number; scale?: number }
+/** Stable outer geometry; only the inner iframe remounts when its scene changes.
+ * A shared session owns at most three documents, including loading documents.
+ * Same-document asynchronous reset generations still require a host-specific token.
  */
-interface IPreviewFrameProps { nodeId: string; title: string; src: string; width: number; height: number; scale?: number }
-
-// 并发挂载十几个开发态 iframe 会耗尽浏览器连接；限制同时加载的数量，后续实例命中模块缓存。
-const MAX_LOADING = 5
-const LOAD_TIMEOUT = 8000
-let loading = 0
-const waiting: (() => void)[] = []
-function pump() {
-  while (loading < MAX_LOADING && waiting.length) {
-    loading += 1
-    waiting.shift()!()
-  }
-}
-function acquire(start: () => void) {
-  waiting.push(start)
-  pump()
-}
-/**
- * 空出的名额推迟到微任务再交接：StrictMode 会同步卸载再重挂全部节点，
- * 若当场把名额交给排队者，排队者被卸载前的 `setReady(true)` 会保留下来，闸门形同虚设。
- */
-function releaseSlot() {
-  loading -= 1
-  queueMicrotask(pump)
-}
-
-const PreviewFrame = forwardRef<HTMLIFrameElement, IPreviewFrameProps>(function PreviewFrame({ nodeId, title, src, width, height, scale = 1 }, ref) {
+const PreviewFrame = forwardRef<HTMLIFrameElement, Props>(function PreviewFrame({ stateKey, nodeId, title, src, width, height, scale = 1 }, ref) {
+  const pool = usePreviewPool()
+  const key = stateKey ?? `${nodeId}:${src}`
+  const active = useSyncExternalStore(pool.subscribe, pool.getSnapshot, pool.getSnapshot).includes(key)
   const { setNodes } = useReactFlow()
-  const [ready, setReady] = useState(false)
-  const [loadedSrc, setLoadedSrc] = useState<string>()
-  const loaded = loadedSrc === src
-  const [size, setSize] = useState<Pick<IPreviewSizeMessage, 'width' | 'height' | 'viewport'>>()
   const frame = useRef<HTMLIFrameElement>(null)
-  const release = useRef<(() => void) | undefined>(undefined)
-  const cleanup = useRef<(() => void) | undefined>(undefined)
-  useImperativeHandle(ref, () => frame.current!, [src, ready])
-  useLayoutEffect(() => { setLoadedSrc(undefined) }, [src])
-
+  const [size, setSize] = useState<Pick<IPreviewSizeMessage, 'width' | 'height' | 'viewport'>>()
+  const [loadedKey, setLoadedKey] = useState<string>()
+  const loaded = active && loadedKey === key
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
+  const usable = useRef(false)
+  const sequence = useRef(0)
+  const cleanup = useRef<() => void>(() => {})
+  const pending = useRef(new Map<number, { resolve: (state: unknown) => void; reject: (error: Error) => void; timer: number }>())
+  useImperativeHandle(ref, () => frame.current!, [src, active])
+  function request(type: string, extra: object = {}) {
+    return new Promise<unknown>((resolve, reject) => {
+      const target = frame.current?.contentWindow
+      if (!target) { reject(new Error('预览尚未载入')); return }
+      const request = ++sequence.current
+      const timer = window.setTimeout(() => { pending.current.delete(request); reject(new Error('预览状态通信超时，原输入已保留，请重试')) }, 5000)
+      pending.current.set(request, { resolve, reject, timer })
+      target.postMessage({ type, request, ...extra }, window.location.origin)
+    })
+  }
+  useEffect(() => pool.register(key, { suspend: () => {
+    if (!usable.current) return Promise.reject(new Error('请等待现有预览完成加载或重置失败预览'))
+    return request('flow-canvas:snapshot')
+  } }), [pool, key])
   useEffect(() => {
+    setLoadedKey(undefined)
+    usable.current = false
+    if (!active) return
     let cancelled = false
-    let held = false
-    const start = () => {
-      held = true
-      if (cancelled) { held = false; releaseSlot(); return }
-      const timer = window.setTimeout(() => release.current?.(), LOAD_TIMEOUT)
-      release.current = () => {
-        window.clearTimeout(timer)
-        release.current = undefined
-        if (held) { held = false; releaseSlot() }
-      }
-      setReady(true)
+    let measured = false
+    let restored = false
+    let bridgeInstance: unknown
+    let requestedRestore = false
+    const finish = () => {
+      if (!cancelled && measured && restored) { usable.current = true; setLoadedKey(key); window.clearTimeout(timeout) }
     }
-    acquire(start)
-    return () => {
-      cancelled = true
-      const index = waiting.indexOf(start)
-      if (index >= 0) waiting.splice(index, 1)
-      release.current?.()
-      cleanup.current?.()
-    }
-  }, [])
-
-  useEffect(() => {
+    const timeout = window.setTimeout(() => setError('预览加载失败：请检查场景桥接，或重置后重试'), 10000)
     const receive = (event: MessageEvent) => {
       if (event.origin !== window.location.origin || event.source !== frame.current?.contentWindow) return
-      if (!isPreviewSizeMessage(event.data)) return
-      const message = event.data
-      // loading 只改变就绪状态，卡片和 iframe 共用最后提交的整组几何。
-      setSize((previous) => commitPreviewSize(previous, message))
-      setLoadedSrc(message.ready === false ? undefined : src)
-      if (message.ready !== false) release.current?.()
+      const data = event.data
+      if (isPreviewSizeMessage(data)) {
+        if (data.ready === false) {
+          measured = false; usable.current = false; setLoadedKey(undefined)
+          return // Keep the entire last committed display and rendering geometry.
+        }
+        setSize(previous => {
+          const next = commitPreviewSize(previous, data)
+          return JSON.stringify(previous) === JSON.stringify(next) ? previous : next
+        })
+        measured = true
+        finish()
+      }
+      if (data?.type === 'flow-canvas:ready') {
+        if (requestedRestore && bridgeInstance === data.instance) return
+        requestedRestore = true
+        bridgeInstance = data.instance
+        setError('')
+        restored = false; measured = false; usable.current = false; setLoadedKey(undefined)
+        const saved = pool.saved(key)
+        void request('flow-canvas:restore', { present: saved.present, state: saved.value }).then(() => {
+          if (cancelled) return
+          restored = true
+          finish()
+        }).catch(error => { if (!cancelled) setError(String(error.message)) })
+      }
+      if (data?.type === 'flow-canvas:snapshot-result' || data?.type === 'flow-canvas:restored') {
+        const task = pending.current.get(data.request)
+        if (!task) return
+        window.clearTimeout(task.timer)
+        pending.current.delete(data.request)
+        if (data.type === 'flow-canvas:restored') measured = false
+        data.error ? task.reject(new Error(data.error)) : task.resolve(data.state)
+      }
     }
     window.addEventListener('message', receive)
-    return () => window.removeEventListener('message', receive)
-  }, [src])
-
+    return () => {
+      cancelled = true
+      usable.current = false
+      cleanup.current()
+      window.clearTimeout(timeout)
+      window.removeEventListener('message', receive)
+      for (const task of pending.current.values()) { window.clearTimeout(task.timer); task.reject(new Error('预览已卸载')) }
+      pending.current.clear()
+    }
+  }, [active, key, pool, src])
+  const activate = async () => {
+    setError(''); setBusy(true)
+    try { await pool.activate(key) } catch (error) { setError((error as Error).message) }
+    finally { setBusy(false) }
+  }
+  const select = () => setNodes(nodes => nodes.map(node => Boolean(node.selected) === (node.id === nodeId) ? node : { ...node, selected: node.id === nodeId }))
   const frameWidth = size?.width ?? width
   const frameHeight = size?.height ?? height
   const viewport = size?.viewport
   return <div className="ck-preview nodrag nopan" style={{ width: frameWidth * scale, height: frameHeight * scale,
     ...(viewport ? { overflow: 'hidden' } : {}) }}>
-    {!loaded && <div className="ck-skeleton" aria-hidden><i /><i /><i /><i /></div>}
-    <iframe key={src} ref={frame} title={title} src={ready ? src : undefined}
+    {!active && <button type="button" className="ck-preview-activate" onClick={activate} disabled={busy}>{busy ? '正在保存现有预览…' : '激活交互预览'}</button>}
+    {active && !loaded && !error && <div className="ck-skeleton" aria-hidden><i /><i /><i /><i /></div>}
+    {error && <p role="alert" className="ck-preview-error">{error}</p>}
+    {active && <iframe key={src} ref={frame} title={title} src={src}
       style={{ width: viewport?.width ?? frameWidth, height: viewport?.height ?? frameHeight,
-        ...(viewport ? { position: 'absolute', left: -viewport.x * scale, top: -viewport.y * scale } as const : {}), visibility: loaded ? undefined : 'hidden', transform: scale === 1 ? undefined : `scale(${scale})`, transformOrigin: '0 0' }}
-      onLoad={(event) => {
-        if (!event.currentTarget.src) return
-        cleanup.current?.()
+        ...(viewport ? { position: 'absolute', left: -viewport.x * scale, top: -viewport.y * scale } as const : {}),
+        visibility: loaded ? undefined : 'hidden', transform: scale === 1 ? undefined : `scale(${scale})`, transformOrigin: '0 0' }}
+      onLoad={event => {
+        cleanup.current()
         const document = event.currentTarget.contentDocument
-        const focus = () => setNodes((nodes) => nodes.map((node) => ({ ...node, selected: node.id === nodeId })))
-        document?.addEventListener('pointerdown', focus)
-        cleanup.current = () => { document?.removeEventListener('pointerdown', focus) }
-      }} />
+        document?.addEventListener('pointerdown', select)
+        cleanup.current = () => document?.removeEventListener('pointerdown', select)
+      }} />}
   </div>
 })
-
 export default PreviewFrame

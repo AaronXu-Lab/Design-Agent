@@ -1,13 +1,14 @@
 import { decision, exit, faultEdge, mainEdge, edge, note, reference, screen, type TCanvasFlows } from './types'
 
+import type { IDemoTarget } from './preview-fixtures.example'
+export type { IDemoTarget } from './preview-fixtures.example'
+
 /**
  * 示例流程数据（去掉业务后的最小形态），新项目复制后替换为自己的流程：
  * - 主路径节点先声明；流程最多两级（子流程写 `parent`）；以一个业务段落为一条流程。
  * - 同一页面的多种结果写成 `variants`，不拆成多个节点；返回、取消写成 `exits`，原地操作不列。
  * - 无入边的节点必须带 `entry`。
  */
-export interface IDemoTarget { screen: string; scenario?: string }
-
 export const FLOWS: TCanvasFlows<IDemoTarget> = {
   main: {
     label: '主流程',
