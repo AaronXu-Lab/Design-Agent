@@ -443,8 +443,8 @@ def _fullwidth_colon_space(text: str):
 @rule(
     "ellipsis-three-dots",
     ERROR,
-    "省略号固定写作三个半角点 ...，标记会进入下一步交互的动作或进行中的状态；不使用半个省略号 …",
-    "新增凭证… → 新增凭证...",
+    "省略号固定写作三个半角点 ...，只用于进入下级界面的 Menu 条目或进行中的状态；不使用半个省略号 …",
+    "移动到… → 移动到...",
 )
 def _ellipsis_three_dots(text: str):
     for m in re.finditer(r"…+|。{2,}|\.{4,}", text):
@@ -724,7 +724,7 @@ SELF_CHECK_CASES = [
     ("2026-07-15,搜索,12840,318,2864", "", "fullwidth-punct", False),
     ("下次运行： 明天 09:00", "", "fullwidth-colon-space", True),
     ("下次运行：明天 09:00", "", "fullwidth-colon-space", False),
-    ("新增凭证...", "", "ellipsis-three-dots", False),
+    ("移动到...", "", "ellipsis-three-dots", False),
     ("加载中...", "", "ellipsis-three-dots", False),
     ("加载中…", "", "ellipsis-three-dots", True),
     ("新增凭证…", "", "ellipsis-three-dots", True),

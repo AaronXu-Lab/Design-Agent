@@ -5,7 +5,7 @@ import { usePreviewPool } from './preview-session'
 
 interface Props { stateKey?: string; nodeId: string; title: string; src: string; width: number; height: number; scale?: number }
 /** Stable outer geometry; only the inner iframe remounts when its scene changes.
- * A shared session owns at most three documents, including loading documents.
+ * All current-view documents activate automatically, without a count limit.
  * Same-document asynchronous reset generations still require a host-specific token.
  */
 const PreviewFrame = forwardRef<HTMLIFrameElement, Props>(function PreviewFrame({ stateKey, nodeId, title, src, width, height, scale = 1 }, ref) {
@@ -18,7 +18,6 @@ const PreviewFrame = forwardRef<HTMLIFrameElement, Props>(function PreviewFrame(
   const [loadedKey, setLoadedKey] = useState<string>()
   const loaded = active && loadedKey === key
   const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
   const usable = useRef(false)
   const sequence = useRef(0)
   const cleanup = useRef<() => void>(() => {})
@@ -99,18 +98,15 @@ const PreviewFrame = forwardRef<HTMLIFrameElement, Props>(function PreviewFrame(
       pending.current.clear()
     }
   }, [active, key, pool, src])
-  const activate = async () => {
-    setError(''); setBusy(true)
-    try { await pool.activate(key) } catch (error) { setError((error as Error).message) }
-    finally { setBusy(false) }
-  }
+  useEffect(() => {
+    if (!active) void pool.activate(key).catch(error => setError((error as Error).message))
+  }, [active, key, pool])
   const select = () => setNodes(nodes => nodes.map(node => Boolean(node.selected) === (node.id === nodeId) ? node : { ...node, selected: node.id === nodeId }))
   const frameWidth = size?.width ?? width
   const frameHeight = size?.height ?? height
   const viewport = size?.viewport
   return <div className="ck-preview nodrag nopan" style={{ width: frameWidth * scale, height: frameHeight * scale,
     ...(viewport ? { overflow: 'hidden' } : {}) }}>
-    {!active && <button type="button" className="ck-preview-activate" onClick={activate} disabled={busy}>{busy ? '正在保存现有预览…' : '激活交互预览'}</button>}
     {active && !loaded && !error && <div className="ck-skeleton" aria-hidden><i /><i /><i /><i /></div>}
     {error && <p role="alert" className="ck-preview-error">{error}</p>}
     {active && <iframe key={src} ref={frame} title={title} src={src}

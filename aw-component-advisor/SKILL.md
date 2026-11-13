@@ -2,7 +2,7 @@
 name: aw-component-advisor
 description: "Guide AaronUI-Web component use before implementation and audit existing use against its live knowledge source. Discover relevant project Docs before reading their sections and select Gallery Examples; not a visual-only review or component-rule editor."
 metadata:
-  version: "1.6.0"
+  version: "1.7.0"
   author: "aaron_xu"
   creation_context: "为以同一 AaronUI-Web 规范支持实现前的组件指导和实现后的用法审查而创建，将知识维护留在组件源项目，Skill 仅维护方法、证据与交接边界。"
 ---

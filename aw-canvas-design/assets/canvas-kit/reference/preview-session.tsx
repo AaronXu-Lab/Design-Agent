@@ -9,6 +9,6 @@ export function PreviewSession({ children }: { children: ReactNode }) {
 }
 export function usePreviewPool() {
   const pool = useContext(Context)
-  if (!pool) throw new Error('画布需由 PreviewSession 承载预览状态和三个活跃实例上限')
+  if (!pool) throw new Error('画布需由 PreviewSession 承载自动预览与会话状态')
   return pool
 }

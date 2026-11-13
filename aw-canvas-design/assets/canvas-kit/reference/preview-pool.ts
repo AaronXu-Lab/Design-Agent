@@ -1,7 +1,6 @@
 /** One pool per canvas session. Snapshots stay in memory, never browser storage. */
 export interface PreviewParticipant { suspend: () => Promise<unknown> }
 export class PreviewPool {
-  readonly limit = 3
   private active: string[] = []
   private listeners = new Set<() => void>()
   private participants = new Map<string, PreviewParticipant>()
@@ -12,6 +11,7 @@ export class PreviewPool {
   private emit() { for (const listener of this.listeners) listener() }
   register(id: string, participant: PreviewParticipant) {
     this.participants.set(id, participant)
+    if (!this.active.includes(id)) { this.active = [...this.active, id]; this.emit() }
     return () => {
       if (this.participants.get(id) !== participant) return
       this.participants.delete(id)
@@ -42,16 +42,6 @@ export class PreviewPool {
     const task = this.queue.then(async () => {
       if (!this.participants.has(id)) throw new Error('预览已离开当前画布')
       if (this.active.includes(id)) return
-      if (this.active.length >= this.limit) {
-        const victim = this.active[0]
-        const participant = this.participants.get(victim)
-        if (!participant) throw new Error('预览生命周期失效，请重试')
-        // A failed/missing state adapter never silently discards user input.
-        const state = await participant.suspend()
-        if (!this.participants.has(id)) return
-        if (this.active.includes(victim)) this.states.set(victim, structuredClone(state))
-        this.active = this.active.filter(key => key !== victim)
-      }
       this.active = [...this.active, id]
       this.emit()
     })

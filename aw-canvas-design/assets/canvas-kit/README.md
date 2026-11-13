@@ -79,7 +79,7 @@ return <header className="ck-card-bar ck-drag">
 
 ## 按需预览与隔离夹具
 
-会话根用 `PreviewSession` 包住带 key 的流程/模块画板，两模式共用最多三个活跃文档；初次不挂载，点击激活，回收前保存完整场景状态，恢复提交与就绪尺寸消息均确认后才显示。`usePreviewBridge(onReset, { state, restore, ready, measure })` 将两套选项合并，已有 ready/measure 调用保持兼容；未提供状态适配器的实例可查看但不可安全回收。接入和失败处理见 [预览生命周期](../../references/preview-lifecycle.md)。
+会话根用 `PreviewSession` 包住带 key 的流程/模块画板，两模式均自动挂载当前视图全部真实预览，不设数量上限、不淘汰已有实例；显式切换前保存完整场景状态，恢复提交与就绪尺寸消息均确认后才显示。`usePreviewBridge(onReset, { state, restore, ready, measure })` 将两套选项合并，已有 ready/measure 调用保持兼容；未提供状态适配器的实例可查看但不可安全回收。接入和失败处理见 [预览生命周期](../../references/preview-lifecycle.md)。
 
 参考入口支持 `?preview=main`（模拟登录流程）、`?screen=credentials&scenario=no-password`（单屏/iframe）、`?item=confirm-default`（模拟归档）及 `?item=confirm-result`（源码记录）。共同登记场景与内存适配器，未知目标为空态；合成数据不调用业务服务或存储。将 `FixtureSceneView` 换为业务入口共享的纯展示组件，沿用宿主已验证的主题、i18n、样式顺序与 token 启动链路，在预览分支隔离业务控制器与副作用。
 
@@ -106,7 +106,7 @@ return <header className="ck-card-bar ck-drag">
 | `reroute.ts` | 拖动后只平移首末段的 `rerouteOf`，以及拖动几何自检 `checkDragGeometry` |
 | `edge.tsx` | 圆角正交路径与统一样式的标签 |
 | `node.tsx` | 四类节点、入口小旗、info Dialog、重置场景、场景切换、出口（悬停去向线或提示）、nodrag 拖动命中区 |
-| `preview-pool.ts` / `preview-session.tsx` | 会话内三实例预算、串行激活、内存快照、保存与重置 |
+| `preview-pool.ts` / `preview-session.tsx` | 会话内自动激活、不限数量、内存快照、保存与重置 |
 | `preview-frame.tsx` | 点击激活的隔离 iframe，恢复确认与就绪骨架、独立渲染视口和动态展示区域、外部缩放 |
 | `preview-size.ts` | 无运行时依赖的尺寸消息类型、边界校验与 readiness 提交门槛，供消费者及测试共用 |
 | `preview-protocol.ts` | 同源尺寸、ready、snapshot、restore、reset 桥接；完整状态与独立视口可同时接入 |
@@ -117,7 +117,7 @@ return <header className="ck-card-bar ck-drag">
 | `board.tsx` | 画板：首次进入适配全图、**切换流程保留视口**、右下 Canvas Control、筛选与聚焦、悬停出口的临时线、拖动 reroute、`data-checks` |
 | `flows.example.ts` / `canvas-page.example.tsx` | 示例流程与画布页路由（`?flow=`、`?preview=`、`?screen=`） |
 
-不要用父级 `visibility: hidden` 保留已访问流程的画板：画布库会在节点上写行内 `visibility`，其他流程的卡片会透出来。想加快加载，使用按需激活与会话预算，并在共享启动链路中跳过已验证与预览无关的副作用；不另写会漂移的样式/主题入口。
+不要用父级 `visibility: hidden` 保留已访问流程的画板：画布库会在节点上写行内 `visibility`，其他流程的卡片会透出来。想加快加载，自动挂载全部预览，并在共享启动链路中跳过已验证与预览无关的副作用、合并重复测量；不另写会漂移的样式/主题入口。
 
 ## 平铺参考验证
 

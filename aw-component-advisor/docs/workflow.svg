@@ -32,7 +32,7 @@
 <path class="edge" d="M775 780H920V875"/>
 <text class="note" x="855" y="760">audit</text>
 <rect x="60" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="280.0" y="905">回校简报并形成用法</text><text class="note" x="280.0" y="930">用户要求优先；匹配规则、动效与实例连续性</text>
-<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">核对实际实现与参考关系</text><text class="note" x="920.0" y="930">实际对照；动效以完成 / 取消及卸载事件取证</text>
+<rect x="700" y="875" width="440" height="76" rx="14" fill="#edf6ff" stroke="#287bbb" stroke-width="2"/><text class="label" x="920.0" y="905">枚举用到的组件并核对实现</text><text class="note" x="920.0" y="930">含手写等价物；对照参考；动效以事件取证</text>
 <path class="join" d="M280 951V990H600"/>
 <path class="join" d="M920 951V990H600"/>
 <path class="edge" d="M600 990V1030"/>
@@ -46,7 +46,7 @@
 <path class="join" d="M280 1251V1290H600"/>
 <path class="join" d="M920 1251V1290H600"/>
 <path class="edge" d="M600 1290V1330"/>
-<rect x="350" y="1330" width="500" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/><text class="label" x="600.0" y="1360">交付可追溯结果与剩余事项</text><text class="note" x="600.0" y="1385">差异与依据 / 实际证据；未覆盖或待验证不算通过</text>
+<rect x="350" y="1330" width="500" height="76" rx="14" fill="#edf9f1" stroke="#2e8b54" stroke-width="2"/><text class="label" x="600.0" y="1360">交付可追溯结果与剩余事项</text><text class="note" x="600.0" y="1385">差异与依据 / 实际证据；附已审 / 未审清单；未覆盖不算通过</text>
 <text class="note" x="600" y="1480">服务或源码读取失败：保留未读与待验证项，不伪称无参考或已通过</text>
 <text class="note" x="600" y="1512">source-reference 仅表示适配依赖，不代表重新设计；可读不代表独立规范覆盖</text>
 <text class="note" x="600" y="1544">减少动态效果单独核实；静态预览不证明动效；保留人工 Review</text>
