@@ -2,7 +2,7 @@
 name: aw-design-orchestrator
 description: "Coordinate AW design shaping, live component guidance, AaronUI-Web implementation, audits, independent task walkthrough, and wording review. Use for the full workflow or resuming it; /help explains the stages without starting work."
 metadata:
-  version: "1.6.0"
+  version: "1.6.1"
   author: "aaron_xu"
   creation_context: "为让用户通过一个入口提交不同形式的需求，顺序调用既有设计 Skill 并保留人工审阅与独立走查边界，同时提供初学者可单独查看的帮助而创建。"
 ---
