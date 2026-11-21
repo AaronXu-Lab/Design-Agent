@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1940" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1980" role="img" aria-labelledby="title desc">
 <title id="title">AW Wording Reviewer 工作流程</title>
-<desc id="desc">按范围审查文案；一般 Wording Docs 先发现再选读，项目文章优先于内置规则；组件语义先复用或获取组件及关联 Wording Docs，纯标点跳过，缺证据的相关结论待验证；已授权时先完成独立字符串修改与验证，仅审查则交付结论。必要的非字符串实现项单独列出问题、建议、实现与影响范围；已有具体授权直接执行，否则明确请求同意并等待。批准后实施和验证，未批准保留未修状态。</desc>
+<desc id="desc">按范围审查文案。一般 Wording Docs 先发现再选读，项目文章优先于内置规则。组件语义先复用或获取组件及关联 Wording Docs，纯标点跳过。提示点名操作时，按 G6 核对提示出现时的入口。相关证据不足的结论保留待验证。已授权时先完成独立字符串修改与验证，仅审查则交付结论。必要的非字符串实现项单独列出问题、建议、实现与影响范围。已有具体授权直接执行，否则明确请求同意并等待。批准后实施和验证，未批准保留未修状态。</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#52606d"/></marker>
 <style>
 text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-anchor:middle;fill:#17212b}.title{font-size:30px;font-weight:700}.label{font-size:18px;font-weight:600}.note{font-size:14px;font-weight:400;fill:#52606d}.input{fill:#fff;stroke:#9eacb8}.step{fill:#edf6ff;stroke:#287bbb}.decision{fill:#fff7e6;stroke:#c98312}.stop{fill:#fff0ef;stroke:#c94b43}.result{fill:#edf9f1;stroke:#2e8b54}rect,polygon{stroke-width:2}.line{fill:none;stroke:#52606d;stroke-width:2.5;marker-end:url(#arrow)}.join{fill:none;stroke:#52606d;stroke-width:2.5}
 </style></defs>
-<rect width="1200" height="1940" fill="#f7f9fb" stroke="none"/>
+<rect width="1200" height="1980" fill="#f7f9fb" stroke="none"/>
 <text class="title" x="600" y="48">AW Wording Reviewer</text>
 <rect class="input" x="390" y="80" width="420" height="68" rx="14"/><text class="label" x="600" y="108">确定审查范围与已有授权</text><text class="note" x="600" y="131">先看用户目标 · 保留规则选择与项目边界</text>
 <path class="line" d="M600 148V178"/>
@@ -31,8 +31,10 @@ text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;text-
 <rect class="step" x="70" y="562" width="360" height="68" rx="14"/><text class="label" x="250" y="590">直接审查可见文案</text><text class="note" x="250" y="613">按角色与所选规则判断</text>
 <rect class="step" x="770" y="562" width="360" height="68" rx="14"/><text class="label" x="950" y="590">扫描源码并补充语义复核</text><text class="note" x="950" y="613">仅适用机械项运行扫描器</text>
 <path class="join" d="M250 630V666H950V630"/><path class="line" d="M600 666V702"/>
-<rect class="step" x="390" y="702" width="420" height="68" rx="14"/><text class="label" x="600" y="730">需要时核对实现与显示</text><text class="note" x="600" y="753">动态展示查调用链 · 缺少事实标记未知</text>
-<path class="line" d="M600 770V810"/>
+<rect class="step" x="390" y="702" width="420" height="96" rx="14"/><text class="label" x="600" y="728">按需核对当前界面与实现</text><text class="note" x="600" y="753">提示点名操作时，按 G6 核对提示出现时的入口</text><text class="note" x="600" y="776">动态展示查调用链 · 证据不足则标记待验证</text>
+<path class="line" d="M600 798V830"/>
+</g>
+<g transform="translate(0 350)">
 <polygon class="decision" points="600,810 790,864 600,918 410,864"/><text class="label" x="600" y="870">已有对应修改授权？</text>
 <path class="line" d="M410 864H330"/><text class="note" x="367" y="850">否</text>
 <rect class="result" x="50" y="830" width="280" height="68" rx="14"/><text class="label" x="190" y="858">交付有依据的审查结果</text><text class="note" x="190" y="881">位置、原文、改写与规则</text>

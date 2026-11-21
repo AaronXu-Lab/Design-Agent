@@ -28,7 +28,7 @@ npx skills@latest add AaronXu-Lab/Design-Agent --skill aw-design-orchestrator
 | [`aw-ux-info-redundancy-audit`](./aw-ux-info-redundancy-audit/) | `1.10.1` | 审计信息任务价值、语义重复、适用阶段与视觉承载物必要性 | 实施前交付证据与最小改动决策；Dialog 用法受影响时交接组件审查，不替代信息价值判断 |
 | [`aw-flow-completeness-audit`](./aw-flow-completeness-audit/) | `1.3.0` | 审查步骤、分支、转换、交接、恢复与可观察结果，交付证据和最小补全建议 | 已实现界面优先；人工 Review 后才实施获准修复；同步已有简报；Dialog 用法变化局部复核，不替代流程结果验证 |
 | [`aw-task-walkthrough`](./aw-task-walkthrough/) | `1.3.0` | 独立走查用户选定的可交互原型或产品任务，判断理解、发现、负担与结果 | 以新会话执行；可读完整 PRD，简报仅辅助规划；不预读组件规则或旧审查；真实交互后交人工 review，默认只报问题不修复 |
-| [`aw-wording-reviewer`](./aw-wording-reviewer/) | `0.18.0` | 审查简体中文排版、术语、数据展示与微文案 | 相关项目 Wording 文章优先于内置默认规则；默认只审查；Dialog 标题 / CTA 与内容语义须取得组件及关联 Wording Doc 证据；纯标点可跳过查询；获准修改影响 Dialog 用法时局部 audit；不用于其他语言或信息架构 |
+| [`aw-wording-reviewer`](./aw-wording-reviewer/) | `0.19.0` | 审查简体中文排版、术语、数据展示与微文案 | 相关项目 Wording 文章优先于内置默认规则；默认只审查；Dialog 标题 / CTA 与内容语义须取得组件及关联 Wording Doc 证据；纯标点可跳过查询；获准修改影响 Dialog 用法时局部 audit；不用于其他语言或信息架构 |
 
 统一入口为 [`aw-design-orchestrator`](./aw-design-orchestrator/)，调用时附带 `/help` 可单独查看新手帮助。
 
